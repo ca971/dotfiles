@@ -1,16 +1,17 @@
 # 🚀 ca971 Dotfiles
 
-Mon environnement de travail automatisé pour **macOS** et **Linux**.
-Entièrement géré par [chezmoi](https://www.chezmoi.io/), ce dépôt permet de configurer une machine vierge en quelques minutes.
+My automated development environment for **macOS** and **Linux**.  
+Powered by [chezmoi](https://www.chezmoi.io/), this repository turns a fresh machine into a fully functional workstation in minutes.
 
-## ⚡️ Installation Rapide (One-Shot)
+## ⚡️ Quick Install (One-Shot)
 
-Ouvrez un terminal et collez la commande suivante :
+Open your terminal and paste the following command:
 
-````bash
+```bash
 curl -L dub.sh/hg67BHh | bash
+````
 
-[!TIP]Alternative link :
+## 💡 [!TIP] Alternative link
 ```bash
 curl -L https://is.gd/tXKWf1 | bash
 ````
