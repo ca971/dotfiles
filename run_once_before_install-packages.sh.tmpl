@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# --- 1. Détection de l'OS ---
+OS_TYPE="{{ .chezmoi.os }}"
+echo "🔍 OS détecté : $OS_TYPE"
+
+# --- 2. Installation pour macOS ---
+{{ if eq .chezmoi.os "darwin" -}}
+if ! command -v brew &> /dev/null; then
+    echo "🍺 Installation de Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # Configurer brew dans le shell actuel pour la suite du script
+    eval "$(/opt/homebrew/bin/brew shellenv)" 2>/dev/null || eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+echo "📦 Installation des outils Power User (macOS)..."
+brew install eza lsd bat fd ripgrep fzf htop btop duf gping dog p7zip neovim tldr jq
+{{ end -}}
+
+# --- 3. Installation pour Linux (Debian/Ubuntu/WSL) ---
+{{ if eq .chezmoi.os "linux" -}}
+echo "📦 Mise à jour et installation des outils Power User (Linux)..."
+sudo apt update && sudo apt install -y \
+    eza lsd bat fd-find ripgrep fzf htop btop duf p7zip-full nvim jq curl
+
+# Correction pour 'bat' qui s'appelle souvent 'batcat' sur Ubuntu
+mkdir -p ~/.local/bin
+ln -sf /usr/bin/batcat ~/.local/bin/bat
+{{ end -}}
+
+echo "✅ Dépendances installées avec succès."
+

@@ -28,11 +28,143 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes.
-alias ls="eza --icons"
-alias ll="eza -la"
+# Définition de l'éditeur par défaut
+if (( $+commands[nvim] )); then
+    export EDITOR='nvim'
+else
+    export EDITOR='vim'
+fi
 
+# EDITOR alias
+alias v=$EDITOR
+
+alias c='clear'
+
+# --- LSD / EZA aliases (ls replacement) ---
+if (( $+commands[eza] )); then
+    alias ls='eza --icons --group-directories-first'
+    alias ll='eza -lh --icons --git --group-directories-first'
+    alias la='eza -a --icons --group-directories-first'
+    alias lt='eza --tree --level=2 --icons'
+elif (( $+commands[lsd] )); then
+    alias ls='lsd'
+    alias ll='lsd -l'
+    alias la='lsd -a'
+    alias lt='lsd --tree'
+fi
+
+# --- Navigation Rapide ---
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias -- -='cd -' # Revient au dossier précédent
+alias dot='chezmoi cd' # Va direct dans le dossier source des dotfiles
+
+# --- Git Shortcuts (Ultra-rapides) ---
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git log --oneline --graph --decorate'
+alias gdiff='git diff'
+
+# --- Git Avancé ---
+alias gcn='git commit --no-edit --amend' # Rajoute les modifs au dernier commit sans changer le message
+alias gcan='git add -A && git commit --no-edit --amend' # Le fameux "oups j'ai oublié un fichier"
+alias gb='git branch'
+alias gco='git checkout'
+alias gcb='git checkout -b' # Créer et switcher sur une branche
+alias gd='git diff --color-words' # Diff plus lisible mot par mot
+
+# --- Network ---
+alias ip="curl ifconfig.me" # Récupère ton IP publique rapidement
+alias ports='netstat -tulanp' # Liste les ports ouverts (utile en cas de conflit)
+
+# --- Utilitaires ---
+alias reload='source ~/.zprofile' # Recharge la config après modif
+alias path='echo $PATH | tr ":" "\n"' # Affiche le PATH de façon lisible
+alias mkdir='mkdir -p' # Crée les dossiers parents si nécessaire
+
+# --- Docker ---
+alias d='docker'
+alias dc='docker-compose'
+alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"' # Un PS Docker propre
+alias dimg='docker images'
+alias drmi='docker rmi $(docker images -q -f "dangling=true")' # Nettoie les images inutilisées
+alias dstop='docker stop $(docker ps -a -q)' # Arrête tous les containers
+
+# --- Kubernetes (si installé) ---
+if (( $+commands[kubectl] )); then
+    alias k='kubectl'
+    alias kgp='kubectl get pods'
+    alias kgs='kubectl get svc'
+    alias kga='kubectl get all'
+fi
+
+# --- System Monitoring ---
+if (( $+commands[btop] )); then
+    alias top='btop'
+elif (( $+commands[htop] )); then
+    alias top='htop'
+fi
+
+if (( $+commands[duf] )); then
+  alias df='duf'
+elif (( $+commands[dfc] )); then
+  alias df='dfc'
+fi
+
+if (( $+commands[bat] )); then
+  alias cat='bat'
+fi
+
+alias du='du -sh' # Taille d'un dossier en format humain
+alias free='free -m -h' # Mémoire vive lisible
+
+# --- Sécurité & Droits ---
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias chmod='chmod --preserve-root'
+    alias chown='chown --preserve-root'
+fi
+alias sshy='ssh -o StrictHostKeyChecking=no' # Pour les tests rapides (à utiliser avec prudence)
+
+
+# Extraire n'importe quel type d'archive d'une seule commande
+extract () {
+   if [ -f $1 ] ; then
+       case $1 in
+           *.tar.bz2)   tar xvjf $1    ;;
+           *.tar.gz)    tar xvzf $1    ;;
+           *.bz2)       bunzip2 $1     ;;
+           *.rar)       unrar x $1      ;;
+           *.gz)        gunzip $1      ;;
+           *.tar)       tar xvf $1     ;;
+           *.tbz2)      tar xvjf $1    ;;
+           *.tgz)       tar xvzf $1    ;;
+           *.zip)       unzip $1       ;;
+           *.Z)         uncompress $1  ;;
+           *.7z)        7za x $1        ;;
+           *)           echo "don't know how to extract '$1'..." ;;
+       esac
+   else
+       echo "'$1' is not a valid file!"
+   fi
+}
+
+# Créer un dossier et entrer dedans immédiatement
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# FZF
+# Preview des fichiers avec 'bat' lors d'une recherche (CTRL+T)
+export FZF_CTRL_T_OPTS="
+  --preview 'bat --style=numbers --color=always --line-range :500 {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+
+# Oh-My-Zsh plugins
 plugins=(
   git
   zsh-autosuggestions
