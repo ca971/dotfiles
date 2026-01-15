@@ -164,6 +164,33 @@ export FZF_CTRL_T_OPTS="
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 
+  # --- FZF Configuration ---
+if (( $+commands[fzf] )); then
+  # Initialisation native
+  source <(fzf --zsh)
+
+  # Utiliser 'fd' au lieu de 'find' pour la rapidité et ignorer le .git
+  #export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+  #export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+  # Options visuelles (Thème épuré et Preview)
+  export FZF_DEFAULT_OPTS="
+    --height 45% 
+    --layout=reverse 
+    --border 
+    --inline-info 
+    --color='header:italic:underline'
+    --preview-window='right:60%:wrap'
+  "
+
+  # Preview du contenu des fichiers avec 'bat' sur CTRL+T
+  export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
+  
+  # Recherche dans l'historique avec CTRL+R (plus lisible)
+  export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
+fi
+
+
 # Oh-My-Zsh plugins
 plugins=(
   git
@@ -176,3 +203,6 @@ plugins=(
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Charger les secrets locaux s'ils existent (non suivis par Git)
+[[ -f ~/.zshrc_local ]] && source ~/.zshrc_local
