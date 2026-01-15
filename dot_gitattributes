@@ -1,0 +1,38 @@
+# ------------------------------------------------------------------------------
+# .gitattributes - Global handling for file types
+# ------------------------------------------------------------------------------
+
+# --- 1. Line Endings (The most important part) ---
+# Handle line endings automatically for text files
+* text=auto eol=lf
+
+# Explicitly set common text files to LF (Unix-style)
+*.sh      text eol=lf
+*.zsh     text eol=lf
+*.py      text eol=lf
+*.js      text eol=lf
+*.json    text eol=lf
+*.md      text eol=lf
+*.yml     text eol=lf
+
+# --- 2. Binary Files (Don't let Git touch these) ---
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.ico     binary
+*.pdf     binary
+*.zip     binary
+*.gz      binary
+*.ttf     binary
+*.woff    binary
+
+# --- 3. Diffing Improvements ---
+# Treat CSS/HTML as text for better diffs
+*.css     diff=css
+*.html    diff=html
+
+# --- 4. GitHub/Linguist Customization ---
+# If you have specific files you want to hide from language stats
+# docs/* linguist-documentation
+
