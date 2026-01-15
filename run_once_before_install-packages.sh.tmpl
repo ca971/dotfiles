@@ -1,51 +1,108 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
-# --- 1. Détection de l'OS ---
+# Fail early if not running under Zsh
+[[ -z "$ZSH_VERSION" ]] && return
+
+
+# Utilities
+log_info() {
+  print -P "%F{cyan}[chez-moi]%f $1"
+}
+
+log_ok() {
+  print -P "%F{green}[chez-moi]%f $1"
+}
+
+log_warn() {
+  print -P "%F{yellow}[chez-moi]%f $1"
+}
+
+# --- 1. OS Detection ---
 OS_TYPE="{{ .chezmoi.os }}"
-echo "🔍 OS détecté : $OS_TYPE"
+echo "🔍 Detected OS: $OS_TYPE"
 
-# --- 2. Installation pour macOS ---
+# --- 2. macOS Setup ---
 {{ if eq .chezmoi.os "darwin" -}}
+log_info "🍎 Starting macOS Setup..."
 
-# Vérification des Command Line Tools
+# Xcode Command Line Tools
 if ! xcode-select -p &> /dev/null; then
-    echo "🛠️  Xcode Command Line Tools non détectés."
-    echo "🚀 Lancement de l'installateur..."
+    log_info "🛠️  Xcode Command Line Tools not found. Installing..."
     xcode-select --install
-
-    echo "⏳ Attente de la fin de l'installation..."
-    echo "📌 Veuillez cliquer sur 'Installer' dans la fenêtre qui vient de s'ouvrir."
-    
-    # Boucle d'attente : vérifie toutes les 5 secondes si xcode-select est fonctionnel
-    until xcode-select -p &> /dev/null; do
-        sleep 5
-        echo "   ... en attente de la fin de l'installation (cliquez sur 'Installer' si ce n'est pas fait) ..."
-    done
-
-    echo "✅ Xcode Command Line Tools installés !"
+    until xcode-select -p &> /dev/null; do sleep 5; done
+    log_ok "✅  Xcode Command Line Tools Installed"
 fi
 
-# Suite de l'installation (Homebrew)
+# Homebrew
 if ! command -v brew &> /dev/null; then
-    echo "🍺 Installation de Homebrew..."
+    log_info "🍺 Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    
-    # Configurer brew dans le shell actuel
-    if [[ -d /opt/homebrew/bin ]]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
+    [ -d "/opt/homebrew/bin" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+    log_ok "✅  Homebrew Installed"
+fi
+
+# --- C. Zsh Plugins (Managed by Chezmoi) ---
+
+PLUGIN_DIR="$HOME/.local/share/zsh-plugins"
+
+# Define an associative array of plugins (Folder Name => GitHub URL)
+declare -A ZSH_PLUGINS=(
+    ["fzf-tab"]="https://github.com/Aloxaf/fzf-tab"
+    ["zsh-autosuggestions"]="https://github.com/zsh-users/zsh-autosuggestions"
+    ["zsh-syntax-highlighting"]="https://github.com/zsh-users/zsh-syntax-highlighting"
+)
+
+if [[ ! -d "PLUGIN_DIR" ]]; then
+  log_info "Creating plugin directory: $PLUGIN_DIR"
+  mkdir -p "$PLUGIN_DIR"
+  log_ok "✅  $PLUGIN_DIR created"
+fi
+
+log_info "🔌 Managing Zsh plugins..."
+
+for plugin repo in ${(kv)ZSH_PLUGINS}; do
+  plugin_path="$PLUGIN_DIR/$plugin"
+
+  if [[ ! -d "$plugin_path/.git" ]]; then
+    log_info "Installing $plugin"
+    git clone --depth=1 "$repo" "$plugin_path" \
+      && log_ok "✅ $plugin installed" \
+      || log_warn "Failed to install $plugin"
+  else
+    log_info "Updating $plugin"
+    git -C "$plugin_path" pull --ff-only --quiet \
+      && log_ok "$plugin updated" \
+      || log_warn "Failed to update $plugin"
+  fi
+done
+
+# A. Install Core Packages (Always)
+BREWFILE_CORE="$HOME/.Brewfile"
+if [ -f "$BREWFILE_CORE" ]; then
+    log_info "📦 Installing Core packages from .Brewfile..."
+    brew bundle --file="$BREWFILE_CORE"
+    log_ok "$BREWFILE_CORE installed"
+fi
+
+# B. Install Local/Optional Packages (Interactive)
+BREWFILE_LOCAL="$HOME/.Brewfile_local"
+if [ -f "$BREWFILE_LOCAL" ]; then
+    echo -n "❓ Found .Brewfile_local. Do you want to install its packages? (y/N): " > /dev/tty
+    read -r response < /dev/tty
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        log_info "🚀 Installing Local packages from $BREWFILE_LOCAL..."
+        brew bundle --file="$BREWFILE_LOCAL"
+        log_ok "$BREWFILE_LOCAL installed"
     else
-        eval "$(/usr/local/bin/brew shellenv)"
+        log_warn "⏭️  Skipping Local packages."
     fi
 fi
-
-echo "📦 Installation des outils Power User (macOS)..."
-brew install eza lsd bat fd ripgrep fzf htop btop duf dfc gping p7zip tldr jq
 {{ end -}}
 
-# --- 3. Section Linux ---
+# --- 3. Linux Setup ---
 {{ if eq .chezmoi.os "linux" -}}
-# ... (votre section Linux habituelle)
+# (Your Linux logic remains here)
 {{ end -}}
 
-echo "✨ Configuration terminée avec succès !"
+log_ok "✨ Configuration complete!"
 
