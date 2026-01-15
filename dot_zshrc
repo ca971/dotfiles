@@ -60,23 +60,6 @@ alias ....='cd ../../..'
 alias -- -='cd -' # Revient au dossier précédent
 alias dot='chezmoi cd' # Va direct dans le dossier source des dotfiles
 
-# --- Git Shortcuts (Ultra-rapides) ---
-alias g='git'
-alias gs='git status'
-alias ga='git add'
-alias gc='git commit -m'
-alias gp='git push'
-alias gl='git log --oneline --graph --decorate'
-alias gdiff='git diff'
-
-# --- Git Avancé ---
-alias gcn='git commit --no-edit --amend' # Rajoute les modifs au dernier commit sans changer le message
-alias gcan='git add -A && git commit --no-edit --amend' # Le fameux "oups j'ai oublié un fichier"
-alias gb='git branch'
-alias gco='git checkout'
-alias gcb='git checkout -b' # Créer et switcher sur une branche
-alias gd='git diff --color-words' # Diff plus lisible mot par mot
-
 # --- Network ---
 alias ip="curl ifconfig.me" # Récupère ton IP publique rapidement
 alias ports='netstat -tulanp' # Liste les ports ouverts (utile en cas de conflit)
@@ -207,6 +190,64 @@ fcd() {
     cd "$dir"
   fi
 }
+
+# Git
+# --- Git Shortcuts (Ultra-rapides) ---
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git log --oneline --graph --decorate'
+alias gdiff='git diff'
+
+# --- Git Avancé ---
+alias gcn='git commit --no-edit --amend' # Rajoute les modifs au dernier commit sans changer le message
+alias gcan='git add -A && git commit --no-edit --amend' # Le fameux "oups j'ai oublié un fichier"
+alias gb='git branch'
+alias gco='git checkout'
+alias gcb='git checkout -b' # Créer et switcher sur une branche
+alias gd='git diff --color-words' # Diff plus lisible mot par mot
+
+# Recherche interactive dans les alias Git
+gal() {
+  git config --get-regexp '^alias\.' | \
+  sed 's/^alias\.//' | \
+  fzf --header "Git Aliases" \
+      --height 40% \
+      --layout=reverse | \
+  cut -d' ' -f1
+}
+
+# ghp: List your GitHub repos and choose to Clone or Browse
+ghp() {
+  local repo
+  # On utilise 'fields' pour avoir un format texte brut ultra-propre séparé par des tabulations
+  repo=$(gh repo list --limit 100 --json fullName,description --jq '.[] | [.fullName, .description] | @tsv' | \
+    fzf --delimiter $'\t' \
+        --header "[ENTER] Select | [ESC] Quit" \
+        --preview "gh repo view {1}" \
+        --height 70% \
+        --layout=reverse | cut -f1)
+
+  if [[ -n "$repo" ]]; then
+    echo -e "\n📦 Repository: \033[1;36m$repo\033[0m"
+    # Utilisation d'un menu simple sans 'read -k' qui peut bugger sur certains terminaux
+    echo "1) Clone | 2) Browse | 3) Cancel"
+    printf "Choice: "
+    read choice
+    
+    case $choice in
+      1) git clone "https://github.com/$repo.git" ;;
+      2) gh browse "$repo" ;;
+      *) echo "Aborted." ;;
+    esac
+  fi
+}
+
+# A lot of repos into one folder (ex : ~/Projects/)
+# Alias to find forgotten commits into a lot of repos in a folder
+alias gstatus='find . -maxdepth 2 -name ".git" -type d | rev | cut -d/ -f2- | rev | xargs -I {} sh -c "echo -e \"\n\033[1;32mRepo: {}\033[0m\"; git -C {} status -s"'
 
 # Oh-My-Zsh plugins
 plugins=(
