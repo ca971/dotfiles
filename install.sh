@@ -1,21 +1,28 @@
 #!/bin/bash
-set -e # Arrête le script en cas d'erreur
+set -e # Exit on error
 
-echo "🚀 Bootstrapping dotfiles..."
+echo "🚀 Starting Power User Bootstrap..."
 
-# 1. Déterminer si chezmoi est déjà installé
+# 1. Ensure bin directory exists
+BIN_DIR="$HOME/.local/bin"
+mkdir -p "$BIN_DIR"
+export PATH="$BIN_DIR:$PATH"
+
+# 2. Install chezmoi if missing
 if ! command -v chezmoi &> /dev/null; then
-  echo "📥 Installation de chezmoi via le script officiel..."
-  bin_dir="$HOME/.local/bin"
-  mkdir -p "$bin_dir"
-  sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$bin_dir"
-  export PATH="$bin_dir:$PATH"
+    echo "📥 Installing chezmoi..."
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$BIN_DIR"
 fi
 
-# 2. Lancer l'initialisation de chezmoi
-# --apply va lancer automatiquement votre script run_once_before_ que nous avons créé
-echo "⚙️ Initialisation avec le dépôt ca971..."
-chezmoi init --apply ca971
+# 3. Initialize dotfiles
+# This will trigger the run_once_ scripts automatically
+echo "⚙️ Initializing dotfiles from ca971 repository..."
+if [ -d "$HOME/.local/share/chezmoi/.git" ]; then
+    chezmoi apply
+else
+    # Replace 'ca971' with your full GitHub repo URL if needed
+    chezmoi init --apply ca971
+fi
 
-echo "✨ Terminé ! Relancez votre terminal ou tapez 'zsh'."
+echo "✨ Bootstrap complete! Please restart your terminal or type 'zsh'."
 
