@@ -190,6 +190,23 @@ if (( $+commands[fzf] )); then
   export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 fi
 
+# fz: Chercher un fichier et l'ouvrir avec ton éditeur par défaut (nvim ou nano)
+fz() {
+  local file
+  file=$(fd --type f --hidden --exclude .git | fzf --preview 'bat --style=numbers --color=always --line-range :500 {}')
+  if [[ -n "$file" ]]; then
+    ${EDITOR:-nvim} "$file"
+  fi
+}
+
+# fcd: Chercher un dossier et se déplacer dedans
+fcd() {
+  local dir
+  dir=$(fd --type d --hidden --exclude .git | fzf --preview 'lsd --tree --depth 2 {}')
+  if [[ -n "$dir" ]]; then
+    cd "$dir"
+  fi
+}
 
 # Oh-My-Zsh plugins
 plugins=(
@@ -201,8 +218,12 @@ plugins=(
   docker
 )
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Load local secrets
+[[ -f ~/.zsh_secrets ]] && source ~/.zsh_secrets
 
 # Charger les secrets locaux s'ils existent (non suivis par Git)
 [[ -f ~/.zshrc_local ]] && source ~/.zshrc_local
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
