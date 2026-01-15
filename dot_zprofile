@@ -1,0 +1,21 @@
+# ------------------------------------------------------------------------------
+# .zprofile - Shell Environment & Session Configuration
+# ------------------------------------------------------------------------------
+
+# --- 1. CORE SYSTEM INITIALIZATION ---
+
+# Initialize Homebrew for macOS
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# Path Configuration
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+# Homebrew behavior
+export HOMEBREW_NO_ENV_HINTS=1
+
+# --- 3. EXTERNAL SOURCE FILES ---
+
+# Load sensitive environment variables (API keys, etc.)
+[[ -f ~/.zsh_secrets ]] && source ~/.zsh_secrets
