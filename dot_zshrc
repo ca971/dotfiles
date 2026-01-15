@@ -249,6 +249,13 @@ ghp() {
 # Alias to find forgotten commits into a lot of repos in a folder
 alias gstatus='find . -maxdepth 2 -name ".git" -type d | rev | cut -d/ -f2- | rev | xargs -I {} sh -c "echo -e \"\n\033[1;32mRepo: {}\033[0m\"; git -C {} status -s"'
 
+# edot: Édite un fichier géré par chezmoi et applique les changements à la fermeture
+# Usage: edot (édite .zshrc par défaut) ou edot ~/.gitconfig
+edot() {
+  local file=${1:-~/.zshrc}
+  chezmoi edit --apply "$file"
+}
+
 # Oh-My-Zsh plugins
 plugins=(
   git
