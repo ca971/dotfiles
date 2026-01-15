@@ -1,0 +1,63 @@
+# ------------------------------------------------------------------------------
+# .gitignore_global - System-wide ignores for all repositories
+# ------------------------------------------------------------------------------
+
+# --- macOS System Files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# --- Linux System Files ---
+*~
+.fuse_hidden
+.directory
+.Trash-*
+.nfs*
+
+# --- IDEs & Editors ---
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains (IntelliJ, WebStorm, PyCharm, etc.)
+.idea/
+
+# Neovim / Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+.netrwhist
+Session.vim
+
+# --- Sensitive Data (Global Safeguard) ---
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+.secrets
+.zsh_secrets
+.vault
+
+# --- Common Temporary Files ---
+*.log
+*.tmp
+*.temp
+.cache/
+dist/
+build/
+node_modules/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
