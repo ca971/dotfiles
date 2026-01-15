@@ -1,165 +1,135 @@
+# ------------------------------------------------------------------------------
+# .gitconfig - Global Git Configuration
+# ------------------------------------------------------------------------------
+
 [user]
-  name = ca971
-  email = discretgwad@gmail.com
-  signingkey = ~/.ssh/id_github_ed25519.pub
+    name = {{ .name }}
+    email = {{ .email }}
+    signingkey = ~/.ssh/id_github_ed25519.pub
 
 [core]
-  editor = nvim
-  pager = delta # Use delta for better diff output
+    editor = nvim
+    pager = delta
+    autocrlf = input
+    excludesfile = ~/.gitignore_global
+    attributesfile = ~/.gitattributes
 
-[delta]
-  features = decorations
-  line-numbers = true
-  syntax-theme = Monokai Extended
-  navigate = true
-  plus-style = "green bold"
-  minus-style = "red bold"
-
-[delta "interactive"]
-  keep-plus-minus-markers = false
-
-[delta "decorations"]
-  commit-decoration-style = blue ol
-  commit-style = raw
-  file-style = omit
-  hunk-header-decoration-style = blue box
-  hunk-header-file-style = red
-  hunk-header-line-number-style = "#067a00"
-  hunk-header-style = file line-number syntax
+# --- 1. UI & APPEARANCE (DELTA) ---
 
 [interactive]
-  diffFilter = delta --color-only --features=interactive
+    diffFilter = delta --color-only --features=interactive
 
-[color]
-  ui = true
-  push = true
-  status = true
-  remote = true
-  branch = true
-  showBranch = true
-  transport = true
-  pager = true
-  advice = true
-  interactive = true
+[delta]
+    features = decorations
+    line-numbers = true
+    syntax-theme = Monokai Extended
+    navigate = true
+    plus-style = "green bold"
+    minus-style = "red bold"
 
-[color "branch"]
-  current = "bold #7DAEA3"
-  upstream = "bold #FE8019"
-  local = "#EA6962"
-  remote = "#819C3B"
-  plain = "#957FB8"
-  # master = "#A76C8C"
-  # main = "#A4B494"
+[delta "interactive"]
+    keep-plus-minus-markers = false
 
-[color "blame"]
-  highlightRecent = "blue,12 month ago,white,1 month ago,bold #7E82CC"
-  repeatedLines = "#7DAEA3"
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
 
-[color "push"]
-  error = "bold #DC3958"
-
-[color "transport"]
-  rejected = "bold #DC3958"
-
-[color "status"]
-  header = "bold #7E82CC"
-  added = "bold #819C3B"
-  updated = "#4C96A8"
-  changed = "#689D6A"
-  untracked = "#EF1D55"
-  branch = "bold #7DAEA3"
-  nobranch = "bold #dc3958"
-  localBranch = "bold #EA6962"
-  remoteBranch = "bold #819C3B"
-  unmerged = "#fe8019"
-
-[color "diff"]
-  context = "#C2A383"
-  meta = "#5E452B"    
-  frag = "bold #FF5813" 
-  commit = "bold #A06469"
-  whitespace = red reverse
-  new = "bold #819C3B"
-  old = "bold #DC3958"
-  newMoved = "bold #819C3B" 
-  oldMoved = "bold #DC3958"
-  func = "bold #A06469"
-
-[color "remote"]
-  hint = "bold #4C96A8"
-  warning = "bold #FF9500"
-  success = "bold #819C3B"
-  error = "bold #EF1D55"
-
-[color "decorate"]
-  branch = "bold #7DAEA3"
-  remoteBranch = "bold #819C3B"
-  HEAD = "bold #7E82CC"
-  tag = "bold #98676A"
-  stash = "bold #D3869B"
-  grafted = "#EA6962"
-
-[color "interactive"]
-  prompt = "bold #FE8019"
-  header = "bold #7E5053"
-  help = green bold
-  error = red bold
+# --- 2. GLOBAL SYSTEM BEHAVIOR ---
 
 [init]
-  defaultBranch = main
+    defaultBranch = main
 
 [gpg]
-  format = ssh
+    format = ssh
 
 [commit]
-  gpgsign = true
-  verbose = true
+    gpgsign = true
+    verbose = true
+
+[push]
+    # Automatically setup remote tracking (saves you from 'git push -u origin...')
+    autoSetupRemote = true
+    # Push tags automatically when pushing commits
+    followTags = true
+
+[pull]
+    rebase = true
+
+[rebase]
+    autoStash = true
+
+# --- 3. THE POWER-USER ALIAS ENGINE ---
 
 [alias]
-  # aliases = config --get-regexp alias
-  aliases = "!f() { git config --get-regexp '^alias\\.' | sed -E 's/^alias\\.([^ ]+) (.*)/\\1 \t => \\2/' | sort | column -t -s '\t'; }; f"
+    # --- Meta & Help ---
+    aliases = "!f() { git config --get-regexp '^alias\\.' | sed -E 's/^alias\\.([^ ]+) (.*)/\\1 \t => \\2/' | sort | column -t -s '\t'; }; f"
+    alias-grep = "!f() { git config --get-regexp '^alias\\.' | cut -c 7- | grep -Ei --color \"$1\"; }; f"
 
-  # Cherche un alias spécifique
-  alias-grep = "!f() { git config --get-regexp '^alias\\.' | cut -c 7- | grep -Ei --color \"$1\"; }; f"
+    # --- Daily Navigation ---
+    a = add
+    st = status -sb
+    co = checkout
+    br = branch -vv
+    cob = checkout -b
+    
+    # --- Advanced Logging (The Pro Graph) ---
+    # lg: Compact graph with relative dates and authors
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    # lga: Same as lg but shows ALL branches
+    lga = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    last = log -1 HEAD --format=format:"%Cred%H"
 
-  # Navigation
-  st = status
-  co = checkout
-  br = branch
-  lg = log --graph --oneline --all --decorate
-  lga = log --oneline --decorate --all --graph --pretty=format:"%C(auto)%h%d %s [%an]"
-  log = log --oneline --decorate --graph --all
-  last = log -1 HEAD --format=format:"%Cred%H"
-  graph = log --all --graph --oneline --decorate
+    # --- Workflow & Staging ---
+    ci = commit
+    cm = commit -m
+    ca = commit --amend
+    amend = commit --amend --no-edit
+    save = stash push -m
+    pop = stash pop
+    
+    # --- Diff & Comparison ---
+    df = diff
+    dc = diff --cached
+    ds = diff --stat
 
-  # Workflow
-  ci = commit
-  amend = commit --amend --no-edit # Amend the last commit without changing the message
-  cm = commit -m
-  ca = commit --amend # Amend the last commit with message editing
-  cob = checkout -b # Create and switch to a new branch
-  save = stash push -m # Save changes to a named stash
-  pop = stash pop # Restore the latest stash
+    # --- Repair & Reset ---
+    undo = reset --soft HEAD~1
+    hard = reset --hard HEAD
+    # Deep clean: remove untracked files and directories
+    clean-all = "!git clean -fd && git reset --hard"
 
-  # Diff and History
-  df = diff
-  dc = diff --cached # Show staged changes
-  ds = diff --stat # Display a summary of changes
+    # --- Maintenance ---
+    # Delete local branches that have been merged into main
+    cleanup = "!git branch --merged | grep -v '\\*' | grep -v 'main' | xargs -n 1 git branch -d"
 
-  # Reset
-  undo = reset --soft HEAD~1 # Undo the last commit but keep changes staged
-  hard = reset --hard HEAD # Fully reset the repository to the last commit
+    # --- GitHub CLI Integration ---
+    pr = "!gh pr create"
+    prl = "!gh pr list"
+    prc = "!gh pr checkout"
 
-  # Collaboration
-  rb = rebase
-  rbc = rebase --continue
-  pullr = pull --rebase # Pull changes with rebase instead of merge
-  rbi = rebase -i
+# --- 4. COLORS (CUSTOM THEME) ---
 
-  # Cleanup
-  clean = "!git clean -fd && git reset --hard" # Reset the repository and remove untracked files
+[color]
+    ui = true
+[color "branch"]
+    current = "bold #7DAEA3"
+    upstream = "bold #FE8019"
+    local = "#EA6962"
+    remote = "#819C3B"
+[color "status"]
+    header = "bold #7E82CC"
+    added = "bold #819C3B"
+    changed = "#689D6A"
+    untracked = "#EF1D55"
+    branch = "bold #7DAEA3"
+[color "diff"]
+    whitespace = red reverse
+    new = "bold #819C3B"
+    old = "bold #DC3958"
+    func = "bold #A06469"
 
-  # External tools
-  pr = "!gh pr create"                  # Create a pull request using GitHub CLI
-  prl = "!gh pr list"                   # List pull requests using GitHub CLI
-  prc = "!gh pr checkout"               # Checkout a pull request using GitHub CLI
