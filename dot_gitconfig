@@ -2,17 +2,161 @@
   name = ca971
   email = discretgwad@gmail.com
   signingkey = ~/.ssh/id_github_ed25519.pub
+
 [core]
   editor = nvim
+  pager = delta # Use delta for better diff output
+
+[delta]
+  features = decorations
+  line-numbers = true
+  syntax-theme = Monokai Extended
+  navigate = true
+  plus-style = "green bold"
+  minus-style = "red bold"
+
+[delta "interactive"]
+  keep-plus-minus-markers = false
+
+[delta "decorations"]
+  commit-decoration-style = blue ol
+  commit-style = raw
+  file-style = omit
+  hunk-header-decoration-style = blue box
+  hunk-header-file-style = red
+  hunk-header-line-number-style = "#067a00"
+  hunk-header-style = file line-number syntax
+
+[interactive]
+  diffFilter = delta --color-only --features=interactive
+
+[color]
+  ui = true
+  push = true
+  status = true
+  remote = true
+  branch = true
+  showBranch = true
+  transport = true
+  pager = true
+  advice = true
+  interactive = true
+
+[color "branch"]
+  current = "bold #7DAEA3"
+  upstream = "bold #FE8019"
+  local = "#EA6962"
+  remote = "#819C3B"
+  plain = "#957FB8"
+  # master = "#A76C8C"
+  # main = "#A4B494"
+
+[color "blame"]
+  highlightRecent = "blue,12 month ago,white,1 month ago,bold #7E82CC"
+  repeatedLines = "#7DAEA3"
+
+[color "push"]
+  error = "bold #DC3958"
+
+[color "transport"]
+  rejected = "bold #DC3958"
+
+[color "status"]
+  header = "bold #7E82CC"
+  added = "bold #819C3B"
+  updated = "#4C96A8"
+  changed = "#689D6A"
+  untracked = "#EF1D55"
+  branch = "bold #7DAEA3"
+  nobranch = "bold #dc3958"
+  localBranch = "bold #EA6962"
+  remoteBranch = "bold #819C3B"
+  unmerged = "#fe8019"
+
+[color "diff"]
+  context = "#C2A383"
+  meta = "#5E452B"    
+  frag = "bold #FF5813" 
+  commit = "bold #A06469"
+  whitespace = red reverse
+  new = "bold #819C3B"
+  old = "bold #DC3958"
+  newMoved = "bold #819C3B" 
+  oldMoved = "bold #DC3958"
+  func = "bold #A06469"
+
+[color "remote"]
+  hint = "bold #4C96A8"
+  warning = "bold #FF9500"
+  success = "bold #819C3B"
+  error = "bold #EF1D55"
+
+[color "decorate"]
+  branch = "bold #7DAEA3"
+  remoteBranch = "bold #819C3B"
+  HEAD = "bold #7E82CC"
+  tag = "bold #98676A"
+  stash = "bold #D3869B"
+  grafted = "#EA6962"
+
+[color "interactive"]
+  prompt = "bold #FE8019"
+  header = "bold #7E5053"
+  help = green bold
+  error = red bold
+
 [init]
   defaultBranch = main
-[alias]
-  co = checkout
-  br = branch
-  ci = commit
-  st = status
-  lg = log --oneline --graph -all
+
 [gpg]
   format = ssh
+
 [commit]
   gpgsign = true
+  verbose = true
+
+[alias]
+  # aliases = config --get-regexp alias
+  aliases = !git config --list | rg 'alias\\.' | sed -E 's/alias\\.([^=]*)=(.*)/\\1\\ \t => \\2/' | sort alias-grep = !git config --list | rg '^alias\\.' | cut -c 7- | grep -Ei --color \"$1\" "#"
+
+  # Navigation
+  st = status
+  co = checkout
+  br = branch
+  lg = log --graph --oneline --all --decorate
+  lga = log --oneline --decorate --all --graph --pretty=format:"%C(auto)%h%d %s [%an]"
+  log = log --oneline --decorate --graph --all
+  last = log -1 HEAD --format=format:"%Cred%H"
+  graph = log --all --graph --oneline --decorate
+
+  # Workflow
+  ci = commit
+  amend = commit --amend --no-edit # Amend the last commit without changing the message
+  cm = commit -m
+  ca = commit --amend # Amend the last commit with message editing
+  cob = checkout -b # Create and switch to a new branch
+  save = stash push -m # Save changes to a named stash
+  pop = stash pop # Restore the latest stash
+
+  # Diff and History
+  df = diff
+  dc = diff --cached # Show staged changes
+  ds = diff --stat # Display a summary of changes
+
+  # Reset
+  undo = reset --soft HEAD~1 # Undo the last commit but keep changes staged
+  hard = reset --hard HEAD # Fully reset the repository to the last commit
+
+  # Collaboration
+  rb = rebase
+  rbc = rebase --continue
+  pullr = pull --rebase # Pull changes with rebase instead of merge
+  rbi = rebase -i
+
+  # Cleanup
+  clean = "!git clean -fd && git reset --hard" # Reset the repository and remove untracked files
+
+  # External tools
+  pr = "!gh pr create"                  # Create a pull request using GitHub CLI
+  prl = "!gh pr list"                   # List pull requests using GitHub CLI
+  prc = "!gh pr checkout"               # Checkout a pull request using GitHub CLI
