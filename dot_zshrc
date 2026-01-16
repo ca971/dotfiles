@@ -1,187 +1,176 @@
 # ------------------------------------------------------------------------------
-# .zshrc - Interactive Shell Configuration
+# .zshrc - High-Performance Interactive Shell Configuration
 # ------------------------------------------------------------------------------
 
-# --- POWERLEVEL10K INSTANT PROMPT ---
-
-# Enable Instant Prompt to make the shell startup feel faster.
-# This should stay at the very top of ~/.zshrc.
+# --- 1. POWERLEVEL10K INSTANT PROMPT ---
+# Standard P10k speed boost. Must stay at the very top.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Path to Oh My Zsh installation
+# --- 2. ENVIRONMENT VARIABLES ---
 export ZSH="$HOME/.oh-my-zsh"
+export PLUGIN_DIR="$HOME/.local/share/zsh-plugins"
+
+# --- 3. OH MY ZSH INITIALIZATION ---
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# # --- Advanced Completion System Configuration ---
-#
-# # Load the completion module
-# autoload -Uz compinit && compinit
-#
-# # 1. Visual selection menu (allows arrow key navigation)
-# zstyle ':completion:*' menu select
-#
-# # 2. Case-insensitive and partial matching
-# # Matches 'doc' to 'Documents', 'downloads' to 'Downloads', etc.
-# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-#
-# # 3. Use terminal colors (LS_COLORS) in the completion menu
-# zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-#
-# # 4. Group results by category (Files, Directories, Commands)
-# zstyle ':completion:*' group-name ''
-# zstyle ':completion:*:descriptions' format $'\e[01;33m-- %d --\e[00m'
-# zstyle ':completion:*:messages' format $'\e[01;35m-- %d --\e[00m'
-#
-# # 5. Smart 'cd' behavior: ignore parent directory (..) when completing
-# zstyle ':completion:*:cd:*' ignore-parents parent pwd
-#
-# # 6. Process completion styling (better colors for the 'kill' command)
-# zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=01;31'
-
-# --- Plugin Specific Tweaks ---
-
-# Make zsh-autosuggestions color more subtle (dark gray)
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
-
-# --- Plugin Management ---
-# Essential plugins for productivity
+# Standard OMZ plugins (Internal only)
 plugins=(
-    git 
-    zoxide 
-    fzf 
-    docker 
-    kubectl
+  zoxide
+  # fzf (The OMZ fzf plugin adds useful bindings, you can keep it or use your manual source)
 )
 
-# Load Oh My Zsh
-source $ZSH/oh-my-zsh.sh
+# Load Oh My Zsh (silent mode)
+source "$ZSH/oh-my-zsh.sh" >/dev/null 2>&1
 
-# --- 2. INTERACTIVE TOOLS ---
-
-# Fzf: Fuzzy search
-(( $+commands[fzf] )) && source <(fzf --zsh) 2>/dev/null
-
-# Mise: Polyglot tool manager
-(( $+commands[mise] )) && eval "$(mise activate zsh)" 2>/dev/null
-
-# Zoxide: Smarter 'cd' command
-(( $+commands[zoxide] )) && eval "$(zoxide init zsh)" 2>/dev/null
-
-# TheFuck: Auto-correction for console commands
-(( $+commands[thefuck] )) && eval "$(thefuck --alias)" 2>/dev/null
-
-# # Load the completion module
-autoload -Uz compinit && compinit
-
-# Load plugins
-#
-# --- Late Loading Plugins (Optimizes speed) ---
-PLUGIN_DIR="$HOME/.local/share/zsh-plugins/"
-
-# Associative array: plugin_name -> git_repository
-declare -a ZSH_PLUGINS=(
-  "fzf-tab"
-  "zsh-autosuggestions"
-  "zsh-syntax-highlighting"
-)
+# --- 4. INTERACTIVE TOOLS ENGINE ---
 
 # NOTE:
-# zsh-syntax-highlighting must be sourced LAST
-# fzf-tab must be sourced BEFORE completion init
-#
-for plugin in ${ZSH_PLUGINS[@]}; do
-  plugin_path="$PLUGIN_DIR/$plugin"
-#
-  # Try common entrypoints
-  if [[ -f "$plugin_path/$plugin.zsh" ]]; then
-    source "$plugin_path/$plugin.zsh"
-  elif [[ -f "$plugin_path/$plugin.plugin.zsh" ]]; then
-    source "$plugin_path/$plugin.plugin.zsh"
-  elif [[ -f "$plugin_path/zsh-$plugin.zsh" ]]; then
-    source "$plugin_path/zsh-$plugin.zsh"
-  fi
-done
-
-# Explicit ordering for sensitive plugins
-if [[ -f "$PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
-  source "$PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+# FZF: Command-line fuzzy finder
+# Must be initialized BEFORE fzf-tab
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh) 2>/dev/null
 fi
 
-# --- 3. ZSH CORE BEHAVIOR ---
+# NOTE:
+# fzf-tab: Replace standard zsh completion with fzf
+# Must be sourced BEFORE completion init
+if [[ -f "$PLUGIN_DIR/fzf-tab/fzf-tab.zsh" ]]; then
+  source "$PLUGIN_DIR/fzf-tab/fzf-tab.zsh"
+fi
 
-setopt AUTO_CD              # Enter directory without typing 'cd'
-setopt CORRECT              # Spelling correction for commands
-setopt EXTENDED_GLOB        # Advanced globbing (#, ~, ^)
-setopt SHARE_HISTORY        # Share history across sessions
-setopt AUTO_PUSHD           # Push visited dirs to stack
-setopt PUSHD_IGNORE_DUPS    # Avoid duplicates in stack
-unsetopt BEEP               # Silence terminal bells
+# MISE: Polyglot tool manager
+(( $+commands[mise] )) && eval "$(mise activate zsh)" 2>/dev/null
 
-# --- 5. PREFERRED TOOLS (FALLBACK LOGIC) ---
+# ZOXIDE: Smarter 'cd' command
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)" 2>/dev/null
 
-# Editor: Use Neovim if available, fallback to Vim
-export EDITOR=${commands[nvim]:-vim}
-export VISUAL=$EDITOR
+# THEFUCK: Auto-correction for console commands
+(( $+commands[thefuck] )) && eval "$(thefuck --alias)" 2>/dev/null
 
-# Pager: Use Most for colored man pages, fallback to Less
-export PAGER=${commands[most]:-less}
-export MANPAGER=$PAGER
+# --- 5. ZSH CORE BEHAVIOR & OPTIONS ---
+setopt AUTO_CD              # Direct directory entry
+setopt CORRECT              # Spelling correction
+setopt EXTENDED_GLOB        # Advanced pattern matching
+setopt SHARE_HISTORY        # Cross-session history
+setopt AUTO_PUSHD           # Dir stack management
+setopt PUSHD_IGNORE_DUPS    # Clean dir stack
+unsetopt BEEP               # Silent terminal
 
-# --- 6. FZF CONFIGURATION (FUZZY FINDER) ---
+# --- 6. EXTERNAL PLUGINS (MAN MANAGED) ---
+# Ordered by priority: fzf-tab -> completion -> suggestions -> highlighting
 
+# B. Initialize completion AFTER fzf-tab
+autoload -Uz compinit && compinit
+
+# --- B1. CORE ZSH COMPLETION STYLING ---
+
+# Enable visual selection menu (arrow keys navigation)
+zstyle ':completion:*' menu select
+
+# Case-insensitive, partial, and substring matching
+# Matches 'doc' to 'Documents', 'foo' to 'bar-foo-baz', etc.
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# Use terminal LS_COLORS for file completion icons and names
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# Group results by category (Files, Directories, etc.)
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format $'\e[01;33m-- %d --\e[00m'
+zstyle ':completion:*:messages' format $'\e[01;35m-- %d --\e[00m'
+
+# Smart 'cd' behavior: ignore parent and current directory in completion
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+# Enhanced colors for process completion (the 'kill' command)
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=01;31'
+
+# Disable sorting for git checkout (keep branch order)
+zstyle ':completion:*:git-checkout:*' sort false
+
+# --- B2. FZF-TAB SPECIFIC CONFIGURATION ---
+
+# 1. Selection & UI Theme
+# Sets the selection background to match a modern dark theme (e.g., Catppuccin)
+zstyle ':fzf-tab:*' fzf-flags '--color=bg+:#313244' 
+
+# 2. Preview Window Layout
+# Force fzf-tab to use 60% of the screen on the right for previews
+zstyle ':fzf-tab:*' fzf-preview-window 'right:60%'
+
+# 3. Dynamic Previews based on command
+# Preview directory trees when using 'cd'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --tree --level=2 --color=always $realpath'
+
+# Preview file content with 'bat' for common reading/editing commands
+zstyle ':fzf-tab:complete:(cat|nvim|v|bat):*' fzf-preview 'bat --color=always --style=numbers $realpath'
+
+# Preview systemd units status
+zstyle ':fzf-tab:complete:systemctl:*' fzf-preview 'systemctl status $word'
+
+# 4. Navigation & UX
+# Continuous completion: trigger fzf-tab again after selecting a directory
+zstyle ':fzf-tab:*' continuous-trigger '/'
+
+# Use '/' and '.' to switch between completion groups (e.g., from Files to Directories)
+zstyle ':fzf-tab:*' switch-group '/' '.'
+
+# C. Autosuggestions & Highlighting (Must be loaded LAST)
+[[ -f "$PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "$PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
+
+# NOTE:
+# zsh-syntax-highlighting 
+# Must be sourced LAST
+[[ -f "$PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# FZF UI/UX Configuration
 if (( $+commands[fzf] )); then
-
-    # General UI/UX
     export FZF_DEFAULT_OPTS="
-        --height 45% 
+        --height 45%
         --layout=reverse 
-        --border 
+        --border='rounded'
         --inline-info 
-        --color='header:italic:underline'
         --preview-window='right:60%:wrap'
+        --ansi
+        --color='fg:-1,bg:-1,hl:#5f87af,fg+:#d75f00,bg+:-1,hl+:#d75f00'
+        --color='info:#af87ff,prompt:#5fff00,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7'
+          "
+    # Enhanced History Search (CTRL-R)
+    # Shows the full command in a small window at the bottom
+    export FZF_CTRL_R_OPTS="
+        --preview 'echo {}' 
+        --preview-window down:3:hidden:wrap 
+        --bind '?:toggle-preview'
+        --header 'Press ? to toggle full command view'
+        "
+    # Enhanced Preview and Keybindings
+    # - Uses 'bat' for file syntax highlighting
+    # - Uses 'eza' for directory tree preview
+    # - CTRL-/ toggles the preview window
+    export FZF_CTRL_T_OPTS="
+        --preview '
+            if [ -d {} ]; then
+                eza --tree --color=always --level=2 {}
+            else
+                bat --color=always --style=numbers --line-range :500 {}
+            fi'
+        --bind 'ctrl-/:change-preview-window(down|hidden|)'
+        --header 'Press CTRL-/ to toggle or resize preview'
     "
 
-    # Search Logic: Use 'fd' for speed and to respect .gitignore
     if (( $+commands[fd] )); then
         export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     fi
-
-    # File Preview Logic (CTRL+T) using 'bat'
-    if (( $+commands[bat] )); then
-        export FZF_CTRL_T_OPTS="
-            --preview 'bat --style=numbers --color=always --line-range :500 {}'
-            --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-    fi
-
-    # History Search Logic (CTRL+R)
     export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 fi
 
-# --- fzf-tab Configuration ---
-# Replace the standard completion menu with fzf
-# Use the correct Homebrew path for fzf-tab on Apple Silicon
-if [[ -f "/opt/homebrew/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]]; then
-    source "/opt/homebrew/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
-fi
+# --- 7. ALIASES ---
 
-# Disable sort when completing `git checkout`
-zstyle ':completion:*:git-checkout:*' sort false
-
-# Set descriptions format to enable group support
-zstyle ':completion:*:descriptions' format '[%d]'
-
-# Preview directory content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-
-# Preview file content with bat when completing cat
-zstyle ':fzf-tab:complete:cat:*' fzf-preview 'bat --color=always --style=numbers $realpath'
-
-# --- 7. SYSTEM ALIASES ---
-
-# General Shortcuts
+# Core shortcuts
 alias v="$EDITOR"
 alias c='clear'
 alias q='exit'
@@ -193,13 +182,12 @@ alias mkdir='mkdir -p'
 # Navigation
 alias ..='cd ..'
 alias ...='cd ../..'
-alias ....='cd ../../..'
 alias -- -='cd -'
 alias d='dirs -v | head -10'
 alias 1='cd -1'
 alias 2='cd -2'
 
-# Modern Replacements
+# Modern tools (eza, bat, lsd etc.)
 if (( $+commands[eza] )); then
     alias ls='eza --icons --group-directories-first'
     alias ll='ls -lh --git'
@@ -212,19 +200,7 @@ elif (( $+commands[lsd] )); then
     alias lt='ls --tree'
 fi
 
-(( $+commands[bat] )) && alias cat='bat' 2>/dev/null
-(( $+commands[btop] )) && alias top='btop' 2>/dev/null
-(( $+commands[duf] )) && alias df='duf' 2>/dev/null
-
-# Chezmoi
-# Update the main Brewfile (tracked by chezmoi)
-alias bdump="brew bundle dump --force --global"
-
-# Update the local Brewfile (not tracked or ignored)
-alias bdump-local="brew bundle dump --force --file=~/.Brewfile_local"
-
-# --- 8. ZSH GLOB QUALIFIER ALIASES ---
-
+# Zsh glob qualifier aliases
 alias l.='ls *(.)'           # Files only
 alias l/='ls *(/)'           # Directories only
 alias lnb='ls -ld *(@-)'     # Broken symlinks
@@ -233,8 +209,7 @@ alias l1='ls *(m-1)'         # Modified last 24h
 alias lL='ls *(L+10M)'       # Larger than 10MB
 alias lK='ls *(LK+50)'       # Larger than 50KB
 
-# --- 9. GLOBAL ALIASES (Work anywhere in the command line) ---
-
+# global aliases (work anywhere in the command line) ---
 alias -g G='| grep -i'
 alias -g L='| less'
 alias -g M='| most'
@@ -242,80 +217,183 @@ alias -g H='| head'
 alias -g T='| tail'
 alias -g NE='2> /dev/null'
 
-# --- 10. DEVELOPMENT TOOLS ---
+(( $+commands[bat] )) && alias cat='bat' 2>/dev/null
+(( $+commands[btop] )) && alias top='btop' 2>/dev/null
+(( $+commands[duf] )) && alias df='duf' 2>/dev/null
+
+# Brewfile Management
+alias bdump="brew bundle dump --force --global"
+alias bdump-local="brew bundle dump --force --file=~/.Brewfile_local"
 
 # Docker
-alias dk='docker'
-alias dc='docker-compose'
-alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"'
-alias drmi='docker rmi $(docker images -q -f "dangling=true")'
+if (( $+commands[docker] )); then
+  alias d='docker'
+  alias dc='docker-compose'
+  alias dr='docker run --rm -it'
+  alias de='docker exec -it'
+  alias di='docker images'
+  alias dl='docker logs -f'
+  alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"'
+  alias dpa='docker ps -a'
+  alias drmi='docker rmi $(docker images -q -f "dangling=true")'
+
+  # Cleanup: Remove dangling images and stopped containers
+  alias dclean='docker system prune -f'
+  alias dstop='docker stop $(docker ps -q)'
+fi
+
+# Lazydocker
+(( $+commands[lazydocker] )) && alias ldk='lazydocker'
 
 # Kubernetes
 if (( $+commands[kubectl] )); then
   alias k='kubectl'
+
+  # Fast navigation
   alias kgp='kubectl get pods'
   alias kgs='kubectl get svc'
+  alias kgd='kubectl get deployments'
+  alias kga='kubectl get all'
+
+  # Context & Namespace (The most used)
+  alias kns='kubectl config set-context --current --namespace'
+  alias kctx='kubectl config use-context'
+
+  # Debugging
+  alias kl='kubectl logs -f'
+  alias ke='kubectl exec -it'
+  alias kd='kubectl describe'
 fi
+
+# k9s
+(( $+commands[k9s] )) && alias kn='k9s'
 
 # Git
 alias g='git'
 
-# --- Git Performance Optimizations ---
-# Disable git status on very large repositories to prevent lag
-# You can still run 'git status' manually.
-zstyle ':vcs_info:*' disable-patterns "$HOME/Documents/VeryLargeProject*"
+# Alias to search for forgotten commits in multiple repositories
+alias gstatus='find . -maxdepth 2 -name ".git" -type d | rev | cut -d/ -f2- | rev | xargs -I {} sh -c "echo -e \"\n\033[1;32mRepo: {}\033[0m\"; git -C {} status -s"'
 
-# Enable Powerlevel10k's internal git status caching
+# P10k Optimizations
+zstyle ':vcs_info:*' disable-patterns "$HOME/Documents/VeryLargeProject*"
 typeset -g POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY=10000
 
-# --- 11. USER FUNCTIONS ---
+# --- 8. CUSTOM FUNCTIONS ---
 
-# lre: Recursive search by extension (Usage: lre pdf)
-lre() {
-    if [[ -z "$1" ]]; then
-        fd --type f | fzf --preview 'bat --color=always --line-range :500 {}'
-    else
-        ls -ld **/*.$1(.)
-    fi
-}
-
-# fz: Interactive file finder & opener
-fz() {
-    local file=$(fd --type f --hidden --exclude .git | fzf)
-    [[ -n "$file" ]] && ${EDITOR:-nvim} "$file"
-}
+# edot: Edit dotfiles with chezmoi
+edot() { local file=${1:-~/.zshrc}; chezmoi edit --apply "$file"; }
 
 # fcd: Interactive directory jumper
 fcd() {
-    local dir=$(fd --type d --hidden --exclude .git | fzf --preview 'lsd --tree --depth 2 {}')
-    [[ -n "$dir" ]] && cd "$dir"
+  local dir=$(fd --type d --hidden --exclude .git | fzf --preview 'eza --tree --level 2 --icons {}')
+  [[ -n "$dir" ]] && cd "$dir"
 }
 
-# edot: Chezmoi wrapper to edit dotfiles
-edot() {
-    local file=${1:-~/.zshrc}
-    chezmoi edit --apply "$file"
+# fz: Search for a file and open it with your default editor
+fz() {
+  local file
+  file=$(fd --type f --hidden --exclude .git | fzf --preview 'bat --style=numbers --color=always --line-range :500 {}')
+  if [[ -n "$file" ]]; then
+    ${EDITOR:-nvim} "$file"
+  fi
 }
 
-# ghp: GitHub repository manager
-ghp() {
-    local repo=$(gh repo list --limit 100 --json fullName,description --jq '.[] | [.fullName, .description] | @tsv' | \
-        fzf --delimiter $'\t' --preview "gh repo view {1}" --height 70% --layout=reverse | cut -f1)
-    if [[ -n "$repo" ]]; then
-        echo "1) Clone | 2) Browse | 3) Cancel"
-        read "choice?Choice: "
-        case $choice in
-            1) git clone "https://github.com/$repo.git" ;;
-            2) gh browse "$repo" ;;
-        esac
-    fi
+# mkcd : Create a folder and cd in
+mkcd() {
+  mkdir -p "$1" && cd "$1"
 }
 
-# --- 12. FINAL INITIALIZATION ---
+# Extract any archive
+extract () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xvjf $1    ;;
+      *.tar.gz)    tar xvzf $1    ;;
+      *.bz2)       bunzip2 $1     ;;
+      *.rar)       unrar x $1      ;;
+      *.gz)        gunzip $1      ;;
+      *.tar)       tar xvf $1     ;;
+      *.tbz2)      tar xvjf $1    ;;
+      *.tgz)       tar xvzf $1    ;;
+      *.zip)       unzip $1       ;;
+      *.Z)         uncompress $1  ;;
+      *.7z)        7za x $1        ;;
+      *)           echo "don't know how to extract '$1'..." ;;
+    esac
+  else
+    echo "'$1' is not a valid file!"
+  fi
+}
 
-# Load p10k config
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh 2>/dev/null
+# gf: Fuzzy find and open files tracked by Git
+# This excludes node_modules, build folders, and everything in .gitignore
+gf() {
+  # Verify we are inside a git repository
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    local file=$(git ls-files | fzf --preview 'bat --color=always --style=numbers --line-range :500 {}')
+      [[ -n "$file" ]] && ${EDITOR:-nvim} "$file"
+  else
+    echo "❌ Not a git repository."
+  fi
+}
 
-# Load local overrides (Unfollowed by Git)
+# gs: Interactive git status
+# Allows you to stage/unstage files with TAB and preview changes
+gs() {
+  local selections=$(git status -s | fzf --multi --height 80% \
+    --preview 'git diff --color=always -- {-1} | sed "1,4d"' \
+    --header 'TAB: Select multiple | ENTER: View full diff' \
+    | cut -c4-)
+  
+  if [[ -n "$selections" ]]; then
+    echo "$selections"
+  fi
+}
+
+# fdk: Interactive Docker container manager
+fdk() {
+  # Check if docker daemon is running
+  if ! docker info >/dev/null 2>&1; then
+    echo "❌ Docker daemon is not running."
+    return 1
+  fi
+
+  # Select a container from all containers (-a)
+  # Preview shows real-time stats (cpu, mem, network)
+  local container=$(docker ps -a --format '{{.Names}}\t{{.Status}}\t{{.Image}}' | \
+    fzf --height 80% --layout=reverse --header "TAB: Multi-select | ENTER: Actions" \
+        --preview "docker stats --no-stream {1}" | cut -f1)
+
+  if [[ -n "$container" ]]; then
+    echo "Actions for $container:"
+    echo "1) Logs (follow) | 2) Stop | 3) Start | 4) Restart | 5) Shell (exec) | 6) Cancel"
+    read "choice?Selection [1-6]: "
+    
+    case $choice in
+      1) docker logs -f "$container" ;;
+      2) docker stop "$container" ;;
+      3) docker start "$container" ;;
+      4) docker restart "$container" ;;
+      5) read "sh_cmd?Shell type [bash/sh]: " && docker exec -it "$container" ${sh_cmd:-bash} ;;
+      *) echo "Cancelled." ;;
+    esac
+  fi
+}
+
+# --- 9. FINAL INITIALIZATION ---
+# Load P10k Theme config
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Load machine-specific local overrides
 [[ -f ~/.zshrc_local ]] && source ~/.zshrc_local 2>/dev/null
+
+# --- DOTFILES AUTO-UPDATE ---
+# Check for updates every 7 days
+export CHEZMOI_LAST_UPDATE="$HOME/.config/chezmoi/.last_update"
+
+if [[ ! -f "$CHEZMOI_LAST_UPDATE" || $(find "$CHEZMOI_LAST_UPDATE" -mtime +7) ]]; then
+    echo "🔄 Checking for dotfiles updates..."
+    # Always keep comments in English as requested
+    chezmoi update --apply && touch "$CHEZMOI_LAST_UPDATE"
+fi
 
