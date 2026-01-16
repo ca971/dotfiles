@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+# .zshrc hash: {{ include "dot_zshrc" | sha256sum }}
+# .zprofile hash: {{ include "dot_zprofile" | sha256sum }}
+
+# Notify the user that a reload is required. 
+# We don't use 'source' here to avoid nested subshells and 'exit' loops.
+
+print -P "%F{yellow}[INFO]%f Zsh configuration changed."
+print -P "%F{cyan}[HINT]%f Run 'exec zsh' or open a new tab to apply changes."
