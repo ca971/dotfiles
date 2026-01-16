@@ -1,5 +1,8 @@
 # 🚀 ca971 Dotfiles
 
+[![Commits: Verified](https://img.shields.io/badge/commits-verified-brightgreen.svg)](https://github.com/ca971/dotfiles/commits/main)
+[![Security: SSH Signing](https://img.shields.io/badge/security-SSH--signing-blue.svg)](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Built with: chezmoi](https://img.shields.io/badge/built%20with-chezmoi-512bd4.svg)](https://www.chezmoi.io/)
 [![Shell: Zsh](https://img.shields.io/badge/shell-zsh-brightgreen.svg)](https://www.zsh.org/)
