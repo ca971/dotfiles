@@ -3,7 +3,6 @@
 # Fail early if not running under Zsh
 [[ -z "$ZSH_VERSION" ]] && return
 
-
 # Utilities
 log_info() {
   print -P "%F{cyan}[chez-moi]%f $1"
@@ -41,47 +40,76 @@ if ! command -v brew &> /dev/null; then
     log_ok "✅  Homebrew Installed"
 fi
 
-# --- C. Zsh Plugins (Managed by Chezmoi) ---
+# --- C. Zsh Plugins & Completions (Managed by Chezmoi) ---
 
 PLUGIN_DIR="$HOME/.local/share/zsh-plugins"
+COMPLETION_DIR="$PLUGIN_DIR/completions"
 
-# Define an associative array of plugins (Folder Name => GitHub URL)
+# Create directories if they don't exist
+[[ ! -d "$PLUGIN_DIR" ]] && mkdir -p "$PLUGIN_DIR"
+[[ ! -d "$COMPLETION_DIR" ]] && mkdir -p "$COMPLETION_DIR"
+
+# 1. Essential Zsh Plugins
+# Added: zsh-completions (extra completion definitions)
 declare -A ZSH_PLUGINS=(
     ["fzf-tab"]="https://github.com/Aloxaf/fzf-tab"
     ["zsh-autosuggestions"]="https://github.com/zsh-users/zsh-autosuggestions"
     ["zsh-syntax-highlighting"]="https://github.com/zsh-users/zsh-syntax-highlighting"
+    ["zsh-completions"]="https://github.com/zsh-users/zsh-completions"
 )
 
-if [[ ! -d "PLUGIN_DIR" ]]; then
-  log_info "Creating plugin directory: $PLUGIN_DIR"
-  mkdir -p "$PLUGIN_DIR"
-  log_ok "✅  $PLUGIN_DIR created"
-fi
-
 log_info "🔌 Managing Zsh plugins..."
-
 for plugin repo in ${(kv)ZSH_PLUGINS}; do
   plugin_path="$PLUGIN_DIR/$plugin"
-
   if [[ ! -d "$plugin_path/.git" ]]; then
     log_info "Installing $plugin"
-    git clone --depth=1 "$repo" "$plugin_path" \
-      && log_ok "✅ $plugin installed" \
-      || log_warn "Failed to install $plugin"
+    git clone --depth=1 "$repo" "$plugin_path" && log_ok "✅ $plugin installed"
   else
     log_info "Updating $plugin"
-    git -C "$plugin_path" pull --ff-only --quiet \
-      && log_ok "$plugin updated" \
-      || log_warn "Failed to update $plugin"
+    git -C "$plugin_path" pull --ff-only --quiet && log_ok "✅ $plugin updated"
   fi
 done
+
+# 2. Generate/Update Shell Completions
+log_info "⌨️  Generating shell completions..."
+
+# chezmoi
+if command -v chezmoi &> /dev/null; then
+    chezmoi completion zsh > "$COMPLETION_DIR/_chezmoi"
+    log_ok "✅ chezmoi completion updated"
+fi
+
+# docker (Fetch official completions)
+if command -v docker &> /dev/null; then
+    # Docker completions are often provided by the binary, but we ensure they are in our fpath
+    curl -sSL https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker > "$COMPLETION_DIR/_docker"
+    log_ok "✅ docker completion updated"
+fi
+
+# mise (Modern tool manager)
+if command -v mise &> /dev/null; then
+    mise completion zsh > "$COMPLETION_DIR/_mise"
+    log_ok "✅ mise completion updated"
+fi
+
+# brew (Homebrew completions)
+if command -v brew &> /dev/null; then
+    # Brew handles its own completions, but we can link them for consistency
+    # or just rely on brew's internal paths. Adding a placeholder or link here:
+    log_ok "ℹ️  brew completions are managed via site-functions"
+fi
+
+# Add other tools here if needed (e.g., mise, brew)
+# if command -v mise &> /dev/null; then mise completion zsh > "$COMPLETION_DIR/_mise"; fi
+
+# --- D. Homebrew Packages ---
 
 # A. Install Core Packages (Always)
 BREWFILE_CORE="$HOME/.Brewfile"
 if [ -f "$BREWFILE_CORE" ]; then
     log_info "📦 Installing Core packages from .Brewfile..."
     brew bundle --file="$BREWFILE_CORE"
-    log_ok "$BREWFILE_CORE installed"
+    log_ok "✅ $BREWFILE_CORE installed"
 fi
 
 # B. Install Local/Optional Packages (Interactive)
@@ -92,7 +120,7 @@ if [ -f "$BREWFILE_LOCAL" ]; then
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
         log_info "🚀 Installing Local packages from $BREWFILE_LOCAL..."
         brew bundle --file="$BREWFILE_LOCAL"
-        log_ok "$BREWFILE_LOCAL installed"
+        log_ok "✅ $BREWFILE_LOCAL installed"
     else
         log_warn "⏭️  Skipping Local packages."
     fi
@@ -101,7 +129,7 @@ fi
 
 # --- 3. Linux Setup ---
 {{ if eq .chezmoi.os "linux" -}}
-# (Your Linux logic remains here)
+# (Linux logic)
 {{ end -}}
 
 log_ok "✨ Configuration complete!"
