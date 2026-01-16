@@ -1,49 +1,43 @@
-# ------------------------------------------------------------------------------
-# .zprofile - Shell Environment & Session Configuration
-# ------------------------------------------------------------------------------
+# --- 1. ENVIRONMENT VARIABLES ---
 
-# --- 1. HOMEBREW INITIALIZATION ---
-# Set up Homebrew environment for macOS (Apple Silicon & Intel support)
-if [[ -f "/opt/homebrew/bin/brew" ]]; then
-    # Apple Silicon (M1/M2/M3)
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -f "/usr/local/bin/brew" ]]; then
-    # Intel Macs
-    eval "$(/usr/local/bin/brew shellenv)"
-fi
-
-# --- 2. PATH CONFIGURATION ---
-# Ensure local bin directories take precedence over system paths
-typeset -U path  # Prevent duplicate entries in PATH
-path=(
-    "$HOME/bin"
-    "$HOME/.local/bin"
-    $path
-)
-export PATH
-
-# --- 3. ENVIRONMENT VARIABLES ---
 export EDITOR=nvim
 export VISUAL=nvim
 export PAGER=most
 export MANPAGER=most
 
-# --- 4. TOOL-SPECIFIC ENVIRONMENT VARIABLES ---
+# --- 2. PATH CONFIGURATION ---
+#
+# Ensure local bin directories take precedence over system paths
+typeset -U path fpath cdpath  # Prevent duplicate entries in PATH
+
+path=(
+  "$HOME"/{,s}bin(N)
+  "$HOME"/.local/{,s}bin(N)
+  /opt/{homebrew,local}/{,s}bin(N)
+  /usr/local/{,s}bin(N)
+  $path
+)
+
+# --- 3. INITIALIZE HOMEBREW ---
+#
+# homebrew
+whence brew >/dev/null && eval $(brew shellenv)
+
+# Go
+whence go >/dev/null && path+=( "$(go env GOPATH)"/bin )
+
 # Homebrew: Disable hints to keep terminal clean
 export HOMEBREW_NO_ENV_HINTS=1
 
-# --- 5. SENSITIVE DATA & SECRETS ---
-# Load API keys and private environment variables from a separate file
+# --- 4. SENSITIVE DATA & SECRETS ---
+#
 # This file should never be tracked by public git repositories
 if [[ -f "$HOME/.zsh_secrets" ]]; then
     source "$HOME/.zsh_secrets"
 fi
 
-# --- 6. CLEANUP ---
-# Ensure the session starts with a clean state if needed
-# (Optional: Add any session-start specific logic here)
+# --- 5. TERMINAL WELCOME BANNER ---
 
-# --- 7. TERMINAL WELCOME BANNER ---
 if [[ -o interactive ]]; then
     # Fetch system info briefly
     local user_name=$(whoami)
