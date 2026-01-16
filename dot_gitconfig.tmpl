@@ -88,6 +88,7 @@
     cob = checkout -b
     
     # --- Advanced Logging (The Pro Graph) ---
+    l = log --oneline --graph --decorate
     # lg: Compact graph with relative dates and authors
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     # lga: Same as lg but shows ALL branches
@@ -101,6 +102,7 @@
     amend = commit --amend --no-edit
     save = stash push -m
     pop = stash pop
+    pullr = pull --rebase
     
     # --- Diff & Comparison ---
     df = diff
@@ -112,6 +114,9 @@
     hard = reset --hard HEAD
     # Deep clean: remove untracked files and directories
     clean-all = "!git clean -fd && git reset --hard"
+
+    # --- Submodules ---
+    sm = Submodule
 
     # --- Maintenance ---
     # Delete local branches that have been merged into main
@@ -142,4 +147,3 @@
     new = "bold #819C3B"
     old = "bold #DC3958"
     func = "bold #A06469"
-
