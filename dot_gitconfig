@@ -5,7 +5,17 @@
 [user]
     name = {{ .name }}
     email = {{ .email }}
+    # Best practice: use the full path or the key string directly
     signingkey = ~/.ssh/id_github_ed25519.pub
+
+[gpg]
+    format = ssh
+
+[gpg "ssh"]
+    # This helps Git verify the identity locally
+    program = /usr/bin/ssh-keygen
+    # Optional: point to your allowed signers file if you use one
+    # allowedSignersFile = ~/.ssh/allowed_signers
 
 [core]
     editor = nvim
