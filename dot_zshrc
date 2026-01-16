@@ -24,6 +24,20 @@ plugins=(
 # Load Oh My Zsh (silent mode)
 source "$ZSH/oh-my-zsh.sh" >/dev/null 2>&1
 
+# --- COMPLETION SYSTEM SETUP ---
+
+# NOTE:
+# fpath: Mandatory fo zsh-completion
+# Must be added to fpath BEFORE calling compinit
+fpath=($HOME/.local/share/zsh-plugins/completions $fpath)
+fpath=($HOME/.local/share/zsh-plugins/zsh-completions/src $fpath)
+
+# --- COMPLETION SYSTEM SETUP ---
+
+# 1. Add custom completions and plugins to fpath
+fpath=($HOME/.local/share/zsh-plugins/completions $fpath)
+fpath=($HOME/.local/share/zsh-plugins/zsh-completions/src $fpath)
+
 # --- 4. INTERACTIVE TOOLS ENGINE ---
 
 # NOTE:
@@ -34,7 +48,7 @@ if (( $+commands[fzf] )); then
 fi
 
 # NOTE:
-# fzf-tab: Replace standard zsh completion with fzf
+# fzf-tab: Replace standard zsh completion with fzf 
 # Must be sourced BEFORE completion init
 if [[ -f "$PLUGIN_DIR/fzf-tab/fzf-tab.zsh" ]]; then
   source "$PLUGIN_DIR/fzf-tab/fzf-tab.zsh"
@@ -61,7 +75,10 @@ unsetopt BEEP               # Silent terminal
 # --- 6. EXTERNAL PLUGINS (MAN MANAGED) ---
 # Ordered by priority: fzf-tab -> completion -> suggestions -> highlighting
 
-# B. Initialize completion AFTER fzf-tab
+# NOTE:
+# compinit:
+# Must be Initialized AFTER fzf-tab
+# This must happen AFTER adding paths to fpath but BEFORE loading plugins
 autoload -Uz compinit && compinit
 
 # --- B1. CORE ZSH COMPLETION STYLING ---
