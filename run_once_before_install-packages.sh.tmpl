@@ -1,57 +1,88 @@
 #!/usr/bin/env zsh
 
-# Fail early if not running under Zsh
+# --- 0. INITIALIZATION & UTILITIES ---
+# Ensure the script stops on errors and handles Zsh specifics
+set -e
 [[ -z "$ZSH_VERSION" ]] && return
 
-# Utilities
-log_info() {
-  print -P "%F{cyan}[chez-moi]%f $1"
-}
+# Styled logging functions for better visibility
+log_info() { print -P "%F{cyan}[INFO]%f $1"; }
+log_ok()   { print -P "%F{green}[OK]%f   $1"; }
+log_warn() { print -P "%F{yellow}[WARN]%f $1"; }
 
-log_ok() {
-  print -P "%F{green}[chez-moi]%f $1"
-}
-
-log_warn() {
-  print -P "%F{yellow}[chez-moi]%f $1"
-}
-
-# --- 1. OS Detection ---
+# --- 1. SYSTEM DETECTION ---
+# Identify the operating system and architecture
 OS_TYPE="{{ .chezmoi.os }}"
-echo "🔍 Detected OS: $OS_TYPE"
+ARCH_TYPE="{{ .chezmoi.arch }}"
+log_info "🔍 Environment: $OS_TYPE ($ARCH_TYPE)"
 
-# --- 2. macOS Setup ---
+# --- 2. MACOS BOOTSTRAP (DARWIN) ---
 {{ if eq .chezmoi.os "darwin" -}}
-log_info "🍎 Starting macOS Setup..."
 
-# Xcode Command Line Tools
+# Install Xcode Command Line Tools if missing
 if ! xcode-select -p &> /dev/null; then
-    log_info "🛠️  Xcode Command Line Tools not found. Installing..."
+    log_info "🛠️  Installing Xcode Command Line Tools..."
     xcode-select --install
     until xcode-select -p &> /dev/null; do sleep 5; done
-    log_ok "✅  Xcode Command Line Tools Installed"
+    log_ok "Xcode CLI Tools ready"
 fi
 
-# Homebrew
+# Install Homebrew if not found
 if ! command -v brew &> /dev/null; then
     log_info "🍺 Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     [ -d "/opt/homebrew/bin" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
-    log_ok "✅  Homebrew Installed"
+    log_ok "Homebrew installed"
 fi
 
-# --- C. Zsh Plugins & Completions (Managed by Chezmoi) ---
+# --- 3. PACKAGE MANAGEMENT (BREW BUNDLE) ---
+
+# Process global Brewfile (includes apps, cli tools, and fonts)
+BREW_CORE="$HOME/.Brewfile"
+if [[ -f "$BREW_CORE" ]]; then
+    log_info "📦 Processing global Brewfile..."
+    brew bundle --file="$BREW_CORE"
+    log_ok "Global packages installed"
+fi
+
+# Process local/optional Brewfile interactively
+BREW_LOCAL="$HOME/.Brewfile_local"
+if [[ -f "$BREW_LOCAL" ]]; then
+    echo -n "❓ Install optional local packages? (y/N): " > /dev/tty
+    read -r response < /dev/tty
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        log_info "🚀 Processing local Brewfile..."
+        brew bundle --file="$BREW_LOCAL"
+        log_ok "Local packages installed"
+    fi
+fi
+
+# --- 4. LANGUAGE RUNTIMES & TOOLS (MISE) ---
+
+# Manage language runtimes (Neovim stable/nightly)
+if command -v mise &> /dev/null; then
+    log_info "🪄 Setting up Neovim versions with mise..."
+    
+    # Install and set Neovim versions
+    mise install neovim@stable
+    mise install neovim@nightly
+    
+    # Default to stable for global usage
+    mise use --global neovim@stable
+    log_ok "Neovim stable/nightly ready (Default: stable)"
+else
+    log_warn "Mise not found. Skipping runtime management."
+fi
+
+# --- 5. SHELL ENVIRONMENT (ZSH PLUGINS) ---
 
 PLUGIN_DIR="$HOME/.local/share/zsh-plugins"
 COMPLETION_DIR="$PLUGIN_DIR/completions"
 
-# Create directories if they don't exist
-[[ ! -d "$PLUGIN_DIR" ]] && mkdir -p "$PLUGIN_DIR"
-[[ ! -d "$COMPLETION_DIR" ]] && mkdir -p "$COMPLETION_DIR"
+# Ensure necessary directories exist
+mkdir -p "$COMPLETION_DIR"
 
-# 1. Essential Zsh Plugins
-# Added: zsh-completions (extra completion definitions)
-declare -A ZSH_PLUGINS=(
+declare -A PLUGINS=(
     ["fzf-tab"]="https://github.com/Aloxaf/fzf-tab"
     ["zsh-autosuggestions"]="https://github.com/zsh-users/zsh-autosuggestions"
     ["zsh-syntax-highlighting"]="https://github.com/zsh-users/zsh-syntax-highlighting"
@@ -59,78 +90,34 @@ declare -A ZSH_PLUGINS=(
 )
 
 log_info "🔌 Managing Zsh plugins..."
-for plugin repo in ${(kv)ZSH_PLUGINS}; do
-  plugin_path="$PLUGIN_DIR/$plugin"
-  if [[ ! -d "$plugin_path/.git" ]]; then
-    log_info "Installing $plugin"
-    git clone --depth=1 "$repo" "$plugin_path" && log_ok "✅ $plugin installed"
-  else
-    log_info "Updating $plugin"
-    git -C "$plugin_path" pull --ff-only --quiet && log_ok "✅ $plugin updated"
-  fi
+for name repo in ${(kv)PLUGINS}; do
+    target="$PLUGIN_DIR/$name"
+    if [[ ! -d "$target" ]]; then
+        log_info "Cloning $name..."
+        git clone --depth=1 "$repo" "$target"
+    else
+        log_info "Updating $name..."
+        git -C "$target" pull --ff-only --quiet
+    fi
 done
 
-# 2. Generate/Update Shell Completions
-log_info "⌨️  Generating shell completions..."
+# --- 6. COMPLETION GENERATION ---
 
-# chezmoi
-if command -v chezmoi &> /dev/null; then
-    chezmoi completion zsh > "$COMPLETION_DIR/_chezmoi"
-    log_ok "✅ chezmoi completion updated"
-fi
+log_info "⌨️  Refreshing completions..."
 
-# docker (Fetch official completions)
-if command -v docker &> /dev/null; then
-    # Docker completions are often provided by the binary, but we ensure they are in our fpath
+# Update completions for essential tools
+[[ -x "$(command -v chezmoi)" ]] && chezmoi completion zsh > "$COMPLETION_DIR/_chezmoi"
+[[ -x "$(command -v mise)" ]]    && mise completion zsh    > "$COMPLETION_DIR/_mise"
+if [[ -x "$(command -v docker)" ]]; then
     curl -sSL https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker > "$COMPLETION_DIR/_docker"
-    log_ok "✅ docker completion updated"
 fi
 
-# mise (Modern tool manager)
-if command -v mise &> /dev/null; then
-    mise completion zsh > "$COMPLETION_DIR/_mise"
-    log_ok "✅ mise completion updated"
-fi
-
-# brew (Homebrew completions)
-if command -v brew &> /dev/null; then
-    # Brew handles its own completions, but we can link them for consistency
-    # or just rely on brew's internal paths. Adding a placeholder or link here:
-    log_ok "ℹ️  brew completions are managed via site-functions"
-fi
-
-# Add other tools here if needed (e.g., mise, brew)
-# if command -v mise &> /dev/null; then mise completion zsh > "$COMPLETION_DIR/_mise"; fi
-
-# --- D. Homebrew Packages ---
-
-# A. Install Core Packages (Always)
-BREWFILE_CORE="$HOME/.Brewfile"
-if [ -f "$BREWFILE_CORE" ]; then
-    log_info "📦 Installing Core packages from .Brewfile..."
-    brew bundle --file="$BREWFILE_CORE"
-    log_ok "✅ $BREWFILE_CORE installed"
-fi
-
-# B. Install Local/Optional Packages (Interactive)
-BREWFILE_LOCAL="$HOME/.Brewfile_local"
-if [ -f "$BREWFILE_LOCAL" ]; then
-    echo -n "❓ Found .Brewfile_local. Do you want to install its packages? (y/N): " > /dev/tty
-    read -r response < /dev/tty
-    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-        log_info "🚀 Installing Local packages from $BREWFILE_LOCAL..."
-        brew bundle --file="$BREWFILE_LOCAL"
-        log_ok "✅ $BREWFILE_LOCAL installed"
-    else
-        log_warn "⏭️  Skipping Local packages."
-    fi
-fi
 {{ end -}}
 
-# --- 3. Linux Setup ---
+# --- 7. LINUX SPECIFIC SETUP ---
 {{ if eq .chezmoi.os "linux" -}}
-# (Linux logic)
+# Add Linux-specific bootstrap logic here
 {{ end -}}
 
-log_ok "✨ Configuration complete!"
+log_ok "✨ System bootstrap completed successfully!"
 
