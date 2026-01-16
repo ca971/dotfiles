@@ -17,7 +17,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Standard OMZ plugins (Internal only)
 plugins=(
-  zoxide
   # fzf (The OMZ fzf plugin adds useful bindings, you can keep it or use your manual source)
 )
 
@@ -32,11 +31,6 @@ source "$ZSH/oh-my-zsh.sh" >/dev/null 2>&1
 fpath=($HOME/.local/share/zsh-plugins/completions $fpath)
 fpath=($HOME/.local/share/zsh-plugins/zsh-completions/src $fpath)
 
-# --- COMPLETION SYSTEM SETUP ---
-
-# 1. Add custom completions and plugins to fpath
-fpath=($HOME/.local/share/zsh-plugins/completions $fpath)
-fpath=($HOME/.local/share/zsh-plugins/zsh-completions/src $fpath)
 
 # --- 4. INTERACTIVE TOOLS ENGINE ---
 
@@ -295,6 +289,15 @@ alias gstatus='find . -maxdepth 2 -name ".git" -type d | rev | cut -d/ -f2- | re
 zstyle ':vcs_info:*' disable-patterns "$HOME/Documents/VeryLargeProject*"
 typeset -g POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY=10000
 
+# Chezmoi
+alias ca="chezmoi apply" # Quick apply changes
+alias ced="chezmoi edit --apply" # Edit dotfiles and apply automatically on exit
+alias csp="cd \$(chezmoi source-path)" # Go to the chezmoi source directory
+alias cst="chezmoi status" # Status check for dotfiles
+
+# Font: Test if Nerd Font icons are working
+alias testfont="echo \"󰙨       \""
+
 # --- 8. CUSTOM FUNCTIONS ---
 
 # edot: Edit dotfiles with chezmoi
@@ -344,7 +347,7 @@ extract () {
 
 # gf: Fuzzy find and open files tracked by Git
 # This excludes node_modules, build folders, and everything in .gitignore
-gf() {
+gff() {
   # Verify we are inside a git repository
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     local file=$(git ls-files | fzf --preview 'bat --color=always --style=numbers --line-range :500 {}')
@@ -403,14 +406,3 @@ fdk() {
 
 # Load machine-specific local overrides
 [[ -f ~/.zshrc_local ]] && source ~/.zshrc_local 2>/dev/null
-
-# --- DOTFILES AUTO-UPDATE ---
-# Check for updates every 7 days
-export CHEZMOI_LAST_UPDATE="$HOME/.config/chezmoi/.last_update"
-
-if [[ ! -f "$CHEZMOI_LAST_UPDATE" || $(find "$CHEZMOI_LAST_UPDATE" -mtime +7) ]]; then
-    echo "🔄 Checking for dotfiles updates..."
-    # Always keep comments in English as requested
-    chezmoi update --apply && touch "$CHEZMOI_LAST_UPDATE"
-fi
-
