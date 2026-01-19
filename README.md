@@ -1,4 +1,4 @@
-Avant d'importer ma config nvim avec chezmoi import nvim, je veux modifier le fichier README de mon dotfiles : https://github.com/ca971/dotfiles pour intégre ma config nvim dans mon dotfiles. Voici mon README actuel : # 🚀 ca971 Dotfiles
+# 🚀 ca971 Dotfiles
 
 [![Commits: Verified](https://img.shields.io/badge/commits-verified-brightgreen.svg)](https://github.com/ca971/dotfiles/commits/main)
 [![Security: SSH Signing](https://img.shields.io/badge/security-SSH--signing-blue.svg)](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
