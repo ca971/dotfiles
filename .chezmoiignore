@@ -1,2 +1,9 @@
 .zshrc_local
 .zsh_secrets
+private.lua
+lazy/
+undodir/
+spell/
+swapped/
+backup/
+session/
