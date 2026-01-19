@@ -1,13 +1,12 @@
 # 🚀 ca971 Dotfiles
 
+
 [![Commits: Verified](https://img.shields.io/badge/commits-verified-brightgreen.svg)](https://github.com/ca971/dotfiles/commits/main)
 [![Security: SSH Signing](https://img.shields.io/badge/security-SSH--signing-blue.svg)](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Built with: chezmoi](https://img.shields.io/badge/built%20with-chezmoi-512bd4.svg)](https://www.chezmoi.io/)
+[![Built with: Neovim](https://img.shields.io/badge/Built%20with-Neovim-57A143?logo=neovim&logoColor=white)](https://neovim.io/)
 [![Shell: Zsh](https://img.shields.io/badge/shell-zsh-brightgreen.svg)](https://www.zsh.org/)
-
-> My automated development environment for **macOS** and **Linux**.  
-> This repository turns a fresh machine into a professional, high-performance workstation in minutes.
 
 ---
 
@@ -68,6 +67,23 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ca971
 | `fcd`     | **Fuzzy CD**      | Interactive directory navigation with tree preview.    |
 | `edot`    | **Edit Dotfiles** | Modify config and apply changes instantly via Chezmoi. |
 
+
+### ⚡️ Neovim
+
+| Key/Command | Action          | Description                                              |
+| :---------- | :-------------- | :------------------------------------------------------- |
+| `<space>`   | **Leader Key**  | Prefix for all custom mappings.                           |
+| `<leader>e`  | **Explorer**    | Toggle Neo-tree (File Explorer).                          |
+| `<leader>ff` | **Find File**   | Search files using Telescope.                             |
+| `<leader>fg` | **Live Grep**   | Search text content in project (Telescope).                |
+| `<leader>gg` | **LazyGit**    | Open LazyGit UI (checks for unsaved buffers first).        |
+| `<leader>mp` | **Format**      | Format current file or selection (Conform.nvim).           |
+| `<leader>uz` | **Zen Mode**    | Toggle Zen mode (Snacks.nvim).                            |
+| `<c-t>`      | **Terminal**     | Toggle floating terminal (Snacks.nvim).                     |
+| `<c-space>`   | **Flash**       | Jump to location by label (Flash.nvim).                    |
+| `gd`         | **Definition**  | Go to definition (LSP).                                  |
+| `K`          | **Hover**       | Show documentation popup (LSP).                            |
+
 ---
 
 ## 🤝 Contributing
@@ -76,4 +92,3 @@ Feel free to fork this repo, open issues, or submit PRs. Any contribution to mak
 
 **Author:** [ca971](https://github.com/ca971)  
 **License:** MIT
-Peux-tu rajouter nvim avec toutes ses fonctionalités
