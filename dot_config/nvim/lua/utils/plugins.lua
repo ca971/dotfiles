@@ -1,97 +1,93 @@
--- [[ UTILITIES PLUGINS ]]
+-- [[ UTILITIES PLUGINS MANAGER ]]
+-- Object-Oriented plugin loader based on User Profile and Namespace
 local M = {}
 
--- [[ HELPER FUNCTIONS ]]
--- Check if a file path exists using uv (cross-platform)
-local function path_exists(path)
-	return (vim.uv or vim.loop).fs_stat(path) ~= nil
-end
+-- [[ METHOD: GET ACTIVE USER PLUGINS ]]
+-- Main entry point for Lazy.nvim to generate plugin specifications.
+-- @param active_user table: The user profile object (from utils/tables/users.lua)
+function M.get_active_user_plugins(active_user)
+  local specs = {}
 
--- [[ PLUGIN GENERATION ]]
--- Generate plugin specifications for Lazy.nvim based on user profile and namespace
-M.get_active_user_plugins = function(active_user)
-	local specs = {}
+  -- Retrieve active namespace from Env settings
+  local namespace = Env.settings.enable_namespace and Env.settings.active_namespace or ""
 
-	-- Determine the active namespace
-	local namespace = Settings.enable_namespace and active_user.namespace or ""
+  -- [[ HELPER: INJECT ]]
+  -- Helper to add a plugin spec to the list
+  local function inject(import_path)
+    table.insert(specs, { import = import_path })
+  end
 
-	-- Function to add plugin specs if the path physically exists on disk
-	local function add_plugins(path, import)
-		if path_exists(path) then
-			table.insert(specs, { import = import })
-		end
-	end
+  -- ==========================================
+  -- 1. CORE PLUGINS (Universal Access)
+  -- ==========================================
+  -- Accessible to everyone, regardless of namespace or role.
+  -- These are the baseline tools.
+  inject("plugins")
+  inject("plugins.themes")
 
-	-- [[ DEFAULT NAMESPACE LOGIC ]]
-	-- Load plugins if no namespace is set
-	if active_user.name:lower() ~= "noconfig" or Settings.enable_noconfig_lazyvim_plugins then
-		if namespace == "" then
-			if Settings.enable_lazyvim_plugins then
-				-- Load LazyVim distribution
-				table.insert(specs, {
-					{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
-					{ import = "lazyvim.plugins.extras.lang.json" },
-					{ import = "lazyvim.plugins.extras.lang.typescript" },
-				})
-			else
-				-- Load custom plugins for standard configuration
-				table.insert(specs, {
-					{ import = "plugins" },
-					{ import = "plugins.themes" },
-				})
-				for _, group in ipairs(active_user.plugins) do
-					table.insert(specs, { import = "plugins/" .. group })
+  -- ==========================================
+  -- 2. LAZyVIM (Optional Distro)
+  -- ==========================================
+  -- If enabled in settings, load the LazyVim distribution.
+  if active_user.name:lower() ~= "noconfig" or Env.settings.enable_noconfig_lazyvim_plugins then
+    if Env.settings.enable_lazyvim_plugins then
+      -- Import core LazyVim configuration
+      table.insert(specs, { "LazyVim/LazyVim", import = "lazyvim.plugins" })
 
-					if group == "lang" then
-						for _, lang in ipairs(active_user.lang or {}) do
-							table.insert(specs, { import = "plugins/lang/" .. lang })
-						end
-					end
-				end
-			end
-		end
-	end
+      -- OPTIONAL: Import specific LazyVim Extras
+      -- You can add specific extras here based on your needs.
+      -- Example: inject("lazyvim.plugins.extras.lang.typescript")
+    end
+  end
 
-	-- [[ NAMESPACE LOGIC ]]
-	-- Load plugins if a specific namespace is active (Multi-user setup)
-	if namespace ~= "" then
-		-- Load base plugins (Root)
-		add_plugins(vim.fn.stdpath("config") .. "/lua/plugins", "plugins")
-		add_plugins(vim.fn.stdpath("config") .. "/lua/plugins/themes", "plugins.themes")
+  -- ==========================================
+  -- 3. ROLE-BASED PLUGINS
+  -- ==========================================
+  -- Load plugins defined by the user's role (e.g., "dev", "admin").
+  -- Accesses the 'plugins' list in the user profile (e.g., "code", "ai", "misc").
+  if active_user.plugins then
+    for _, group in ipairs(active_user.plugins) do
+      -- Load group from plugins/{group}
+      -- Example: "plugins/code"
+      inject("plugins/" .. group)
 
-		-- Load common plugins (Shared across users in this namespace)
-		local common_path = vim.fn.stdpath("config") .. "/lua/plugins/common"
-		add_plugins(common_path, "plugins.common")
+      -- Special handling for "lang" group (Load sub-folders)
+      if group == "lang" and active_user.lang then
+        for _, lang in ipairs(active_user.lang) do
+          inject("plugins/lang/" .. lang)
+        end
+      end
+    end
+  end
 
-		for _, group in ipairs(active_user.plugins) do
-			local group_path = common_path .. "/" .. group
-			add_plugins(group_path, "plugins.common." .. group)
-		end
+  -- ==========================================
+  -- 4. NAMESPACE ISOLATION (Multi-User Setup)
+  -- ==========================================
+  -- If a namespace is active (e.g., "bly", "free", "lazya"),
+  -- load user-specific overrides or additions located in plugins/_ns/{name}.
+  if namespace ~= "" then
+    -- Load namespace root (e.g., plugins/_ns.bly)
+    inject("plugins._ns." .. namespace)
 
-		-- Load namespace-specific plugins (User isolation)
-		local namespace_path = vim.fn.stdpath("config") .. "/lua/plugins/_ns" .. "/" .. namespace
-		add_plugins(namespace_path, "plugins._ns." .. namespace)
+    -- Load role-based plugins inside the namespace folder
+    -- This allows user "bly" with role "dev" to override/extend "code".
+    -- Example: plugins/_ns.bly/code
+    if active_user.plugins then
+      for _, group in ipairs(active_user.plugins) do
+        inject("plugins._ns." .. namespace .. "." .. group)
+      end
+    end
 
-		for _, group in ipairs(active_user.plugins) do
-			local group_path = namespace_path .. "/" .. group
-			add_plugins(group_path, "plugins._ns." .. namespace .. "." .. group)
-		end
-	end
+    -- Load language-specific plugins inside the namespace
+    -- Example: plugins/_ns.bly.lang.python
+    if active_user.lang then
+      for _, lang in ipairs(active_user.lang) do
+        inject("plugins._ns." .. namespace .. ".lang." .. lang)
+      end
+    end
+  end
 
-	-- [[ LANGUAGE PLUGINS ]]
-	-- Load language-specific plugins based on the user's configuration
-	for _, lang in ipairs(active_user.lang or {}) do
-		-- Determine path based on whether a namespace is active
-		local lang_path = namespace ~= ""
-				and vim.fn.stdpath("config") .. "/lua/plugins._ns./" .. namespace .. "/lang/" .. lang
-			or vim.fn.stdpath("config") .. "/lua/plugins/lang/" .. lang
-
-		local import_path = namespace ~= "" and "plugins._ns." .. namespace .. ".lang." .. lang
-			or "plugins.lang." .. lang
-		add_plugins(lang_path, import_path)
-	end
-
-	return specs
+  return specs
 end
 
 return M

@@ -2,7 +2,15 @@
 -- Default options for keymaps (noremap = do not recurse, silent = no feedback)
 local opts = { noremap = true, silent = true }
 
--- [[ LEADER KEY ]]
+-- Set <space> as the leader key
+
+-- Quit rapidly Insertion mode
+vim.keymap.set("i", "jj", "<ESC>", opts)
+
+-- Clear highlights on search when pressing <Esc> in normal mode
+--  See `:help hlsearch`
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
 -- Deactivate <Space> default behavior (Reserved for leader)
 -- vim.keymap.set("", "<Space>", "<Nop>", opts)
 
@@ -54,3 +62,19 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", opts)
 -- Center screen after search jumps
 vim.keymap.set("n", "n", "nzzzv", opts)
 vim.keymap.set("n", "N", "Nzzzv", opts)
+
+-- [[ TERMINAL ]]
+-- Exit to terminal
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- [[ ARROW KEYS ]]
+-- Disable arrow keys in all modes
+-- local modes = { 'n', 'i', 'v', 'c', 't', 'o', 's', 'x' } -- All possible modes
+local modes = { 'n', 'i', 'v', 'o', 't', 's', 'x' } -- All possible modes
+local arrows = { '<Up>', '<Down>', '<Left>', '<Right>' }
+
+for _, mode in ipairs(modes) do
+  for _, key in ipairs(arrows) do
+    vim.keymap.set(mode, key, '<Nop>', { noremap = true, silent = true })
+  end
+end

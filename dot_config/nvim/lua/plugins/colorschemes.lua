@@ -1,6 +1,6 @@
 -- [[ COLORSCHEMES PLUGINS ]]
-local colorschemes = Utils.tables.colorschemes
-local user_colorscheme = Utils.tables.active_user.colorscheme or {}
+local colorschemes = Env.utils.tables.colorschemes
+local user_colorscheme = Env.utils.tables.active_user.colorscheme or {}
 
 -- [[ ACTIVE THEME RESOLUTION ]]
 -- Retrieve the name of the active colorscheme and the specific variant (theme)
@@ -56,4 +56,4 @@ end
 
 -- [[ RETURN SPECS ]]
 -- Return plugin specs only if colorschemes are enabled in settings
-return Settings.enable_colorschemes and specs or {}
+return Env.settings.enable_colorschemes and specs or {}

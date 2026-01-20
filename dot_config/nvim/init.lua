@@ -2,4 +2,6 @@
 -- Entry point for the Neovim configuration.
 -- Loads the core modules (settings, keymaps, lazy, etc.).
 
-require("core")
+if not vim.g.vscode then
+	require("core")
+end
