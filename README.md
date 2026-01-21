@@ -10,12 +10,12 @@
 [![Maintained: Yes](https://img.shields.io/badge/Maintained-Yes-green.svg)](https://github.com/ca971/dotfiles)
 
 
-<h4 align="center">
-    This configuration is engineered for speed, modularity, and deep interactivity.
-</h4>
+<div align="center">
+    <h4>This configuration is engineered for speed, modularity, and deep interactivity.</h4>
+</div>
 
 <div align="center>"
-<h4 align="center">
+<h4>
     <a href="https://github.com/ca971">Projects</a>
      ·
     <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#%EF%B8%8F-quick-start">Install</a>
@@ -24,7 +24,9 @@
 </h4>
 </div>
 
-<hr>
+<br>
+<br>
+<br>
 
 <div align="center">
     <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png" alt="Neovim screenshot">
