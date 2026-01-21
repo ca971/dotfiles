@@ -1,10 +1,3 @@
-<h4 align="center">
-    <a href="https://github.com/ca971">Projects</a>
-     ·
-    <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#%EF%B8%8F-quick-start">Install</a>
-     ·
-    <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#-neovim--lazy-oop-architecture>Architecture</a>
-</h4>
 
 [![Architecture: Modular](https://img.shields.io/badge/Architecture-Modular-orange)](https://github.com/ca971/dotfiles)
 [![Made with: Lua](https://img.shields.io/badge/Made%20with-Lua-blue.svg?logo=lua)](https://www.lua.org/)
@@ -19,6 +12,14 @@
 
 <h4 align="center">
     This configuration is engineered for speed, modularity, and deep interactivity.
+</h4>
+
+<h4 align="center">
+    <a href="https://github.com/ca971">Projects</a>
+     ·
+    <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#%EF%B8%8F-quick-start">Install</a>
+     ·
+    <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#-neovim--lazy-oop-architecture>Architecture</a>
 </h4>
 
 ![image](https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png)
