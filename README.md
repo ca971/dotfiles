@@ -1,6 +1,7 @@
 <div align="center">
-    <h2>⚡️ CA971 DOTFILES</h2>
-
+    <h2>⚡️ ca971 DOTFILES</h2>
+</div>
+<div align="center">
     <h4>Modular. Object-Oriented. Powerful</h4>
 </div>
 
