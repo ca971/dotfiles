@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://raw.githubusercontent.com/ca971/dotfiles/main/nvim/static/header.png" alt="Editor Dashboard" />
+    <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/header.png "alt="Editor Dashboard" />
 </div>
 
 <hr>
@@ -10,7 +10,6 @@
     <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#%EF%B8%8F-quick-start">Install</a>
 </h4>
 
-```markdown
 [![Architecture: Modular](https://img.shields.io/badge/Architecture-Modular-orange)](https://github.com/ca971/dotfiles)
 [![Made with: Lua](https://img.shields.io/badge/Made%20with-Lua-blue.svg?logo=lua)](https://www.lua.org/)
 [![Built with: chezmoi](https://img.shields.io/badge/built%20with-chezmoi-512bd4.svg)](https://www.chezmoi.io/)
@@ -20,15 +19,15 @@
 [![Shell: Zsh](https://img.shields.io/badge/shell-zsh-brightgreen.svg)](https://www.zsh.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Maintained: Yes](https://img.shields.io/badge/Maintained-Yes-green.svg)](https://github.com/ca971/dotfiles)
-```
+
 
 <h4 align="center">
     This configuration is engineered for speed, modularity, and deep interactivity.
 </h4>
 
-![image](https://raw.githubusercontent.com/ca971/dotfiles/main/nvim/static/screenshot.png)
+![image](https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png)
 
-![image](https://raw.githubusercontent.com/ca971/dotfiles/main/nvim/static/screencode.png)
+![image](https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screencode.png)
 
 
 ## ✨ Core Highlights
