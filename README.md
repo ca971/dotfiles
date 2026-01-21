@@ -31,6 +31,7 @@
 
 <p>
 <p>
+<p>
 
 <div align="center">
     <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png" alt="Neovim screenshot">
