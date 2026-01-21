@@ -122,4 +122,4 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ca971
 Feel free to fork this repo, open issues, or submit PRs. Any contribution to make this environment faster or more elegant is welcome!
 
 **Author:** [ca971](https://github.com/ca971)  
-**License:** MIT
+**License:** [MIT](https://github.com/ca971/dotfiles/blob/main/LICENSE)
