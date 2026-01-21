@@ -24,10 +24,15 @@
 </h4>
 </div>
 
+<hr>
 
-![image](https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png)
+<div align="center">
+    <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png" alt="Neovim screenshot">
+</div>
 
-![image](https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screencode.png)
+<div align="center">
+    <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screencode.png" alt="Neovim screencode">
+</div>
 
 
 ## ✨ Core Highlights
