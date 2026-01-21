@@ -11,6 +11,7 @@
 [![Built with: chezmoi](https://img.shields.io/badge/built%20with-chezmoi-512bd4.svg)](https://www.chezmoi.io/)
 [![Built with: Neovim](https://img.shields.io/badge/Built%20with-Neovim-57A143?logo=neovim&logoColor=white)](https://neovim.io/)
 [![Commits: Verified](https://img.shields.io/badge/commits-verified-brightgreen.svg)](https://github.com/ca971/dotfiles/commits/main)
+[![Latest Commit](https://img.shields.io/badge/latest_commit-abc1234d-blue.svg)](https://github.com/ca971/dotfiles/commit/abc1234d)
 [![Security: SSH Signing](https://img.shields.io/badge/security-SSH--signing-blue.svg)](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
 [![Shell: Zsh](https://img.shields.io/badge/shell-zsh-brightgreen.svg)](https://www.zsh.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -36,7 +37,7 @@
     <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png" alt="Neovim screenshot">
 </div>
 
-<h4 align="center"
+<h4 style="text-align=center">
     OOP Architecture · Namespace Isolation · Smart Dependencies · Modern UI
 </h4>  
 
