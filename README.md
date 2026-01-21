@@ -11,7 +11,8 @@
 
 
 <div align="center">
-    <h4>This configuration is engineered for speed, modularity, and deep interactivity.</h4>
+    <h4>A high-performance, modular Neovim environment written in Lua.</h4>
+    Features an Object-Oriented core, namespace isolation for multi-user setups, lazy-provisioned LSP servers via Mason, and a modern UI powered by Snacks.nvim.
 <h4>
     <a href="https://github.com/ca971">Projects</a>
      ·
