@@ -36,9 +36,9 @@
     <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png" alt="Neovim screenshot">
 </div>
 
-<div align="center"
+<h4 align="center"
     OOP Architecture · Namespace Isolation · Smart Dependencies · Modern UI
-</div>  
+</h4>  
 
 <div align="center">
     <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screencode.png" alt="Neovim screencode">
