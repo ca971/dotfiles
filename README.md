@@ -1,3 +1,9 @@
+<div align="center">
+    <h2>⚡️ CA971 DOTFILES</h2>
+
+    <h4>Modular. Object-Oriented. Powerful</h4>
+</div>
+
 
 [![Architecture: Modular](https://img.shields.io/badge/Architecture-Modular-orange)](https://github.com/ca971/dotfiles)
 [![Made with: Lua](https://img.shields.io/badge/Made%20with-Lua-blue.svg?logo=lua)](https://www.lua.org/)
