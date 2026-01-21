@@ -14,6 +14,7 @@
     This configuration is engineered for speed, modularity, and deep interactivity.
 </h4>
 
+<div align="center>"
 <h4 align="center">
     <a href="https://github.com/ca971">Projects</a>
      ·
@@ -21,6 +22,8 @@
      ·
     <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#-neovim--lazy-oop-architecture>Architecture</a>
 </h4>
+</div>
+
 
 ![image](https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/screenshot.png)
 
