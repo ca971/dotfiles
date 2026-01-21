@@ -38,7 +38,7 @@ fi
 # --- 3. PACKAGE MANAGEMENT (BREW BUNDLE) ---
 
 # Process global Brewfile (includes apps, cli tools, and fonts)
-BREW_CORE="$HOME/.Brewfile"
+BREW_CORE="$HOME/bundles/Brewfile-base"
 if [[ -f "$BREW_CORE" ]]; then
     log_info "📦 Processing global Brewfile..."
     brew bundle --file="$BREW_CORE"
@@ -46,7 +46,7 @@ if [[ -f "$BREW_CORE" ]]; then
 fi
 
 # Process local/optional Brewfile interactively
-BREW_LOCAL="$HOME/.Brewfile_local"
+BREW_LOCAL="$HOME/bundles/Brewfile-local"
 if [[ -f "$BREW_LOCAL" ]]; then
     echo -n "❓ Install optional local packages? (y/N): " > /dev/tty
     read -r response < /dev/tty

@@ -13,7 +13,11 @@ return {
     Lua = {
       diagnostics = {
         -- Define global variables to avoid "undefined global" warnings
-        globals = { "vim", "Settings", "Utils" },
+        globals = { "vim", "Env", "Lib" },
+        disable = { "lowercase-global" },
+      },
+      runtime = {
+        version = "LuaJIT",
       },
       telemetry = { enable = false }, -- Disable telemetry
       workspace = {

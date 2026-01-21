@@ -1,11 +1,4 @@
-# --- 1. ENVIRONMENT VARIABLES ---
-
-export EDITOR=nvim
-export VISUAL=nvim
-export PAGER=most
-export MANPAGER=most
-
-# --- 2. PATH CONFIGURATION ---
+# --- 1. PATH CONFIGURATION ---
 #
 # Ensure local bin directories take precedence over system paths
 typeset -U path fpath cdpath  # Prevent duplicate entries in PATH
@@ -17,6 +10,8 @@ path=(
   /usr/local/{,s}bin(N)
   $path
 )
+
+# --- 2. ENVIRONMENT VARIABLES ---
 
 # --- 3. INITIALIZE HOMEBREW ---
 #

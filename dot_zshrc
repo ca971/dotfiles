@@ -178,7 +178,10 @@ fi
 # --- 7. ALIASES ---
 
 # Core shortcuts
-alias v="$EDITOR"
+
+# Opens the configured editor ($EDITOR from .zprofile).
+alias v=$EDITOR
+
 alias c='clear'
 alias q='exit'
 alias dot='chezmoi cd'
