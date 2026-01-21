@@ -104,5 +104,4 @@ cask "tor-browser"
 cask "transmission"
 cask "wezterm"
 mas "LanScan", id: 472226235
-mas "Proton Pass for Safari", id: 6502835663
 mas "Save to Raindrop.io", id: 1549370672
