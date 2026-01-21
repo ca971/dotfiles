@@ -2,7 +2,7 @@
     <h2>⚡️ ca971 DOTFILES</h2>
 </div>
 <div align="center">
-    <h4>Modular. Object-Oriented. Powerful</h4>
+    <h4>Modular . Object-Oriented . Powerful</h4>
 </div>
 
 
