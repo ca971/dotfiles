@@ -17,7 +17,7 @@
      ·
     <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#%EF%B8%8F-quick-start">Install</a>
      ·
-    <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#-neovim--lazy-oop-architecture>Architecture"</a>
+    <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#-neovim--lazy-oop-architecture">Architecture</a>
 </h4>
 </div>
 
