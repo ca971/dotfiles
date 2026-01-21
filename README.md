@@ -1,13 +1,9 @@
-<div align="center">
-    <img src="https://github.com/ca971/dotfiles/blob/main/dot_config/nvim/static/header.png "alt="Editor Dashboard" />
-</div>
-
-<hr>
-
 <h4 align="center">
     <a href="https://github.com/ca971">Projects</a>
      ·
     <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#%EF%B8%8F-quick-start">Install</a>
+     ·
+    <a href="https://github.com/ca971/dotfiles?tab=readme-ov-file#-neovim--lazy-oop-architecture>Architecture</a>
 </h4>
 
 [![Architecture: Modular](https://img.shields.io/badge/Architecture-Modular-orange)](https://github.com/ca971/dotfiles)
@@ -62,7 +58,6 @@ A unified, high-performance replacement for multiple core plugins.
 *   **Custom Workflows**: Interactive functions for **Docker** (`fdk`) and **Git** (`gff`, `gsi`, `glo`).
 *   **Modern CLI replacements**: `eza` (ls), `bat` (cat), `duf` (df), `btop` (top).
 
----
 
 ## ⚡️ Quick Start
 
