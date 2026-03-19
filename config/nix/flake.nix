@@ -108,6 +108,19 @@
               '';
             };
 
+            shellHook = ''
+              if [ -n "$IN_NIX_SHELL" ]; then
+                echo ""
+                echo "  ⚠️  Already inside a Nix shell ($name)"
+                echo "  Exit first with: exit"
+                echo ""
+              else
+                echo ""
+                echo "  ❄️  Nix dev shell — ${system}"
+                echo ""
+              fi
+            '';
+
             # Rust
             rust = import ./shells/rust.nix { inherit pkgs; };
 
