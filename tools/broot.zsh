@@ -6,7 +6,6 @@ log_debug "Configuring broot"
 
 [[ -f "${DOTFILES_DIR}/config/tools.d/broot.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/broot.zsh"
 
-# Broot shell integration (cd on exit)
 local _broot_launcher="${XDG_CONFIG_HOME:-${HOME}/.config}/broot/launcher/bash/br"
 [[ -f "$_broot_launcher" ]] && source "$_broot_launcher"
 

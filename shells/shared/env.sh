@@ -16,6 +16,13 @@
 DOTFILES_DIR="${DOTFILES_DIR:-${HOME}/dotfiles}"
 export DOTFILES_DIR
 
+# ── Local env overrides (loaded FIRST — highest priority) ────────────────────
+# This allows local/local.env to override ANY variable before it's set below.
+# local.env is gitignored — safe for machine-specific overrides.
+if [ -f "${DOTFILES_DIR}/local/local.env" ]; then
+    . "${DOTFILES_DIR}/local/local.env"
+fi
+
 # ── XDG Base Directories ────────────────────────────────────────────────────
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"

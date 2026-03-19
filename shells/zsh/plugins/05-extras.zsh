@@ -93,7 +93,7 @@ case "$ZSH_PLATFORM" in
   darwin)
     if has "brew"; then
       zinit ice wait"2" lucid
-      zinit snippet OMZP::brew
+      # zinit snippet OMZP::brew
     fi
     ;;
   linux|wsl)

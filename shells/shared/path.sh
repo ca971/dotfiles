@@ -33,4 +33,9 @@ _add_path "${XDG_DATA_HOME:-${HOME}/.local/share}/go/bin"
 _add_path "${XDG_DATA_HOME:-${HOME}/.local/share}/gem/bin"
 _add_path "$(ruby -e 'print Gem.user_dir')/bin"
 
+# Afficher le PATH ligne par ligne
+show_path() {
+    echo "$PATH" | tr ':' '\n' | nl
+}
+
 unset -f _add_path

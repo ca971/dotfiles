@@ -18,20 +18,30 @@
 
 # ── Identity — loaded from private local file ───────────────────────────────
 [include]
-	path = ~/dotfiles/config/local/gitconfig.local
+	path = ~/dotfiles/local/gitconfig.local
 
 # ── Conditional includes — different config per directory ────────────────────
 # Work projects
 [includeIf "gitdir:~/Work/"]
-	path = ~/dotfiles/config/local/gitconfig.work
+	path = ~/dotfiles/local/gitconfig.work
 
 # Personal projects
 [includeIf "gitdir:~/Projects/"]
-	path = ~/dotfiles/config/local/gitconfig.local
+	path = ~/dotfiles/local/gitconfig.local
 
 # Open source
 [includeIf "gitdir:~/OSS/"]
-	path = ~/dotfiles/config/local/gitconfig.local
+	path = ~/dotfiles/local/gitconfig.local
+
+[gpg]
+    format = ssh
+
+[gpg "ssh"]
+    program = /usr/bin/ssh-keygen
+    allowedSignersFile = ~/.ssh/allowed_signers
+
+# [commit]
+#   gpgSign = true
 
 # ── Core ─────────────────────────────────────────────────────────────────────
 [core]
@@ -250,9 +260,7 @@
 
 # ── Credential ───────────────────────────────────────────────────────────────
 [credential]
-	helper = osxkeychain    # macOS
-	# helper = store        # Linux (plaintext — use with caution)
-	# helper = cache --timeout=86400  # Linux (in-memory, 24h)
+	helper = osxkeychain
 
 [credential "https://github.com"]
 	helper =

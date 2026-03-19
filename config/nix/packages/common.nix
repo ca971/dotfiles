@@ -1,6 +1,3 @@
-# ============================================================================
-# Common packages — installed on ALL platforms (macOS + Linux)
-# ============================================================================
 { pkgs }:
 
 with pkgs; [
@@ -35,15 +32,6 @@ with pkgs; [
   gh
   difftastic
 
-  # ── DevOps ─────────────────────────────────────────────────────────
-  kubectl
-  k9s
-  kubernetes-helm
-  dive
-  lazydocker
-  act
-  trivy
-
   # ── Data & HTTP ────────────────────────────────────────────────────
   jq
   yq-go
@@ -54,6 +42,7 @@ with pkgs; [
   gnupg
   age
   sops
+  openssh
 
   # ── Runtime ────────────────────────────────────────────────────────
   mise
@@ -65,7 +54,6 @@ with pkgs; [
 
   # ── Files ──────────────────────────────────────────────────────────
   yazi
-  broot
   glow
   lnav
 

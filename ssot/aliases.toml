@@ -97,9 +97,6 @@ rm = "rm -iv"
 # @description  Remove recursively with confirmation
 rmf = "rm -rfv"
 
-# @description  Create symbolic link verbosely
-ln = "ln -sv"
-
 # @description  Recursive copy preserving attributes
 cpr = "cp -rv"
 

@@ -33,7 +33,7 @@ alias lf="eza --icons=auto --color=auto -lf --git --header --time-style=relative
 # Audit .env, .gitignore
 alias 'l.'="eza --icons=auto --color=auto -la --git --header --time-style=relative -d .*"
 # Debug chezmoi/stow/brew
-alias ln="eza --icons=auto --color=auto -la --header --time-style=relative | rg '\->'"
+alias lnk="eza --icons=auto --color=auto -la --header --time-style=relative | rg '\->'"
 
 # -- ANALYSIS -----------------------------------------------------------------
 # "What just changed?"

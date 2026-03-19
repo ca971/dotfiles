@@ -1,6 +1,3 @@
-# ============================================================================
-# macOS-specific packages
-# ============================================================================
 { pkgs }:
 
 with pkgs; [
@@ -9,6 +6,6 @@ with pkgs; [
   gnugrep
   gnused
   gawk
-  gnutar # pas gnu-tar
+  gnutar
   pinentry_mac
 ]

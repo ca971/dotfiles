@@ -700,6 +700,18 @@ ssh-restore                 # Restore from backup
 ssh-key-age                 # Key age report
 ```
 
+### Specific for macOS
+
+```bash
+# Add keygens to Apple Keychain instead of agent
+/usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_github_ed25519
+
+# For all keys
+for key in ~/.ssh/id_*(N); do
+  [[ -f "$key" && "$key" != *.pub ]] && /usr/bin/ssh-add --apple-use-keychain "$key"
+done
+```
+
 ---
 
 ## 📝 [Git](git.md) Integration

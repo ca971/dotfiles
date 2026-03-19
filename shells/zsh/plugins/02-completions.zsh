@@ -47,7 +47,7 @@ zinit snippet OMZP::docker-compose/_docker-compose
 # ============================================================================
 
 # @description  kubectl completions — loaded only if kubectl is available
-if (( $+commands[kubectl] )); then
+if has "kubectl"; then
   zinit ice wait"1" lucid as"completion" id-as"kubectl-completion" \
     atclone"kubectl completion zsh > _kubectl" \
     atpull"%atclone" \

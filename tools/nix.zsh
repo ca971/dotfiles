@@ -348,4 +348,53 @@ function nix-rebuild() {
   nix-install-env
 }
 
+# ── Project templates ────────────────────────────────────────────────────────
+function nix-new() {
+  local template="${1:-}"
+  local dir="${2:-}"
+
+  if [[ -z "$template" ]]; then
+    if has "fzf"; then
+      template=$(printf "rust\npython\nnode\ngo" | \
+        fzf --header='Project template' --height='30%' --border)
+    else
+      printf "  Templates: rust, python, node, go\n  Choice: "
+      read -r template
+    fi
+  fi
+  [[ -z "$template" ]] && return 0
+
+  if [[ -z "$dir" ]]; then
+    printf "  Project directory: "
+    read -r dir
+  fi
+  [[ -z "$dir" ]] && return 0
+
+  mkdir -p "$dir" && cd "$dir"
+  nix flake init -t "${DOTFILES_DIR}/config/nix#${template}"
+  git init 2>/dev/null
+  log_info "Project created: %s (%s)" "$dir" "$template"
+}
+
+# ── Named dev shells ─────────────────────────────────────────────────────────
+function nix-shell-list() {
+  printf "\n  ❄️  Available Dev Shells\n  ─────────────────────\n"
+  printf "  default   All tools\n"
+  printf "  rust      Rust + cargo + wasm\n"
+  printf "  python    Python 3.13 + uv + ruff\n"
+  printf "  node      Node.js 22 + corepack\n"
+  printf "  go        Go 1.23 + gopls + lint\n"
+  printf "  devops    K8s + Terraform + Cloud\n"
+  printf "  minimal   Essential CLI only\n\n"
+  printf "  Usage: nix develop ~/dotfiles/config/nix#<name>\n\n"
+}
+
+function nix-dev() {
+  local shell="${1:-default}"
+  local flake="${DOTFILES_DIR}/config/nix"
+  [[ -f "${flake}/flake.nix" ]] || { log_error "No flake.nix"; return 1; }
+  log_info "Entering %s shell..." "$shell"
+  nix develop "${flake}#${shell}" "$@"
+}
+
 log_debug "nix configured"
