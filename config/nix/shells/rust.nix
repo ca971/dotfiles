@@ -20,19 +20,15 @@ pkgs.mkShell {
     cargo-edit
     cargo-expand
     cargo-audit
-    cargo-outdated
     cargo-nextest
-    cargo-deny
-    sccache # Compilation cache
-    mold # Fast linker (Linux)
+    sccache
 
     # WASM
     wasm-pack
-    trunk
-  ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
-    pkgs.darwin.apple_sdk.frameworks.Security
-    pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
-  ];
+  ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin (with pkgs.apple-sdk.frameworks; [
+    Security
+    SystemConfiguration
+  ]);
 
   env = {
     RUST_BACKTRACE = "1";
