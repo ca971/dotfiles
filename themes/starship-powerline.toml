@@ -191,7 +191,7 @@ format = "[$symbol$context]($style)"
 
 [nix_shell]
 disabled = false
-format = "[ ❄️ $state( $name)]($style) "
+format = "[❄️$state( $name)]($style) "
 style = "bold blue"
 impure_msg = ""
 pure_msg = "pure"

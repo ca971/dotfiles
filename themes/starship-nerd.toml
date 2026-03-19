@@ -196,7 +196,7 @@ style = "bold sapphire"
 
 [nix_shell]
 disabled = false
-format = "[ ❄️ $state( $name)]($style) "
+format = "[❄️$state( $name)]($style) "
 style = "bg:teal fg:base bold"
 impure_msg = ""
 pure_msg = "pure"
