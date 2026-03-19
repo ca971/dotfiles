@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔧 Dotfiles Enterprise
+# 🔧 Dotfiles
 
 **Cross-Platform · Cross-Shell · SSOT Architecture · Security-Hardened ·
 Power-User Grade**
