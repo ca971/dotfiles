@@ -54,6 +54,7 @@ $git_metrics\
 $git_status\
 $docker_context\
 $kubernetes\
+$nix_shell\
 $package\
 $fill\
 $nodejs\
@@ -193,6 +194,14 @@ symbol = "☸ "
 format = "[$symbol$context(:$namespace)]($style) "
 style = "bold sapphire"
 
+[nix_shell]
+disabled = false
+format = "[ ❄️ $state( $name)]($style) "
+style = "bg:teal fg:base bold"
+impure_msg = ""
+pure_msg = "pure"
+unknown_msg = ""
+
 [package]
 symbol = " "
 format = "[$symbol$version]($style) "
@@ -230,11 +239,6 @@ style = "bold red"
 symbol = "󱁢 "
 format = "[$symbol$version($workspace)]($style) "
 style = "bold lavender"
-
-[nix_shell]
-symbol = " "
-format = "[$symbol$state( $name)]($style) "
-style = "bold blue"
 
 [memory_usage]
 disabled = false

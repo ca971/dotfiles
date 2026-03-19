@@ -50,6 +50,7 @@ $rust\
 $golang\
 $docker_context\
 $kubernetes\
+$nix_shell \
 $line_break\
 $shell\
 $character"""
@@ -130,6 +131,14 @@ style = "dimmed surface1"
 min_time = 3000
 format = "[$duration]($style) "
 style = "dimmed yellow"
+
+[nix_shell]
+disabled = false
+format = "[ ❄️ $state( $name)]($style) "
+style = "bg:teal fg:base bold"
+impure_msg = ""
+pure_msg = "pure"
+unknown_msg = ""
 
 [python]
 format = "[py $version]($style) "

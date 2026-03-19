@@ -55,6 +55,7 @@ $git_status\
 [](bg:teal fg:green)\
 $docker_context\
 $kubernetes\
+$nix_shell\
 [](bg:blue fg:teal)\
 $nodejs\
 $python\
@@ -188,6 +189,14 @@ symbol = "☸ "
 style = "bg:teal fg:base"
 format = "[$symbol$context]($style)"
 
+[nix_shell]
+disabled = false
+format = "[ ❄️ $state( $name)]($style) "
+style = "bold blue"
+impure_msg = ""
+pure_msg = "pure"
+unknown_msg = ""
+
 [nodejs]
 symbol = " "
 style = "bg:blue fg:base"
@@ -227,11 +236,6 @@ format = "[$symbol$version]($style)"
 symbol = "󱁢 "
 style = "bg:blue fg:base"
 format = "[$symbol$version]($style)"
-
-[nix_shell]
-symbol = " "
-style = "bg:blue fg:base"
-format = "[$symbol$state]($style)"
 
 [cmd_duration]
 min_time = 2000
