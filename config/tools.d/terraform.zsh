@@ -1,0 +1,8 @@
+alias tf="terraform"
+alias tfi="terraform init"
+alias tfp="terraform plan"
+alias tfa="terraform apply"
+alias tfd="terraform destroy"
+alias tfs="terraform state"
+alias tfw="terraform workspace"
+export TF_CLI_CONFIG_FILE="${XDG_CONFIG_HOME:-${HOME}/.config}/terraform/terraformrc"

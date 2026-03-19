@@ -1,0 +1,460 @@
+# ============================================================================
+# @file        git/.gitconfig
+# @description Global Git configuration — power-user edition.
+#              Optimized for modern Git workflows, security, performance,
+#              and cross-platform compatibility.
+#
+#              Symlink: ln -sf ~/dotfiles/config/git/.gitconfig ~/.gitconfig
+#
+#              Private identity: ~/dotfiles/config/local/gitconfig.local
+#              Work overrides:   ~/dotfiles/config/local/gitconfig.work
+#
+# @repository  https://github.com/ca971/dotfiles/config.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-15
+# @version     2.0.0
+# ============================================================================
+
+# ── Identity — loaded from private local file ───────────────────────────────
+[include]
+	path = ~/dotfiles/config/local/gitconfig.local
+
+# ── Conditional includes — different config per directory ────────────────────
+# Work projects
+[includeIf "gitdir:~/Work/"]
+	path = ~/dotfiles/config/local/gitconfig.work
+
+# Personal projects
+[includeIf "gitdir:~/Projects/"]
+	path = ~/dotfiles/config/local/gitconfig.local
+
+# Open source
+[includeIf "gitdir:~/OSS/"]
+	path = ~/dotfiles/config/local/gitconfig.local
+
+# ── Core ─────────────────────────────────────────────────────────────────────
+[core]
+	editor = nvim
+	pager = delta
+	autocrlf = input
+	safecrlf = warn
+	# Prevent data corruption
+	whitespace = fix,trailing-space,cr-at-eol
+	excludesFile = ~/dotfiles/config/git/.gitignore_global
+	attributesFile = ~/dotfiles/config/git/.gitattributes_global
+	hooksPath = ~/dotfiles/config/git/git-templates/hooks
+	# Faster file hashing
+	untrackedCache = true
+	# Performance: use filesystem monitor
+	fsmonitor = true
+	# Protect against NTFS/HFS+ case issues
+	ignoreCase = false
+	commitGraph = true
+	multiPackIndex = true
+	# Compression
+	compression = 9
+	# Bigger buffer for large repos
+	packedGitLimit = 512m
+	packedGitWindowSize = 512m
+
+# ── Init ─────────────────────────────────────────────────────────────────────
+[init]
+	defaultBranch = main
+	# Auto-install hooks on every git init / git clone
+	templateDir = ~/dotfiles/config/git/git-templates
+
+# ── Pull / Push / Fetch ──────────────────────────────────────────────────────
+[pull]
+	rebase = true
+	ff = only
+
+[push]
+	default = current
+	autoSetupRemote = true
+	followTags = true
+	gpgSign = if-asked
+
+[fetch]
+	prune = true
+	pruneTags = true
+	parallel = 0
+	writeCommitGraph = true
+
+# ── Rebase ───────────────────────────────────────────────────────────────────
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+	missingCommitsCheck = warn
+
+# ── Merge ────────────────────────────────────────────────────────────────────
+[merge]
+	ff = false
+	conflictstyle = zdiff3
+	tool = nvim
+
+[mergetool]
+	keepBackup = false
+	prompt = false
+
+[mergetool "nvim"]
+	cmd = nvim -d "$LOCAL" "$MERGED" "$REMOTE"
+
+# ── Diff ─────────────────────────────────────────────────────────────────────
+[diff]
+	mnemonicPrefix = true
+	tool = nvim
+	# Better diff algorithm
+	algorithm = histogram
+	# Detect renames and copies
+	renames = copies
+	# Color moved lines differently
+	colorMoved = default
+	colorMovedWS = allow-indentation-change
+	# Show word-level diff
+	wordRegex = [[:alnum:]_]+|[^[:space:]]
+	# Show submodule changes
+	submodule = log
+	# Show context
+	context = 3
+
+[difftool]
+	prompt = false
+
+[difftool "nvim"]
+	cmd = nvim -d "$LOCAL" "$REMOTE"
+
+# ── Delta (diff pager) ───────────────────────────────────────────────────────
+[delta]
+	navigate = true
+	dark = true
+	line-numbers = true
+	side-by-side = false
+	hyperlinks = true
+	syntax-theme = Catppuccin Mocha
+	plus-style = "syntax #2a363b"
+	minus-style = "syntax #3b2c34"
+	plus-emph-style = "syntax #3a5540"
+	minus-emph-style = "syntax #5b3040"
+	line-numbers-left-format = "{nm:>4} │"
+	line-numbers-right-format = "{np:>4} │"
+	file-style = bold yellow
+	file-decoration-style = yellow ul
+	hunk-header-style = line-number syntax bold
+	hunk-header-decoration-style = blue box
+	hyperlinks-file-link-format = vscode://file/{path}:{line}
+
+[delta "decorations"]
+	commit-decoration-style = "bold yellow box ul"
+	commit-style = "bold yellow"
+	file-decoration-style = "bold blue ul"
+	file-style = "bold blue"
+	hunk-header-decoration-style = "blue box"
+	hunk-header-file-style = "bold magenta"
+	hunk-header-line-number-style = "bold #067a00"
+	hunk-header-style = file line-number syntax
+
+[delta "merge"]
+	conflictstyle = zdiff3
+
+[interactive]
+	diffFilter = delta --color-only
+
+# ── Branch ───────────────────────────────────────────────────────────────────
+[branch]
+	# Sort by most recent commit
+	sort = -committerdate
+	# Auto-setup rebase for new branches
+	autoSetupRebase = always
+
+# ── Tag ──────────────────────────────────────────────────────────────────────
+[tag]
+	# Sign tags by default
+	gpgsign = true
+	# Sort by version
+	sort = -version:refname
+
+# ── Stash ────────────────────────────────────────────────────────────────────
+[stash]
+	# Show patch in stash list
+	showPatch = true
+	showStat = true
+
+# ── Log ──────────────────────────────────────────────────────────────────────
+[log]
+	# ISO dates for consistency
+	date = iso
+	# Show renames in log
+	follow = true
+	# Decorate refs
+	decorate = short
+	# Abbreviate commit hashes
+	abbrevCommit = true
+
+[format]
+	pretty = format:%C(auto)%h %C(blue)%an %C(dim)%ar%C(auto)%d %s
+
+# ── Status ───────────────────────────────────────────────────────────────────
+[status]
+	# Show individual files in untracked directories
+	showUntrackedFiles = all
+	# Short format by default
+	short = true
+	branch = true
+	# Show stash count
+	showStash = true
+	# Show submodule summary
+	submoduleSummary = true
+
+# ── Color ────────────────────────────────────────────────────────────────────
+[color]
+	ui = true
+
+[color "branch"]
+	current = "bold #7DAEA3"
+	upstream = "bold #FE8019"
+	local = "#EA6962"
+	remote = "#819C3B"
+	plain = "white"
+
+[color "status"]
+	header = "bold #7E82CC"
+	added = "bold #819C3B"
+	changed = "#689D6A"
+	untracked = "#EF1D55"
+	branch = "bold #7DAEA3"
+	nobranch = "bold red"
+	unmerged = "bold magenta"
+
+[color "diff"]
+	whitespace = "red reverse"
+	new = "bold #819C3B"
+	old = "bold #DC3958"
+	func = "bold #A06469"
+	meta = "bold #7E82CC"
+	frag = "bold cyan"
+	commit = "bold yellow"
+
+[color "diff-highlight"]
+	oldNormal = "red bold"
+	oldHighlight = "red bold 52"
+	newNormal = "green bold"
+	newHighlight = "green bold 22"
+
+# ── Commit ───────────────────────────────────────────────────────────────────
+[commit]
+	gpgsign = true
+	verbose = true
+	template = ~/dotfiles/config/git/.gitmessage
+
+# ── Credential ───────────────────────────────────────────────────────────────
+[credential]
+	helper = osxkeychain    # macOS
+	# helper = store        # Linux (plaintext — use with caution)
+	# helper = cache --timeout=86400  # Linux (in-memory, 24h)
+
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[credential "https://gitlab.com"]
+	helper =
+	helper = !glab auth git-credential
+
+# ── Rerere (reuse recorded resolution) ───────────────────────────────────────
+[rerere]
+	enabled = true
+	autoUpdate = true
+
+# ── Submodule ────────────────────────────────────────────────────────────────
+[submodule]
+	recurse = true
+	fetchJobs = 4
+
+# ── Transfer ─────────────────────────────────────────────────────────────────
+[transfer]
+	fsckobjects = true
+
+[receive]
+	fsckobjects = true
+
+[http]
+	lowSpeedLimit = 1000
+	lowSpeedTime = 300
+	postBuffer = 524288000
+	maxRequests = 5
+	# SSL verification (never disable in production)
+	sslVerify = true
+
+# ── Maintenance — Auto-optimize repos ────────────────────────────────────────
+[maintenance]
+	auto = true
+	strategy = incremental
+
+# ── Pack / GC ────────────────────────────────────────────────────────────────
+[pack]
+	threads = 0
+	useSparse = true
+
+[gc]
+	auto = 256
+	writeCommitGraph = true
+
+# ── URL Shortcuts ────────────────────────────────────────────────────────────
+# Note: insteadOf replaces the prefix in the URL
+[url "git@github.com:"]
+	insteadOf = gh:
+	pushInsteadOf = https://github.com/
+
+[url "git@gitlab.com:"]
+	insteadOf = gl:
+
+[url "git@bitbucket.org:"]
+	insteadOf = bb:
+
+# ── LFS ──────────────────────────────────────────────────────────────────────
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+# ── Aliases ──────────────────────────────────────────────────────────────────
+[alias]
+	# ── Meta & Help ──
+	aliases = "!f() { git config --get-regexp '^alias\\.' | sed -E 's/^alias\\.([^ ]+) (.*)/\\1 \t => \\2/' | sort | column -t -s '\t'; }; f"
+	alias-grep = "!f() { git config --get-regexp '^alias\\.' | cut -c 7- | grep -Ei --color \"$1\"; }; f"
+	help-all = "!git aliases | less"
+
+	# ── Status & Info ──
+	s = status --short --branch
+	st = status -sb
+	ss = status
+	info = !git remote -v && echo && git branch -vv
+
+	# ── Staging ──
+	a = add
+	aa = add --all
+	ap = add --patch
+	ai = add --interactive
+
+	# ── Commit ──
+	c = commit -m
+	ci = commit
+	cm = commit -m
+	ca = commit --amend
+	cs = commit -s -m
+	amend = commit --amend --no-edit
+	empty = commit --allow-empty -m
+	fixup = "!f() { git commit --fixup=$1; }; f"
+	wip = !git add -A && git commit -m 'chore: wip [skip ci]'
+	unwip = reset --soft HEAD~1
+
+	# ── Push / Pull ──
+	p = push
+	pf = push --force-with-lease --force-if-includes
+	pl = pull --rebase
+	fa = fetch --all --prune --tags
+	# Removed duplicate `sync` alias below
+	deploy = "!git push origin main && sleep 10 && gh run watch"
+	pw = "!git push origin $(git branch --show-current) && sleep 10 && gh run watch"
+	ship = "!git push origin $(git branch --show-current) && sleep 10 && gh run watch && echo '🚀 Shipped!'"
+	sync = "!git pull --rebase && git push"
+
+	# ── Branch ──
+	b = branch -vv
+	ba = branch -avv
+	bd = branch -d
+	bD = branch -D
+	sw = switch
+	swc = switch -c
+	recent = branch --sort=-committerdate --format='%(refname:short) %(committerdate:relative) %(authorname)'
+
+	# ── Log ──
+	l = log --oneline --graph --decorate --all -20
+	ll = log --oneline --graph --decorate --all
+	lg = log --graph --pretty=format:'%C(auto)%h%d %s %C(dim)(%ar) %C(blue)<%an>%Creset' --all
+	lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)— %an%C(reset)%C(auto)%d%C(reset)' --all -20
+	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)— %an%C(reset)' --all -15
+	lg3 = log --graph --abbrev-commit --decorate --format=format:'%C(bold yellow)⦿ %h%C(reset) %C(bold white)%s%C(reset)%C(auto)%d%C(reset)%n  %C(dim cyan)📅 %aD%C(reset) %C(dim green)(%ar)%C(reset)%n  %C(dim white)👤 %an <%ae>%C(reset)%n' --all -10
+	lp = log --patch --follow
+	last = log -1 HEAD --stat
+	today = log --since='00:00:00' --all --oneline --no-merges --author='me'
+	week = log --since='1 week ago' --all --oneline --no-merges
+	standup = !git log --since='yesterday' --author=\"$(git config user.name)\" --oneline --no-merges
+
+	# ── Diff ──
+	df = diff
+	ds = diff --stat
+	dc = diff --cached
+	dw = diff --word-diff
+	dm = diff main...HEAD
+
+	# ── Stash ──
+	save = stash push -m
+	stp = stash pop
+	stl = stash list
+	std = stash drop
+	sta = stash apply
+	sts = stash show --patch
+
+	# ── Reset / Undo ──
+	undo = reset --soft HEAD~1
+	hard = reset --hard HEAD
+	unstage = reset HEAD --
+	discard = checkout --
+	nuke = !git reset --hard HEAD && git clean -fd
+	uncommit = reset --mixed HEAD~1
+
+	# ── Clean ──
+	cleanup = !git branch --merged | grep -v '\\*\\|main\\|master\\|develop' | xargs -n 1 git branch -d
+	gone = !git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D
+	tidy = !git gone && git cleanup
+	clean-all = "!git clean -fd && git reset --hard"
+
+	# ── Recover ──
+	# Recover deleted branch or commit
+	recover = "!git reflog | head -20"
+	nevermind = "!git reset --hard HEAD && git clean -fd"
+
+	# ── Worktree ──
+	wt = worktree list
+	wta = worktree add
+	wtr = worktree remove
+
+	# ── Shortcuts ──
+	co = checkout
+	cb = checkout -b
+	cp = cherry-pick
+	ri = rebase -i
+	mt = mergetool
+	dt = difftool
+
+	# ── Stats & Analysis ──
+	contributors = shortlog -sn --all --no-merges
+	filecount = !git ls-files | wc -l
+	linecount = !git ls-files | xargs wc -l | tail -1
+	biggest = !git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' | awk '/^blob/{print $3,$4}' | sort -rn | head -20
+
+	# ── Find & Search ──
+	find = !git log --all --pretty=format:'%h %s' --grep
+	search = !git log --all -S
+	who = !git log --all --format='%aN <%aE>' | sort -u
+
+	# ── PR & Release Workflow ──
+	pr = !gh pr create --fill
+	prs = !gh pr list
+	prv = !gh pr view --web
+	release = !gh release create
+
+	# ── Bisect Helpers ──
+	bisect-start = bisect start HEAD
+	bisect-good = bisect good
+	bisect-bad = bisect bad
+	bisect-reset = bisect reset
+
+	# ── Maintenance ──
+	optimize = !git gc --aggressive --prune=now && git repack -a -d --depth=250 --window=250
+	fsck-full = fsck --full --strict
+	count = rev-list --count HEAD

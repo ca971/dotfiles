@@ -1,0 +1,244 @@
+# ============================================================================
+# @file        ssot/colors.toml
+# @description Single Source of Truth for color definitions. Provides a
+#              unified color palette used across the shell, prompt, syntax
+#              highlighting, FZF, and all CLI tool configurations.
+#              Supports multiple theme variants.
+# @repository  https://github.com/ca971/zsh-config.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-14
+# @version     1.0.0
+#
+# @format      Colors are defined as hex RGB values (#RRGGBB).
+#              The generator converts them to the appropriate format
+#              per target: ANSI codes, zsh %F{}, fish set_color, etc.
+# ============================================================================
+
+# ============================================================================
+# [ansi] — Standard ANSI color names mapped to theme-specific hex values
+# ============================================================================
+[ansi]
+
+# @description  ANSI black / background dark
+black = "#1e1e2e"
+
+# @description  ANSI red
+red = "#f38ba8"
+
+# @description  ANSI green
+green = "#a6e3a1"
+
+# @description  ANSI yellow
+yellow = "#f9e2af"
+
+# @description  ANSI blue
+blue = "#89b4fa"
+
+# @description  ANSI magenta / purple
+magenta = "#cba6f7"
+
+# @description  ANSI cyan / teal
+cyan = "#94e2d5"
+
+# @description  ANSI white / foreground light
+white = "#cdd6f4"
+
+# @description  ANSI bright black / gray
+bright_black = "#585b70"
+
+# @description  ANSI bright red
+bright_red = "#f38ba8"
+
+# @description  ANSI bright green
+bright_green = "#a6e3a1"
+
+# @description  ANSI bright yellow
+bright_yellow = "#f9e2af"
+
+# @description  ANSI bright blue
+bright_blue = "#89b4fa"
+
+# @description  ANSI bright magenta
+bright_magenta = "#cba6f7"
+
+# @description  ANSI bright cyan
+bright_cyan = "#94e2d5"
+
+# @description  ANSI bright white
+bright_white = "#cdd6f4"
+
+# ============================================================================
+# [catppuccin_mocha] — Catppuccin Mocha (default dark theme)
+# @see https://catppuccin.com/palette
+# ============================================================================
+[catppuccin_mocha]
+
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dcfe"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+# ============================================================================
+# [catppuccin_latte] — Catppuccin Latte (light theme)
+# ============================================================================
+[catppuccin_latte]
+
+rosewater = "#dc8a78"
+flamingo = "#dd7878"
+pink = "#ea76cb"
+mauve = "#8839ef"
+red = "#d20f39"
+maroon = "#e64553"
+peach = "#fe640b"
+yellow = "#df8e1d"
+green = "#40a02b"
+teal = "#179299"
+sky = "#04a5e5"
+sapphire = "#209fb5"
+blue = "#1e66f5"
+lavender = "#7287fd"
+text = "#4c4f69"
+subtext1 = "#5c5f77"
+subtext0 = "#6c6f85"
+overlay2 = "#7c7f93"
+overlay1 = "#8c8fa1"
+overlay0 = "#9ca0b0"
+surface2 = "#acb0be"
+surface1 = "#bcc0cc"
+surface0 = "#ccd0da"
+base = "#eff1f5"
+mantle = "#e6e9ef"
+crust = "#dce0e8"
+
+# ============================================================================
+# [tokyonight] — Tokyo Night (alternative dark theme)
+# ============================================================================
+[tokyonight]
+
+bg = "#1a1b26"
+bg_dark = "#16161e"
+bg_float = "#16161e"
+bg_highlight = "#292e42"
+bg_popup = "#16161e"
+bg_search = "#3d59a1"
+bg_sidebar = "#16161e"
+bg_statusline = "#16161e"
+bg_visual = "#283457"
+fg = "#c0caf5"
+fg_dark = "#a9b1d6"
+fg_float = "#c0caf5"
+fg_gutter = "#3b4261"
+fg_sidebar = "#a9b1d6"
+blue = "#7aa2f7"
+blue0 = "#3d59a1"
+blue1 = "#2ac3de"
+blue2 = "#0db9d7"
+blue5 = "#89ddff"
+blue6 = "#b4f9f8"
+blue7 = "#394b70"
+comment = "#565f89"
+cyan = "#7dcfff"
+dark3 = "#545c7e"
+dark5 = "#737aa2"
+green = "#9ece6a"
+green1 = "#73daca"
+green2 = "#41a6b5"
+magenta = "#bb9af7"
+magenta2 = "#ff007c"
+orange = "#ff9e64"
+purple = "#9d7cd8"
+red = "#f7768e"
+red1 = "#db4b4b"
+teal = "#1abc9c"
+terminal_black = "#414868"
+yellow = "#e0af68"
+
+# ============================================================================
+# [semantic] — Semantic color roles (theme-independent)
+# ============================================================================
+[semantic]
+
+# @description  Success / positive state
+success = "#a6e3a1"
+
+# @description  Warning / caution state
+warning = "#f9e2af"
+
+# @description  Error / danger state
+error = "#f38ba8"
+
+# @description  Informational / neutral state
+info = "#89b4fa"
+
+# @description  Debug / verbose state
+debug = "#94e2d5"
+
+# @description  Muted / disabled / placeholder
+muted = "#6c7086"
+
+# @description  Accent / highlight / emphasis
+accent = "#cba6f7"
+
+# @description  Primary foreground text
+foreground = "#cdd6f4"
+
+# @description  Primary background
+background = "#1e1e2e"
+
+# @description  Secondary background (elevated surfaces)
+surface = "#313244"
+
+# @description  Border / separator color
+border = "#45475a"
+
+# ============================================================================
+# [ls_colors] — LS_COLORS generation hints
+# ============================================================================
+[ls_colors]
+
+# @description  Directory color
+directory = "#89b4fa"
+
+# @description  Symbolic link color
+symlink = "#94e2d5"
+
+# @description  Executable file color
+executable = "#a6e3a1"
+
+# @description  Archive / compressed file color
+archive = "#fab387"
+
+# @description  Image / media file color
+media = "#cba6f7"
+
+# @description  Document file color
+document = "#f9e2af"
+
+# @description  Broken symlink color
+broken_symlink = "#f38ba8"
+
+# @description  Socket / pipe color
+socket = "#f5c2e7"

@@ -1,0 +1,306 @@
+# ============================================================================
+# @file        ssot/icons.toml
+# @description Single Source of Truth for Nerd Font icon definitions. Provides
+#              a consistent icon vocabulary used across the prompt, file
+#              listings, tool outputs, and status indicators.
+#              Requires a Nerd Font v3+ to be installed.
+# @repository  https://github.com/ca971/zsh-config.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-14
+# @version     1.0.0
+# @see         https://www.nerdfonts.com/cheat-sheet
+#
+# @format      icon_name = "unicode_character"
+#              Unicode codepoints are Nerd Font glyphs.
+# ============================================================================
+
+# ============================================================================
+# [status] — Status indicator icons
+# ============================================================================
+[status]
+
+# @description  Success / check mark
+success = "✓"
+
+# @description  Error / cross mark
+error = "✗"
+
+# @description  Warning / exclamation
+warning = ""
+
+# @description  Info / information circle
+info = ""
+
+# @description  Debug / bug
+debug = ""
+
+# @description  Loading / spinner
+loading = "󰔟"
+
+# @description  Pending / clock
+pending = ""
+
+# @description  Locked / secure
+locked = ""
+
+# @description  Unlocked / insecure
+unlocked = ""
+
+# @description  Star / favorite
+star = ""
+
+# @description  Flame / hot
+flame = ""
+
+# @description  Rocket / launch
+rocket = ""
+
+# @description  Lightning / fast
+lightning = ""
+
+# @description  Question mark / unknown
+question = ""
+
+# ============================================================================
+# [arrows] — Directional and flow icons
+# ============================================================================
+[arrows]
+
+# @description  Right arrow
+right = ""
+
+# @description  Left arrow
+left = ""
+
+# @description  Up arrow
+up = ""
+
+# @description  Down arrow
+down = ""
+
+# @description  Right chevron / prompt marker
+chevron_right = ""
+
+# @description  Double right arrow / forward
+forward = "󰒈"
+
+# @description  Separator (powerline-style)
+separator = ""
+
+# @description  Separator thin
+separator_thin = ""
+
+# @description  Branch / fork
+branch = ""
+
+# ============================================================================
+# [files] — File type icons
+# ============================================================================
+[files]
+
+# @description  Generic file
+file = ""
+
+# @description  Generic folder / directory
+folder = ""
+
+# @description  Open folder
+folder_open = ""
+
+# @description  Configuration file
+config = ""
+
+# @description  Code / source file
+code = ""
+
+# @description  Terminal / shell file
+terminal = ""
+
+# @description  Database file
+database = ""
+
+# @description  Image file
+image = ""
+
+# @description  Document / text file
+document = "󰈙"
+
+# @description  Archive / compressed file
+archive = ""
+
+# @description  Lock file
+lockfile = "󰌾"
+
+# @description  Binary / executable
+binary = ""
+
+# @description  Symlink
+symlink = ""
+
+# @description  Hidden file (dotfile)
+hidden = "󰘓"
+
+# ============================================================================
+# [dev] — Development and programming icons
+# ============================================================================
+[dev]
+
+# @description  Git branch
+git_branch = ""
+
+# @description  Git commit
+git_commit = ""
+
+# @description  Git merge
+git_merge = ""
+
+# @description  Git pull request
+git_pr = ""
+
+# @description  GitHub
+github = ""
+
+# @description  Docker / container
+docker = ""
+
+# @description  Kubernetes / helm
+kubernetes = "☸"
+
+# @description  Cloud
+cloud = ""
+
+# @description  Server / host
+server = ""
+
+# @description  Package / module
+package = ""
+
+# @description  Bug / issue
+bug = ""
+
+# @description  Test / beaker
+test = ""
+
+# @description  CI/CD pipeline
+pipeline = "󰕃"
+
+# @description  API / endpoint
+api = "󰒎"
+
+# @description  Database
+db = ""
+
+# ============================================================================
+# [languages] — Programming language icons
+# ============================================================================
+[languages]
+
+python = ""
+javascript = ""
+typescript = ""
+rust = ""
+go = ""
+ruby = ""
+java = ""
+c = ""
+cpp = ""
+csharp = "󰌛"
+php = ""
+swift = ""
+kotlin = ""
+lua = ""
+vim = ""
+html = ""
+css = ""
+react = ""
+vue = "󰡄"
+angular = ""
+svelte = ""
+node = ""
+deno = ""
+bun = ""
+
+# ============================================================================
+# [system] — System and platform icons
+# ============================================================================
+[system]
+
+# @description  Linux penguin
+linux = ""
+
+# @description  macOS / Apple
+macos = ""
+
+# @description  Windows
+windows = ""
+
+# @description  CPU / processor
+cpu = ""
+
+# @description  Memory / RAM
+memory = ""
+
+# @description  Disk / storage
+disk = ""
+
+# @description  Network / wifi
+network = "󰖩"
+
+# @description  Bluetooth
+bluetooth = ""
+
+# @description  Battery
+battery = ""
+
+# @description  Power / electricity
+power = ""
+
+# @description  Temperature / thermometer
+temperature = ""
+
+# @description  User / account
+user = ""
+
+# @description  Home directory
+home = ""
+
+# @description  Clock / time
+clock = ""
+
+# @description  Calendar / date
+calendar = ""
+
+# @description  Search / magnifier
+search = ""
+
+# @description  Settings / gear
+settings = ""
+
+# @description  Shield / security
+shield = "󰒃"
+
+# @description  SSH / key
+ssh = "󰣀"
+
+# ============================================================================
+# [tools] — CLI tool icons (for prompt, status bars, etc.)
+# ============================================================================
+[tools]
+
+neovim = ""
+git = ""
+docker = ""
+kubernetes = "☸"
+terraform = "󱁢"
+ansible = "󱂚"
+aws = ""
+gcp = "󱇶"
+azure = "󰠅"
+npm = ""
+yarn = ""
+pnpm = "󰨋"
+pip = "󰏗"
+cargo = "󰏗"
+homebrew = ""
+nix = ""

@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# ============================================================================
+# @file        bin/dot
+# @description Unified dotfiles CLI — dispatcher.
+#              Routes commands to modules in bin/dot.d/
+# @repository  https://github.com/ca971/dotfiles.git
+# @author      ca971
+# @license     MIT
+# @version     3.0.0
+# ============================================================================
+
+set -uo pipefail
+
+# ── Resolve paths ────────────────────────────────────────────────────────────
+DOTFILES_DIR="${DOTFILES_DIR:-${HOME}/dotfiles}"
+DOT_DIR="${DOTFILES_DIR}/bin/dot.d"
+
+# ── Load core (colors, icons, helpers) ───────────────────────────────────────
+if [[ -f "${DOT_DIR}/_core.sh" ]]; then
+    source "${DOT_DIR}/_core.sh"
+else
+    echo "ERROR: ${DOT_DIR}/_core.sh not found" >&2
+    exit 1
+fi
+
+# ── Load a module and run its command function ───────────────────────────────
+_run_module() {
+    local module="$1" func="$2"
+    shift 2
+
+    local module_file="${DOT_DIR}/${module}.sh"
+    if [[ -f "$module_file" ]]; then
+        source "$module_file"
+        if declare -f "$func" > /dev/null 2>&1; then
+            "$func" "$@"
+        else
+            _err "Function '${func}' not found in ${module}.sh"
+            return 1
+        fi
+    else
+        _err "Module not found: ${module}.sh"
+        return 1
+    fi
+}
+
+# ── Main router ─────────────────────────────────────────────────────────────
+main() {
+    local cmd="${1:-help}"
+    shift 2> /dev/null || true
+
+    case "$cmd" in
+        # ── Information ──
+        info | i) _run_module info cmd_info "$@" ;;
+        status | st) _run_module status cmd_status "$@" ;;
+        doctor | doc | dr) _run_module doctor cmd_doctor "$@" ;;
+        shells | sh) _run_module shells cmd_shells "$@" ;;
+        tools | t) _run_module tools cmd_tools "$@" ;;
+
+        # ── Themes ──
+        theme | th) _run_module theme cmd_theme "$@" ;;
+
+        # ── Configuration ──
+        generate | gen | g) _run_module generate cmd_generate "$@" ;;
+        link | ln) _run_module link cmd_link "$@" ;;
+        unlink | ul) _run_module link cmd_unlink "$@" ;;
+        edit | e) _run_module explore cmd_edit "$@" ;;
+
+        # ── Security ──
+        ssh) _run_module ssh cmd_ssh "$@" ;;
+        secret | sec) _run_module secret cmd_secret "$@" ;;
+        git-sign | sign) _run_module git-sign cmd_git_sign "$@" ;;
+
+        # ── Nix ──
+        nix) _run_module nix cmd_nix "$@" ;;
+
+        # ── Maintenance ──
+        update | up) _run_module maintenance cmd_update "$@" ;;
+        upgrade) _run_module maintenance cmd_upgrade "$@" ;;
+        clean | cl) _run_module maintenance cmd_clean "$@" ;;
+        backup | bak) _run_module maintenance cmd_backup "$@" ;;
+        restore) _run_module maintenance cmd_restore "$@" ;;
+
+        # ── Performance ──
+        benchmark | bench | b) _run_module performance cmd_benchmark "$@" ;;
+        profile | prof) _run_module performance cmd_profile "$@" ;;
+
+        # ── Exploration ──
+        alias | a) _run_module explore cmd_alias "$@" ;;
+        path) _run_module explore cmd_path "$@" ;;
+        color | colours) _run_module explore cmd_color "$@" ;;
+        diff | d) _run_module explore cmd_diff "$@" ;;
+        log) _run_module explore cmd_log "$@" ;;
+
+        # ── Shortcuts ──
+        cd) printf '%s\n' "$DOTFILES_DIR" ;;
+        version | v | -v | --version) printf '%b%b  dot%b %bv%s%b\n' "$C_MAUVE" "$I_TERMINAL" "$S_RESET" "$C_SUBTEXT" "$VERSION" "$S_RESET" ;;
+        help | h | --help | -h) _run_module help cmd_help "$@" ;;
+
+        # ── Terminal ──
+        terminal | term) _run_module terminal cmd_terminal "$@" ;;
+
+        # ── Editor ──
+        editor | ed) _run_module editor cmd_editor "$@" ;;
+
+        # ── Security ──
+        gpg) zsh -ic "gpg-${2:-info}" 2> /dev/null || zsh -ic "gpg-info" ;;
+
+        *)
+            _err "Unknown command: ${cmd}"
+            printf '  Run %bdot help%b\n\n' "$C_TEAL" "$S_RESET"
+            return 1
+            ;;
+    esac
+}
+
+main "$@"

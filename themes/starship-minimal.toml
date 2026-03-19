@@ -1,0 +1,177 @@
+# ============================================================================
+# @file        themes/starship-minimal.toml
+# @description Minimal Two-Line prompt — for remote connections.
+#              Used on: SSH sessions, Docker containers, OPNsense, routers.
+#              Designed for low-bandwidth, limited font support, fast rendering.
+# @repository  https://github.com/ca971/dotfiles.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-15
+# @version     1.0.0
+# ============================================================================
+
+palette = "catppuccin_mocha"
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dcfe"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay1 = "#7f849c"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$fill\
+$cmd_duration\
+$python\
+$nodejs\
+$rust\
+$golang\
+$docker_context\
+$kubernetes\
+$line_break\
+$shell\
+$character"""
+
+right_format = ""
+add_newline = true
+continuation_prompt = "[··](dimmed) "
+
+[character]
+success_symbol = "[λ](bold green)"
+error_symbol = "[λ](bold red)"
+vimcmd_symbol = "[ν](bold mauve)"
+
+[shell]
+disabled = false
+format = "[$indicator ](dimmed overlay1)"
+zsh_indicator = "z"
+bash_indicator = "b"
+fish_indicator = "f"
+nu_indicator = "n"
+
+[username]
+show_always = true
+style_user = "bold sky"
+style_root = "bold red"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+style = "bold yellow"
+format = "[@$hostname]($style) "
+trim_at = "."
+
+[directory]
+style = "bold blue"
+format = "[$path]($style)[$read_only]($read_only_style) "
+truncation_length = 3
+truncation_symbol = "…/"
+read_only = " "
+read_only_style = "red"
+
+[directory.substitutions]
+"Documents" = "docs"
+"Downloads" = "dl"
+"Projects" = "proj"
+".config" = "cfg"
+"dotfiles" = "dots"
+
+[git_branch]
+symbol = ""
+style = "green"
+format = "[$symbol $branch]($style) "
+truncation_length = 20
+
+[git_status]
+style = "yellow"
+format = "([$all_status$ahead_behind]($style) )"
+conflicted = "="
+ahead = "↑"
+behind = "↓"
+diverged = "↕"
+untracked = "?"
+stashed = "$"
+modified = "~"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "yellow"
+
+[fill]
+symbol = "·"
+style = "dimmed surface1"
+
+[cmd_duration]
+min_time = 3000
+format = "[$duration]($style) "
+style = "dimmed yellow"
+
+[python]
+format = "[py $version]($style) "
+style = "dimmed yellow"
+
+[nodejs]
+format = "[node $version]($style) "
+style = "dimmed green"
+
+[rust]
+format = "[rs $version]($style) "
+style = "dimmed maroon"
+
+[golang]
+format = "[go $version]($style) "
+style = "dimmed sky"
+
+[docker_context]
+format = "[docker $context]($style) "
+style = "dimmed blue"
+only_with_files = true
+
+[kubernetes]
+disabled = false
+format = "[k8s $context(:$namespace)]($style) "
+style = "dimmed sapphire"
+
+[jobs]
+format = "[$number bg]($style) "
+style = "dimmed blue"
+
+[os]
+disabled = true
+
+[battery]
+disabled = true
+
+[time]
+disabled = true
+
+[package]
+disabled = true
+
+[git_metrics]
+disabled = true

@@ -1,0 +1,211 @@
+# ============================================================================
+# @file        ssot/highlights.toml
+# @description Single Source of Truth for ZSH syntax highlighting rules.
+#              Defines colors and styles for different token types in the
+#              command line. Used by zsh-syntax-highlighting plugin.
+# @repository  https://github.com/ca971/zsh-config.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-14
+# @version     1.0.0
+#
+# @format      token_type = "style_specification"
+#              Styles use zsh-syntax-highlighting format:
+#              fg=COLOR,bg=COLOR,bold,underline,standout
+#              Colors: named (red, blue), 256-color (166), hex (#f38ba8)
+#
+# @see         https://github.com/zsh-users/zsh-syntax-highlighting
+# ============================================================================
+
+# ============================================================================
+# [main] — Main highlighter styles
+# ============================================================================
+[main]
+
+# @description  Unknown / unrecognized tokens
+unknown-token = "fg=#f38ba8,bold"
+
+# @description  Reserved words (if, then, else, fi, for, do, done, etc.)
+reserved-word = "fg=#cba6f7,bold"
+
+# @description  Shell aliases
+alias = "fg=#a6e3a1"
+
+# @description  Shell builtin commands (cd, echo, export, etc.)
+builtin = "fg=#89b4fa"
+
+# @description  External commands / executables found in PATH
+command = "fg=#a6e3a1"
+
+# @description  Precommand modifiers (sudo, noglob, command, builtin, etc.)
+precommand = "fg=#94e2d5,underline"
+
+# @description  Hashed commands (in the command hash table)
+hashed-command = "fg=#a6e3a1"
+
+# @description  Functions defined in the session
+function = "fg=#89b4fa"
+
+# @description  Command not found in PATH
+command-not-found = "fg=#f38ba8,bold,underline"
+
+# ============================================================================
+# [arguments] — Argument and parameter styles
+# ============================================================================
+[arguments]
+
+# @description  Regular command arguments
+default = "fg=#cdd6f4"
+
+# @description  Single-quoted strings ('...')
+single-quoted-argument = "fg=#f9e2af"
+
+# @description  Double-quoted strings ("...")
+double-quoted-argument = "fg=#f9e2af"
+
+# @description  Dollar-quoted strings ($'...')
+dollar-quoted-argument = "fg=#fab387"
+
+# @description  Backtick substitution (`...`)
+back-quoted-argument = "fg=#f5c2e7"
+
+# @description  Unclosed single quotes
+single-quoted-argument-unclosed = "fg=#f38ba8,bold"
+
+# @description  Unclosed double quotes
+double-quoted-argument-unclosed = "fg=#f38ba8,bold"
+
+# @description  Unclosed backtick
+back-quoted-argument-unclosed = "fg=#f38ba8,bold"
+
+# ============================================================================
+# [variables] — Variable and substitution styles
+# ============================================================================
+[variables]
+
+# @description  Variable assignment (VAR=value)
+assign = "fg=#cdd6f4"
+
+# @description  Named parameter ($var, ${var})
+named-parameter = "fg=#fab387"
+
+# @description  Dollar-double-quoted argument ($"...")
+dollar-double-quoted-argument = "fg=#fab387"
+
+# @description  Command substitution $(...)
+command-substitution = "fg=#f5c2e7"
+
+# @description  Command substitution delimiter $( )
+command-substitution-delimiter = "fg=#f5c2e7"
+
+# @description  Process substitution <(...) >(...)
+process-substitution = "fg=#f5c2e7"
+
+# @description  Process substitution delimiter < > ( )
+process-substitution-delimiter = "fg=#f5c2e7"
+
+# @description  Arithmetic expression (( ... ))
+arithmetic-expansion = "fg=#fab387"
+
+# ============================================================================
+# [redirections] — I/O redirection styles
+# ============================================================================
+[redirections]
+
+# @description  Redirection operators (>, >>, <, <<, |, etc.)
+redirection = "fg=#94e2d5,bold"
+
+# @description  File descriptor numbers in redirections (2>, &1, etc.)
+numeric-fd = "fg=#fab387"
+
+# @description  Here-doc operator (<<EOF)
+here-string-word = "fg=#f9e2af"
+
+# ============================================================================
+# [patterns] — Glob and pattern styles
+# ============================================================================
+[patterns]
+
+# @description  Globbing expressions (*, ?, [abc], etc.)
+globbing = "fg=#89b4fa,bold"
+
+# @description  History expansion (!!, !$, !:n, etc.)
+history-expansion = "fg=#cba6f7,bold"
+
+# ============================================================================
+# [comments] — Comment styles
+# ============================================================================
+[comments]
+
+# @description  Interactive comments (requires INTERACTIVE_COMMENTS option)
+comment = "fg=#6c7086,italic"
+
+# ============================================================================
+# [separators] — Command separator styles
+# ============================================================================
+[separators]
+
+# @description  Command separators (; && || |)
+commandseparator = "fg=#94e2d5,bold"
+
+# ============================================================================
+# [suffixes] — Suffix alias styles
+# ============================================================================
+[suffixes]
+
+# @description  Suffix aliases (e.g., alias -s json=bat)
+suffix-alias = "fg=#a6e3a1,underline"
+
+# @description  Global aliases (e.g., alias -g NF='| tail -1')
+global-alias = "fg=#89b4fa,bold,underline"
+
+# ============================================================================
+# [brackets] — Bracket highlighter styles (bracket pair matching)
+# ============================================================================
+[brackets]
+
+# @description  Enable bracket highlighting
+enabled = true
+
+# @description  Bracket pair nesting level colors (cyclic)
+level1 = "fg=#89b4fa,bold"
+level2 = "fg=#fab387,bold"
+level3 = "fg=#a6e3a1,bold"
+level4 = "fg=#f5c2e7,bold"
+level5 = "fg=#f9e2af,bold"
+
+# @description  Matching bracket cursor style
+cursor = "fg=#cdd6f4,standout"
+
+# @description  Unmatched / mismatched bracket
+mismatch = "fg=#f38ba8,bold,standout"
+
+# ============================================================================
+# [cursor] — Cursor style based on vi-mode (if enabled)
+# ============================================================================
+[cursor]
+
+# @description  Cursor style in vi normal mode
+vi_normal = "block"
+
+# @description  Cursor style in vi insert mode
+vi_insert = "beam"
+
+# @description  Cursor style in vi replace mode
+vi_replace = "underline"
+
+# ============================================================================
+# [autosuggestions] — Autosuggestion appearance
+# ============================================================================
+[autosuggestions]
+
+# @description  Color for autosuggestion ghost text
+suggestion_color = "fg=#585b70"
+
+# @description  Highlight style for accepted suggestion
+accept_color = "fg=#6c7086"
+
+# @description  Strategy order for autosuggestions
+# @type         array
+# @values       "history" | "completion" | "match_prev_cmd"
+strategy = ["history", "completion", "match_prev_cmd"]

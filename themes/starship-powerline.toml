@@ -1,0 +1,267 @@
+# ============================================================================
+# @file        themes/starship-powerline.toml
+# @description Powerline Rounded prompt — default for workstations.
+#              Used on: macOS, Linux desktop, WSL, local development.
+# @repository  https://github.com/ca971/dotfiles.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-15
+# @version     1.0.0
+# ============================================================================
+
+palette = "catppuccin_mocha"
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dcfe"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+format = """
+[](blue)\
+$os\
+[](bg:lavender fg:blue)\
+$shell\
+[](bg:mauve fg:lavender)\
+$username\
+$hostname\
+[](bg:peach fg:mauve)\
+$directory\
+[](bg:green fg:peach)\
+$git_branch\
+$git_status\
+[](bg:teal fg:green)\
+$docker_context\
+$kubernetes\
+[](bg:blue fg:teal)\
+$nodejs\
+$python\
+$rust\
+$golang\
+$java\
+$lua\
+$ruby\
+$terraform\
+$nix_shell\
+[](bg:surface0 fg:blue)\
+$cmd_duration\
+$jobs\
+[](fg:surface0)\
+$fill\
+$battery\
+$time\
+$line_break\
+$character"""
+
+right_format = ""
+add_newline = true
+continuation_prompt = "[ ](dimmed mauve)"
+
+[character]
+success_symbol = "[󰄬](bold green) "
+error_symbol = "[󰅖](bold red) "
+vimcmd_symbol = "[󰅪](bold mauve) "
+
+[os]
+disabled = false
+style = "bg:blue fg:base bold"
+format = "[$symbol]($style)"
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+Linux = " "
+Macos = " "
+Manjaro = " "
+Mint = "󰣭 "
+NixOS = " "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = " "
+
+[shell]
+disabled = false
+style = "bg:lavender fg:base"
+format = "[$indicator]($style)"
+zsh_indicator = "󰰰 "
+bash_indicator = "󰰚 "
+fish_indicator = "󰰭 "
+nu_indicator = "󰰼 "
+powershell_indicator = "󰰳 "
+
+[username]
+show_always = true
+style_user = "bg:mauve fg:base bold"
+style_root = "bg:red fg:base bold"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+style = "bg:mauve fg:base"
+format = "[@$hostname]($style)"
+trim_at = "."
+
+[directory]
+style = "bg:peach fg:base bold"
+format = "[$path]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+truncate_to_repo = true
+read_only = " 󰌾"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = "󰇚 "
+"Projects" = "󱗆 "
+"Dev" = " "
+".config" = " "
+"dotfiles" = "󰒲 "
+
+[git_branch]
+symbol = " "
+style = "bg:green fg:base"
+format = "[$symbol$branch]($style)"
+truncation_length = 25
+
+[git_status]
+style = "bg:green fg:base"
+format = "[($all_status$ahead_behind)]($style)"
+conflicted = "󰞇"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "󰹹"
+untracked = "󰡿"
+stashed = "󰀼"
+modified = "󰏫"
+staged = "󰐖"
+renamed = "󰕈"
+deleted = "󰛇"
+
+[docker_context]
+symbol = " "
+style = "bg:teal fg:base"
+format = "[$symbol$context]($style)"
+only_with_files = true
+
+[kubernetes]
+disabled = false
+symbol = "☸ "
+style = "bg:teal fg:base"
+format = "[$symbol$context]($style)"
+
+[nodejs]
+symbol = " "
+style = "bg:blue fg:base"
+format = "[$symbol$version]($style)"
+
+[python]
+symbol = " "
+style = "bg:blue fg:base"
+format = "[$symbol$version]($style)"
+
+[rust]
+symbol = " "
+style = "bg:blue fg:base"
+format = "[$symbol$version]($style)"
+
+[golang]
+symbol = " "
+style = "bg:blue fg:base"
+format = "[$symbol$version]($style)"
+
+[java]
+symbol = " "
+style = "bg:blue fg:base"
+format = "[$symbol$version]($style)"
+
+[lua]
+symbol = " "
+style = "bg:blue fg:base"
+format = "[$symbol$version]($style)"
+
+[ruby]
+symbol = " "
+style = "bg:blue fg:base"
+format = "[$symbol$version]($style)"
+
+[terraform]
+symbol = "󱁢 "
+style = "bg:blue fg:base"
+format = "[$symbol$version]($style)"
+
+[nix_shell]
+symbol = " "
+style = "bg:blue fg:base"
+format = "[$symbol$state]($style)"
+
+[cmd_duration]
+min_time = 2000
+style = "bg:surface0 fg:subtext1"
+format = "[ 󱎫 $duration]($style)"
+
+[jobs]
+symbol = "󰔟 "
+style = "bg:surface0 fg:subtext1"
+format = "[ $symbol$number]($style)"
+
+[battery]
+full_symbol = "󰁹 "
+charging_symbol = "󰂄 "
+discharging_symbol = "󰂃 "
+format = "[$symbol$percentage]($style) "
+
+[time]
+disabled = false
+style = "bold subtext0"
+format = "[ 󱑎 $time]($style)"
+time_format = "%H:%M"
+
+[fill]
+symbol = " "
+
+# ── Disabled ──
+[aws]
+disabled = true
+[gcloud]
+disabled = true
+[azure]
+disabled = true

@@ -1,0 +1,213 @@
+# ============================================================================
+# @file        ssot/aliases.toml
+# @description Single Source of Truth for GENERIC shell aliases only.
+#              These aliases have NO tool dependency — they use only
+#              built-in shell commands and standard POSIX utilities.
+#
+#              Tool-specific aliases are defined in tools/*.zsh
+#              and are loaded ONLY if the tool is installed.
+#
+# @repository  https://github.com/ca971/dotfiles.git
+# @author      ca971
+# @license     MIT
+# @version     3.0.0
+# ============================================================================
+
+# ============================================================================
+# [general] — Common everyday aliases (no tool dependency)
+# ============================================================================
+[general]
+
+# @description  Clear terminal screen
+c = "clear"
+
+# @description  Quick exit
+q = "exit"
+
+# @description  Reload shell configuration
+reload = "exec ${SHELL} -l"
+
+# @description  Print current working directory (resolved)
+pwd = "pwd -P"
+
+# @description  Create parent directories as needed
+mkd = "mkdir -pv"
+
+# @description  Make file executable
+cx = "chmod +x"
+
+# @description  Show PATH entries one per line
+path = "echo $PATH | tr ':' '\\n' | sort"
+
+# @description  Show current date in ISO 8601 format
+now = "date '+%Y-%m-%dT%H:%M:%S%z'"
+
+# @description  Show current Unix timestamp
+timestamp = "date '+%s'"
+
+# @description  Quick edit of ZSH configuration
+zshrc = "${EDITOR:-nvim} ${ZDOTDIR:-~/.config/zsh}/.zshrc"
+
+# ============================================================================
+# [navigation] — Directory navigation (no tool dependency)
+# ============================================================================
+[navigation]
+
+# @description  Go up one directory
+".." = "cd .."
+
+# @description  Go up two directories
+"..." = "cd ../.."
+
+# @description  Go up three directories
+"...." = "cd ../../.."
+
+# @description  Go up four directories
+"....." = "cd ../../../.."
+
+# @description  Go to config directory
+cdc = "cd ${XDG_CONFIG_HOME:-~/.config}"
+
+# @description  Go to projects directory
+cdp = "cd ~/Projects"
+
+# @description  Go to downloads directory
+cdd = "cd ~/Downloads"
+
+# @description  Go to desktop directory
+cdt = "cd ~/Desktop"
+
+# @description  Go to dotfiles directory
+cdz = "cd ${DOTFILES_DIR:-~/dotfiles}"
+
+# ============================================================================
+# [file_ops] — File operations with safety (no tool dependency)
+# ============================================================================
+[file_ops]
+
+# @description  Copy with confirmation
+cp = "cp -iv"
+
+# @description  Move with confirmation
+mv = "mv -iv"
+
+# @description  Remove with confirmation
+rm = "rm -iv"
+
+# @description  Remove recursively with confirmation
+rmf = "rm -rfv"
+
+# @description  Create symbolic link verbosely
+ln = "ln -sv"
+
+# @description  Recursive copy preserving attributes
+cpr = "cp -rv"
+
+# @description  rsync with progress
+rcp = "rsync -avhP --info=progress2"
+
+# ============================================================================
+# [system] — System commands (no tool dependency)
+# ============================================================================
+[system]
+
+# @description  Process grep
+psg = "ps aux | grep -v grep | grep -i"
+
+# @description  Show listening ports
+ports = "ss -tulpn"
+
+# @description  Show all network connections
+connections = "ss -tupan"
+
+# @description  Show public IP address
+myip = "curl -s https://ifconfig.me && echo ''"
+
+# @description  Show weather
+weather = "curl -s 'wttr.in?format=3'"
+
+# @description  Show calendar (3 months)
+cal3 = "cal -3"
+
+# @description  Show top memory consumers
+topmem = "ps aux --sort=-%mem | head -20"
+
+# @description  Show top CPU consumers
+topcpu = "ps aux --sort=-%cpu | head -20"
+
+# @description  Show disk usage summary
+usage = "df -h --total 2>/dev/null || df -h"
+
+# ============================================================================
+# [network] — Network diagnostics (no tool dependency)
+# ============================================================================
+[network]
+
+# @description  Ping (limited to 5 packets)
+ping = "ping -c 5"
+
+# @description  HTTP GET request
+get = "curl -sSL"
+
+# @description  HTTP headers only
+headers = "curl -sSI"
+
+# @description  Download file with progress
+dl = "curl -LO --progress-bar"
+
+# ============================================================================
+# [archive] — Archive operations (no tool dependency)
+# ============================================================================
+[archive]
+
+# @description  Create tar.gz archive
+tgz = "tar -czvf"
+
+# @description  Extract tar.gz archive
+untgz = "tar -xzvf"
+
+# @description  Create tar.bz2 archive
+tbz = "tar -cjvf"
+
+# @description  Extract tar.bz2 archive
+untbz = "tar -xjvf"
+
+# @description  Create tar.xz archive
+txz = "tar -cJvf"
+
+# @description  Extract tar.xz archive
+untxz = "tar -xJvf"
+
+# ============================================================================
+# [encoding] — Encoding utilities (python3 assumed available)
+# ============================================================================
+[encoding]
+
+# @description  URL encode a string
+urlencode = "python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))'"
+
+# @description  URL decode a string
+urldecode = "python3 -c 'import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))'"
+
+# @description  JSON pretty print
+jsonpp = "python3 -m json.tool"
+
+# @description  Base64 encode
+b64e = "base64"
+
+# @description  Base64 decode
+b64d = "base64 --decode"
+
+# @description  Generate UUID
+uuid = "python3 -c 'import uuid; print(uuid.uuid4())'"
+
+# @description  Generate random password
+genpass = "openssl rand -base64 32"
+
+# ============================================================================
+# [misc] — Miscellaneous (no tool dependency)
+# ============================================================================
+[misc]
+
+# @description  Show directory size
+dirsize = "du -sh . 2>/dev/null"

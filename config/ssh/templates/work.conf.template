@@ -1,0 +1,7 @@
+# SSH Work Servers — TEMPLATE
+# Copy to ~/dotfiles/local/ssh_config_work.conf
+
+# Host bastion
+#   HostName bastion.company.com
+#   User deploy
+#   IdentityFile ~/.ssh/id_work_ed25519

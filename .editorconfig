@@ -1,0 +1,53 @@
+# ============================================================================
+# @file        .editorconfig
+# @description EditorConfig for consistent coding style across editors/IDEs
+# @repository  https://github.com/ca971/zsh-config.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-14
+# @see         https://editorconfig.org
+# ============================================================================
+
+root = true
+
+# ── Default for all files ────────────────────────────────────────────────────
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# ── Shell scripts ────────────────────────────────────────────────────────────
+[*.{sh,zsh,bash,fish}]
+indent_style = space
+indent_size = 2
+
+# ── TOML (SSOT config files) ────────────────────────────────────────────────
+[*.toml]
+indent_style = space
+indent_size = 2
+
+# ── Markdown ─────────────────────────────────────────────────────────────────
+[*.md]
+trim_trailing_whitespace = false
+
+# ── Justfile ─────────────────────────────────────────────────────────────────
+[Justfile]
+indent_style = space
+indent_size = 2
+
+# ── Makefile (if ever needed) ────────────────────────────────────────────────
+[Makefile]
+indent_style = tab
+
+# ── YAML ─────────────────────────────────────────────────────────────────────
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# ── JSON ─────────────────────────────────────────────────────────────────────
+[*.json]
+indent_style = space
+indent_size = 2

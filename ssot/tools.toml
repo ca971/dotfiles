@@ -1,0 +1,418 @@
+# ============================================================================
+# @file        ssot/tools.toml
+# @description Single Source of Truth for CLI tool registry. Defines which
+#              tools are expected, their installation methods, feature flags,
+#              and categorization. Used by the doctor script, installer, and
+#              tool-check library.
+# @repository  https://github.com/ca971/zsh-config.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-14
+# @version     1.0.0
+#
+# @format      [tools.TOOL_NAME]
+#              description = "..."
+#              category = "essential" | "recommended" | "optional"
+#              binary = "command_name"
+#              install.brew = "formula_name"
+#              install.apt = "package_name"
+#              install.dnf = "package_name"
+#              install.pacman = "package_name"
+#              install.cargo = "crate_name"
+#              install.nix = "nixpkgs.name"
+#              min_version = "x.y.z"
+# ============================================================================
+
+# ============================================================================
+# Essential Tools — Core functionality depends on these
+# ============================================================================
+
+[tools.eza]
+description = "Modern replacement for ls with icons and git integration"
+category = "essential"
+binary = "eza"
+min_version = "0.18"
+install.brew = "eza"
+install.apt = "eza"
+install.dnf = "eza"
+install.pacman = "eza"
+install.cargo = "eza"
+install.nix = "eza"
+
+[tools.fzf]
+description = "Command-line fuzzy finder"
+category = "essential"
+binary = "fzf"
+min_version = "0.50"
+install.brew = "fzf"
+install.apt = "fzf"
+install.dnf = "fzf"
+install.pacman = "fzf"
+install.nix = "fzf"
+
+[tools.bat]
+description = "Cat clone with syntax highlighting and git integration"
+category = "essential"
+binary = "bat"
+min_version = "0.24"
+install.brew = "bat"
+install.apt = "bat"
+install.dnf = "bat"
+install.pacman = "bat"
+install.cargo = "bat"
+install.nix = "bat"
+
+[tools.fd]
+description = "Simple, fast, user-friendly alternative to find"
+category = "essential"
+binary = "fd"
+min_version = "9.0"
+install.brew = "fd"
+install.apt = "fd-find"
+install.dnf = "fd-find"
+install.pacman = "fd"
+install.cargo = "fd-find"
+install.nix = "fd"
+
+[tools.ripgrep]
+description = "Recursively search directories for a regex pattern"
+category = "essential"
+binary = "rg"
+min_version = "14.0"
+install.brew = "ripgrep"
+install.apt = "ripgrep"
+install.dnf = "ripgrep"
+install.pacman = "ripgrep"
+install.cargo = "ripgrep"
+install.nix = "ripgrep"
+
+[tools.zoxide]
+description = "Smarter cd command with learning and ranking"
+category = "essential"
+binary = "zoxide"
+min_version = "0.9"
+install.brew = "zoxide"
+install.apt = "zoxide"
+install.dnf = "zoxide"
+install.pacman = "zoxide"
+install.cargo = "zoxide"
+install.nix = "zoxide"
+
+[tools.git]
+description = "Distributed version control system"
+category = "essential"
+binary = "git"
+min_version = "2.40"
+install.brew = "git"
+install.apt = "git"
+install.dnf = "git"
+install.pacman = "git"
+install.nix = "git"
+
+[tools.delta]
+description = "Syntax-highlighting pager for git, diff, and grep output"
+category = "essential"
+binary = "delta"
+min_version = "0.16"
+install.brew = "git-delta"
+install.apt = "git-delta"
+install.dnf = "git-delta"
+install.pacman = "git-delta"
+install.cargo = "git-delta"
+install.nix = "delta"
+
+[tools.starship]
+description = "Minimal, blazing-fast, cross-shell prompt"
+category = "essential"
+binary = "starship"
+min_version = "1.18"
+install.brew = "starship"
+install.apt = "starship"
+install.pacman = "starship"
+install.cargo = "starship"
+install.nix = "starship"
+install.script = "curl -sS https://starship.rs/install.sh | sh"
+
+[tools.neovim]
+description = "Hyper-extensible Vim-based text editor"
+category = "essential"
+binary = "nvim"
+min_version = "0.10"
+install.brew = "neovim"
+install.apt = "neovim"
+install.dnf = "neovim"
+install.pacman = "neovim"
+install.nix = "neovim"
+
+# ============================================================================
+# Recommended Tools — Strongly recommended for full experience
+# ============================================================================
+
+[tools.atuin]
+description = "Magical shell history with sync and search"
+category = "recommended"
+binary = "atuin"
+min_version = "18.0"
+install.brew = "atuin"
+install.pacman = "atuin"
+install.cargo = "atuin"
+install.nix = "atuin"
+install.script = "curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh"
+
+[tools.mise]
+description = "Polyglot runtime version manager (replaces asdf, nvm, pyenv)"
+category = "recommended"
+binary = "mise"
+min_version = "2024.10"
+install.brew = "mise"
+install.pacman = "mise"
+install.cargo = "mise"
+install.nix = "mise"
+install.script = "curl https://mise.run | sh"
+
+[tools.direnv]
+description = "Unclutter your .profile with per-directory environments"
+category = "recommended"
+binary = "direnv"
+min_version = "2.34"
+install.brew = "direnv"
+install.apt = "direnv"
+install.dnf = "direnv"
+install.pacman = "direnv"
+install.nix = "direnv"
+
+[tools.carapace]
+description = "Multi-shell multi-command argument completer"
+category = "recommended"
+binary = "carapace"
+min_version = "1.0"
+install.brew = "carapace"
+install.pacman = "carapace-bin"
+install.nix = "carapace"
+
+[tools.chezmoi]
+description = "Manage dotfiles across multiple machines"
+category = "recommended"
+binary = "chezmoi"
+min_version = "2.46"
+install.brew = "chezmoi"
+install.pacman = "chezmoi"
+install.nix = "chezmoi"
+install.script = "sh -c '$(curl -fsLS get.chezmoi.io)'"
+
+[tools.yazi]
+description = "Blazing fast terminal file manager"
+category = "recommended"
+binary = "yazi"
+min_version = "0.4"
+install.brew = "yazi"
+install.pacman = "yazi"
+install.cargo = "yazi-fm"
+install.nix = "yazi"
+
+[tools.lazygit]
+description = "Simple terminal UI for git commands"
+category = "recommended"
+binary = "lazygit"
+min_version = "0.43"
+install.brew = "lazygit"
+install.pacman = "lazygit"
+install.nix = "lazygit"
+
+[tools.lazydocker]
+description = "Simple terminal UI for Docker and Docker Compose"
+category = "recommended"
+binary = "lazydocker"
+install.brew = "lazydocker"
+install.pacman = "lazydocker"
+install.nix = "lazydocker"
+
+[tools.docker]
+description = "Container runtime engine"
+category = "recommended"
+binary = "docker"
+min_version = "24.0"
+install.brew = "docker"
+install.apt = "docker-ce"
+install.dnf = "docker-ce"
+install.pacman = "docker"
+install.nix = "docker"
+
+[tools.podman]
+description = "Daemonless container engine (Docker alternative)"
+category = "recommended"
+binary = "podman"
+install.brew = "podman"
+install.apt = "podman"
+install.dnf = "podman"
+install.pacman = "podman"
+install.nix = "podman"
+
+[tools.kubectl]
+description = "Kubernetes command-line tool"
+category = "recommended"
+binary = "kubectl"
+min_version = "1.29"
+install.brew = "kubectl"
+install.apt = "kubectl"
+install.pacman = "kubectl"
+install.nix = "kubectl"
+
+# ============================================================================
+# Optional Tools — Nice to have, loaded when available
+# ============================================================================
+
+[tools.btop]
+description = "Resource monitor with TUI (top/htop replacement)"
+category = "optional"
+binary = "btop"
+install.brew = "btop"
+install.apt = "btop"
+install.dnf = "btop"
+install.pacman = "btop"
+install.nix = "btop"
+
+[tools.navi]
+description = "Interactive cheatsheet tool for the command-line"
+category = "optional"
+binary = "navi"
+install.brew = "navi"
+install.pacman = "navi"
+install.cargo = "navi"
+install.nix = "navi"
+
+[tools.fastfetch]
+description = "Fast system information display (neofetch alternative)"
+category = "optional"
+binary = "fastfetch"
+install.brew = "fastfetch"
+install.apt = "fastfetch"
+install.dnf = "fastfetch"
+install.pacman = "fastfetch"
+install.nix = "fastfetch"
+
+[tools.just]
+description = "Handy command runner (modern make alternative)"
+category = "optional"
+binary = "just"
+min_version = "1.30"
+install.brew = "just"
+install.pacman = "just"
+install.cargo = "just"
+install.nix = "just"
+
+[tools.gh]
+description = "GitHub CLI for managing repositories and workflows"
+category = "optional"
+binary = "gh"
+min_version = "2.45"
+install.brew = "gh"
+install.apt = "gh"
+install.dnf = "gh"
+install.pacman = "github-cli"
+install.nix = "gh"
+
+[tools.dust]
+description = "More intuitive version of du (disk usage)"
+category = "optional"
+binary = "dust"
+install.brew = "dust"
+install.pacman = "dust"
+install.cargo = "du-dust"
+install.nix = "du-dust"
+
+[tools.duf]
+description = "Better df alternative with disk usage overview"
+category = "optional"
+binary = "duf"
+install.brew = "duf"
+install.apt = "duf"
+install.pacman = "duf"
+install.nix = "duf"
+
+[tools.dfc]
+description = "Display file system space usage with colors"
+category = "optional"
+binary = "dfc"
+install.brew = "dfc"
+install.apt = "dfc"
+install.pacman = "dfc"
+
+[tools.topgrade]
+description = "Upgrade all the things (system, packages, tools)"
+category = "optional"
+binary = "topgrade"
+install.brew = "topgrade"
+install.pacman = "topgrade"
+install.cargo = "topgrade"
+install.nix = "topgrade"
+
+[tools.thefuck]
+description = "Corrects previous console command"
+category = "optional"
+binary = "thefuck"
+install.brew = "thefuck"
+install.apt = "thefuck"
+install.dnf = "thefuck"
+install.pacman = "thefuck"
+install.nix = "thefuck"
+install.pipx = "thefuck"
+
+[tools.tldr]
+description = "Simplified and community-driven man pages"
+category = "optional"
+binary = "tldr"
+install.brew = "tldr"
+install.apt = "tldr"
+install.pacman = "tldr"
+install.nix = "tldr"
+
+[tools.most]
+description = "Powerful pager with horizontal scrolling and multiple windows"
+category = "optional"
+binary = "most"
+install.brew = "most"
+install.apt = "most"
+install.dnf = "most"
+install.pacman = "most"
+
+[tools.gpg]
+description = "GNU Privacy Guard for encryption and signing"
+category = "optional"
+binary = "gpg"
+install.brew = "gnupg"
+install.apt = "gnupg"
+install.dnf = "gnupg2"
+install.pacman = "gnupg"
+install.nix = "gnupg"
+
+[tools.pipx]
+description = "Install and run Python applications in isolated environments"
+category = "optional"
+binary = "pipx"
+install.brew = "pipx"
+install.apt = "pipx"
+install.dnf = "pipx"
+install.pacman = "python-pipx"
+install.nix = "pipx"
+
+[tools.vivi]
+description = "Open-source vi-compatible text editor"
+category = "optional"
+binary = "vivi"
+install.cargo = "vivi"
+
+[tools.lazyssh]
+description = "SSH connection manager with TUI"
+category = "optional"
+binary = "lazyssh"
+
+# ============================================================================
+# Zinit Plugin Manager — Special entry (not a regular CLI tool)
+# ============================================================================
+
+[tools.zinit]
+description = "Flexible and fast ZSH plugin manager"
+category = "essential"
+binary = "zinit"
+install.script = "bash -c '$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)'"

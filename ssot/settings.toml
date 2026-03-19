@@ -1,0 +1,373 @@
+# ============================================================================
+# @file        ssot/settings.toml
+# @description Single Source of Truth for global configuration parameters,
+#              feature flags, and behavioral toggles. Controls the behavior
+#              of the entire ZSH configuration framework across all platforms,
+#              terminals, and shells.
+# @repository  https://github.com/ca971/zsh-config.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-14
+# @version     1.0.0
+#
+# @usage       Parsed by lib/toml-parser.zsh at shell startup.
+#              Access values with: toml_get "section.key" [default]
+# ============================================================================
+
+# ============================================================================
+# [general] — Core framework settings
+# ============================================================================
+[general]
+
+# @description  Configuration framework version
+# @type         string
+version = "1.0.0"
+
+# @description  Default theme for prompt and UI elements
+# @type         string
+# @values       "catppuccin-mocha" | "catppuccin-latte" | "tokyonight" | "gruvbox" | "nord" | "dracula"
+theme = "catppuccin-mocha"
+
+# @description  Default editor for file editing operations
+# @type         string
+editor = "nvim"
+
+# @description  Default pager for viewing output
+# @type         string
+# @values       "most" | "bat" | "less" | "more"
+pager = "most"
+
+# @description  Default shell language/locale
+# @type         string
+locale = "en_US.UTF-8"
+
+# @description  Log level for ZSH configuration messages
+# @type         string
+# @values       "debug" | "info" | "warn" | "error" | "fatal" | "silent"
+log_level = "info"
+
+# ============================================================================
+# [features] — Feature flags (enable/disable functionality)
+# ============================================================================
+[features]
+
+# @description  Enable Nerd Font icons in output (requires Nerd Font installed)
+# @type         boolean
+enable_icons = true
+
+# @description  Enable syntax highlighting in the shell
+# @type         boolean
+enable_syntax_highlighting = true
+
+# @description  Enable autosuggestions (ghost text from history)
+# @type         boolean
+enable_autosuggestions = true
+
+# @description  Enable command auto-correction
+# @type         boolean
+enable_correction = true
+
+# @description  Enable clipboard integration (cross-platform copy/paste)
+# @type         boolean
+enable_clipboard = true
+
+# @description  Enable fastfetch on shell startup
+# @type         boolean
+enable_fastfetch = true
+
+# @description  Enable deferred/lazy loading for non-critical tools
+# @type         boolean
+enable_lazy_loading = true
+
+# @description  Enable background compilation of ZSH files
+# @type         boolean
+enable_zcompile = true
+
+# @description  Enable directory environment switching (direnv)
+# @type         boolean
+enable_direnv = true
+
+# @description  Enable shell history sync via Atuin
+# @type         boolean
+enable_atuin = true
+
+# @description  Enable carapace multi-shell completion engine
+# @type         boolean
+enable_carapace = true
+
+# @description  Enable thefuck command correction
+# @type         boolean
+enable_thefuck = true
+
+# @description  Enable vi-mode (false = emacs mode default)
+# @type         boolean
+enable_vi_mode = false
+
+# @description  Enable Git status in prompt (can slow down in large repos)
+# @type         boolean
+enable_git_prompt = true
+
+# @description  Enable Kubernetes context in prompt
+# @type         boolean
+enable_k8s_prompt = true
+
+# @description  Enable SSH agent auto-start on login
+# @type         boolean
+enable_ssh_agent = true
+
+# @description  Enable GPG agent auto-start on login
+# @type         boolean
+enable_gpg_agent = true
+
+# ============================================================================
+# [history] — History engine parameters
+# ============================================================================
+[history]
+
+# @description  Maximum number of history entries in memory
+# @type         integer
+size = 100000
+
+# @description  Maximum number of history entries saved to file
+# @type         integer
+save_size = 100000
+
+# @description  Enable cross-session history sharing
+# @type         boolean
+share = true
+
+# @description  Ignore commands starting with a space
+# @type         boolean
+ignore_space = true
+
+# @description  Remove duplicate entries from history
+# @type         boolean
+ignore_dups = true
+
+# @description  Verify history expansion before executing
+# @type         boolean
+verify = true
+
+# ============================================================================
+# [completion] — Completion system parameters
+# ============================================================================
+[completion]
+
+# @description  Enable fuzzy/approximate completion matching
+# @type         boolean
+fuzzy = true
+
+# @description  Maximum errors allowed in approximate matching
+# @type         integer
+max_errors = 2
+
+# @description  Cache duration for completion dump in seconds (86400 = 24h)
+# @type         integer
+cache_duration = 86400
+
+# @description  Show completion menu on ambiguous matches
+# @type         boolean
+menu_select = true
+
+# @description  Use LS_COLORS for file completion coloring
+# @type         boolean
+colorize = true
+
+# ============================================================================
+# [performance] — Performance tuning parameters
+# ============================================================================
+[performance]
+
+# @description  Maximum open file descriptors (ulimit -n)
+# @type         integer
+max_fd = 4096
+
+# @description  Periodic rehash interval in seconds
+# @type         integer
+rehash_interval = 60
+
+# @description  Enable startup time reporting
+# @type         boolean
+report_startup_time = true
+
+# @description  Slow startup threshold in milliseconds (triggers warning)
+# @type         integer
+slow_threshold_ms = 500
+
+# ============================================================================
+# [security] — Security settings
+# ============================================================================
+[security]
+
+# @description  Umask for regular users
+# @type         string
+umask_user = "022"
+
+# @description  Umask for root user
+# @type         string
+umask_root = "077"
+
+# @description  Enable paste protection (bracketed paste mode)
+# @type         boolean
+paste_protection = true
+
+# @description  Enable PATH sanitization (remove unsafe entries)
+# @type         boolean
+sanitize_path = true
+
+# @description  Enable credential leak prevention in env display
+# @type         boolean
+mask_secrets = true
+
+# @description  Sensitive environment variable patterns to mask
+# @type         array
+secret_patterns = ["token", "secret", "password", "key", "credential", "auth"]
+
+# ============================================================================
+# [directories] — Directory stack settings
+# ============================================================================
+[directories]
+
+# @description  Maximum directory stack depth
+# @type         integer
+stack_size = 20
+
+# @description  Enable auto-cd (type directory name to cd into it)
+# @type         boolean
+auto_cd = true
+
+# @description  Enable auto-pushd (push old directory on cd)
+# @type         boolean
+auto_pushd = true
+
+# @description  Resolve symlinks when changing directories
+# @type         boolean
+chase_links = true
+
+# ============================================================================
+# [fzf] — Fuzzy finder configuration
+# ============================================================================
+[fzf]
+
+# @description  Default FZF command for file listing
+# @type         string
+default_command = "fd --type f --hidden --follow --exclude .git"
+
+# @description  FZF preview command for file browsing
+# @type         string
+preview_command = "bat --color=always --style=numbers --line-range=:500 {}"
+
+# @description  FZF default options
+# @type         string
+default_opts = "--height 60% --layout=reverse --border --info=inline"
+
+# @description  Enable FZF integration with Ctrl-R (history)
+# @type         boolean
+enable_ctrl_r = true
+
+# @description  Enable FZF integration with Ctrl-T (file finder)
+# @type         boolean
+enable_ctrl_t = true
+
+# @description  Enable FZF integration with Alt-C (cd finder)
+# @type         boolean
+enable_alt_c = true
+
+# ============================================================================
+# [eza] — eza (ls replacement) configuration
+# ============================================================================
+[eza]
+
+# @description  Default eza options for listings
+# @type         string
+default_opts = "--icons --group-directories-first --color=always"
+
+# @description  Enable Git status integration in eza
+# @type         boolean
+git_status = true
+
+# @description  Enable hyperlinks in terminal output
+# @type         boolean
+hyperlinks = true
+
+# @description  Date format for eza time display
+# @type         string
+time_style = "relative"
+
+# ============================================================================
+# [git] — Git configuration
+# ============================================================================
+[git]
+
+# @description  Default branch name for new repositories
+# @type         string
+default_branch = "main"
+
+# @description  Enable delta as the Git diff pager
+# @type         boolean
+use_delta = true
+
+# @description  Enable Git commit signing with GPG
+# @type         boolean
+sign_commits = false
+
+# ============================================================================
+# [docker] — Docker/Podman configuration
+# ============================================================================
+[docker]
+
+# @description  Prefer podman over docker when available
+# @type         boolean
+prefer_podman = false
+
+# @description  Default Docker Compose command version
+# @type         string
+# @values       "docker compose" | "docker-compose"
+compose_command = "docker compose"
+
+# ============================================================================
+# [kubernetes] — Kubernetes configuration
+# ============================================================================
+[kubernetes]
+
+# @description  Default namespace for kubectl commands
+# @type         string
+default_namespace = "default"
+
+# @description  Enable kubectl autocompletion
+# @type         boolean
+enable_completion = true
+
+# @description  Short alias prefix for kubectl
+# @type         string
+alias_prefix = "k"
+
+# ============================================================================
+# [starship] — Starship prompt settings
+# ============================================================================
+[starship]
+
+# @description  Path to Starship configuration file
+# @type         string
+config_path = "~/.config/starship.toml"
+
+# @description  Enable transient prompt (previous commands show simplified prompt)
+# @type         boolean
+transient = true
+
+# ============================================================================
+# [update] — Auto-update settings
+# ============================================================================
+[update]
+
+# @description  Enable auto-update check on shell startup
+# @type         boolean
+auto_check = false
+
+# @description  Update check interval in days
+# @type         integer
+check_interval_days = 7
+
+# @description  Auto-update without prompting
+# @type         boolean
+auto_apply = false

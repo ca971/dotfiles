@@ -1,0 +1,5 @@
+alias ans="ansible"
+alias ansp="ansible-playbook"
+alias ansg="ansible-galaxy"
+alias ansv="ansible-vault"
+alias ansi="ansible-inventory"

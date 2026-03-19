@@ -1,0 +1,67 @@
+# ============================================================================
+# @file        .gitignore
+# @description Git ignore rules for zsh-config repository
+# @repository  https://github.com/ca971/zsh-config.git
+# @author      ca971
+# @license     MIT
+# @created     2025-07-14
+# ============================================================================
+
+# ── Local / Private (machine-specific, secrets) ─────────────────────────────
+local/*
+!local/.gitkeep
+
+# ── Cache / Runtime ─────────────────────────────────────────────────────────
+cache/*
+!cache/.gitkeep
+*.zwc
+*.zwc.old
+*.zcompdump
+*.zcompdump.*
+.zsh_sessions/
+
+# ── Generated files (rebuilt from SSOT) ──────────────────────────────────────
+generated/*.zsh
+generated/*.fish
+generated/*.nu
+generated/*.bash
+!generated/.gitkeep
+
+# ── Zinit runtime ────────────────────────────────────────────────────────────
+.zinit/
+zinit/
+
+# ── OS artifacts ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*~
+\#*\#
+.nfs*
+
+# ── Editor / IDE ─────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+
+# ── Logs & debug ─────────────────────────────────────────────────────────────
+*.log
+zsh-profiling-*
+
+# ── SSH Keys (extra safety — even if someone puts them in the wrong place) ──
+id_*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ── Secrets ──────────────────────────────────────────────────────────────────
+*.secret
+*.secrets
+*secret*
+*token*
+*credential*

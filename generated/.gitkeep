@@ -1,0 +1,29 @@
+# ============================================================================
+# generated/
+#
+# This directory contains auto-generated shell files transpiled from the
+# SSOT TOML source files in ssot/.
+#
+# DO NOT EDIT files in this directory manually.
+#
+# Regenerate all files:
+#   just generate-all
+#
+# Regenerate individual files:
+#   just generate-aliases
+#   just generate-colors
+#   just generate-icons
+#   just generate-highlights
+#
+# Files:
+#   aliases.zsh      - Shell aliases for ZSH
+#   aliases.fish     - Shell aliases for Fish
+#   aliases.nu       - Shell aliases for Nushell
+#   aliases.bash     - Shell aliases for Bash
+#   colors.zsh       - Color palette definitions
+#   icons.zsh        - Nerd Font icon definitions
+#   highlights.zsh   - Syntax highlighting rules
+#
+# Source: ssot/aliases.toml, ssot/colors.toml, ssot/icons.toml,
+#         ssot/highlights.toml
+# ============================================================================
