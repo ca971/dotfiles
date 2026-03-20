@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_ZOXIDE_LOADED=1
 has "zoxide" || return 0
 log_debug "Configuring zoxide"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/zoxide.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/zoxide.zsh"
 
 export _ZO_FZF_OPTS="${FZF_DEFAULT_OPTS:-} \
   --preview='eza --icons --tree --level=1 --color=always {2..} 2>/dev/null || ls -la {2..}' \

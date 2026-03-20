@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_FASTFETCH_LOADED=1
 has "fastfetch" || return 0
 log_debug "Configuring fastfetch"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/fastfetch.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/fastfetch.zsh"
 
 function sysinfo-full() { fastfetch --show-errors --multithreading true; }
 function sysinfo-json() { fastfetch --format json 2>/dev/null; }

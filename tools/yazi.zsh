@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_YAZI_LOADED=1
 has "yazi" || return 0
 log_debug "Configuring yazi"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/yazi.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/yazi.zsh"
 
 function y() {
   local tmp; tmp="$(mktemp -t "yazi-cwd.XXXXXX")"

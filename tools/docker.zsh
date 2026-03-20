@@ -17,7 +17,6 @@ has "podman" && ! has "docker" && { CONTAINER_RUNTIME="podman"; alias docker="po
 typeset -g COMPOSE_CMD=""
 ${CONTAINER_RUNTIME} compose version &>/dev/null 2>&1 && COMPOSE_CMD="${CONTAINER_RUNTIME} compose" || has "docker-compose" && COMPOSE_CMD="docker-compose"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/docker.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/docker.zsh"
 
 function dps()      { ${CONTAINER_RUNTIME} ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}' "$@"; }
 function dpsa()     { ${CONTAINER_RUNTIME} ps -a --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}' "$@"; }

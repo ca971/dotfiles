@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_LAZYGIT_LOADED=1
 has_any "lazygit" "lazydocker" "lazyssh" || return 0
 log_debug "Configuring lazy* tools"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/lazygit.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/lazygit.zsh"
 
 if has "lazygit"; then
   function lg-repo()   { lazygit --path "${1:-.}"; }

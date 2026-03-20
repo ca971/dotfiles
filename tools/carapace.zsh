@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_CARAPACE_LOADED=1
 has "carapace" || return 0
 log_debug "Configuring carapace"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/carapace.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/carapace.zsh"
 
 export CARAPACE_CACHE="${XDG_CACHE_HOME:-${HOME}/.cache}/carapace"
 local _bridges="zsh"; has "fish" && _bridges+=",fish"; has "bash" && _bridges+=",bash"

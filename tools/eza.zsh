@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_EZA_LOADED=1
 has "eza" || return 0
 log_debug "Configuring eza"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/eza.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/eza.zsh"
 
 # ── Hyperlinks (terminal-aware) ──────────────────────────────────────────────
 case "${ZSH_TERMINAL:-}" in

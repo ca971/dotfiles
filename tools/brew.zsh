@@ -8,6 +8,5 @@ has "brew" || return 0
 
 log_debug "Configuring brew"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/brew.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/brew.zsh"
 
 log_debug "brew configured"

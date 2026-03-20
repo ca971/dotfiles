@@ -2,7 +2,6 @@
 # ============================================================================
 # @file        tools/git.zsh
 # @description Git — auto-setup, signing, templates, workflow functions.
-#              Aliases in config/tools.d/git.zsh
 #              Native configs in config/git/
 # @version     5.0.0
 # ============================================================================
@@ -17,7 +16,6 @@ readonly GIT_TEMPLATES_REPO="https://github.com/ca971/git-templates.git"
 readonly GIT_TEMPLATES_DIR="${DOTFILES_DIR}/config/git/git-templates"
 
 # ── Source config (aliases, env vars) ────────────────────────────────────────
-[[ -f "${DOTFILES_DIR}/config/tools.d/git.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/git.zsh"
 
 # ============================================================================
 # Auto-Setup — Order matters!

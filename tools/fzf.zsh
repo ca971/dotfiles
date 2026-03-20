@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_FZF_LOADED=1
 has "fzf" || return 0
 log_debug "Configuring fzf"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/fzf.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/fzf.zsh"
 
 # ── Shell integration ────────────────────────────────────────────────────────
 local _fzf_loaded=0

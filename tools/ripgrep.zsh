@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_RIPGREP_LOADED=1
 has "rg" || return 0
 log_debug "Configuring ripgrep"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/ripgrep.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/ripgrep.zsh"
 
 # ── Native config ───────────────────────────────────────────────────────────
 function _rg_generate_config() {

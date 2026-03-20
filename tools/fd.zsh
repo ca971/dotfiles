@@ -18,7 +18,6 @@ fi
 
 log_debug "Configuring fd"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/fd.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/fd.zsh"
 
 # ── Native config ───────────────────────────────────────────────────────────
 function _fd_generate_config() {

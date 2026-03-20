@@ -72,6 +72,8 @@ cat > "$nix_conf" << 'EOF'
 experimental-features = nix-command flakes
 warn-dirty = false
 max-jobs = auto
+connect-timeout = 10
+stalled-download-timeout = 30
 EOF
     log_debug "Generated nix.conf"
   fi
@@ -90,7 +92,6 @@ has "nix" || has "nix-env" || return 0
 log_debug "Configuring nix"
 
 # ── Source config ────────────────────────────────────────────────────────────
-[[ -f "${DOTFILES_DIR}/config/tools.d/nix.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/nix.zsh"
 
 # ── Functions ────────────────────────────────────────────────────────────────
 

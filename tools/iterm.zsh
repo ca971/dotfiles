@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_ITERM_LOADED=1
 [[ "${TERM_PROGRAM:-}" == "iTerm.app" ]] || return 0
 log_debug "Configuring iterm"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/iterm.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/iterm.zsh"
 
 # ── Shell integration ────────────────────────────────────────────────────────
 local _ii="${HOME}/.iterm2_shell_integration.zsh"

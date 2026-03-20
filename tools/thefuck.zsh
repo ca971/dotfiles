@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_THEFUCK_LOADED=1
 has "thefuck" || return 0
 log_debug "Configuring thefuck (lazy)"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/thefuck.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/thefuck.zsh"
 
 # Lazy init — thefuck eval is slow (~300ms)
 function fuck() {

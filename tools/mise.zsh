@@ -4,7 +4,6 @@ readonly _ZSH_TOOLS_MISE_LOADED=1
 has "mise" || return 0
 log_debug "Configuring mise"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/mise.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/mise.zsh"
 
 eval "$(mise activate zsh)"
 

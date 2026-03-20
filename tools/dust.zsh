@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_DUST_LOADED=1
 has "dust" || return 0
 log_debug "Configuring dust"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/dust.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/dust.zsh"
 
 if has "duf"; then alias df="duf"; fi
 if has "dfc"; then alias dfc="dfc -T -W -w"; fi

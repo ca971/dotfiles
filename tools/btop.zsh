@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_BTOP_LOADED=1
 has "btop" || return 0
 log_debug "Configuring btop"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/btop.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/btop.zsh"
 
 function sysstat() {
   printf "\n  📊 System Snapshot\n  ─────────────────────────────────\n"

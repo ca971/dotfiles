@@ -11,7 +11,6 @@ fi
 [[ -z "$_starship_bin" ]] && return 0
 log_debug "Configuring starship"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/starship.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/starship.zsh"
 
 export STARSHIP_CONFIG="${STARSHIP_CONFIG:-${DOTFILES_DIR}/themes/starship-powerline.toml}"
 

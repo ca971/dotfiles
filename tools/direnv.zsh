@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_DIRENV_LOADED=1
 has "direnv" || return 0
 log_debug "Configuring direnv"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/direnv.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/direnv.zsh"
 
 eval "$(direnv hook zsh)"
 

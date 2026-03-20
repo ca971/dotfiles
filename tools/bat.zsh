@@ -2,7 +2,6 @@
 # ============================================================================
 # @file        tools/bat.zsh
 # @description Bat (cat replacement) — auto-setup + functions.
-#              Aliases and options in config/tools.d/bat.zsh
 # @version     4.0.0
 # ============================================================================
 
@@ -21,7 +20,6 @@ fi
 log_debug "Configuring bat"
 
 # ── Source config ────────────────────────────────────────────────────────────
-[[ -f "${DOTFILES_DIR}/config/tools.d/bat.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/bat.zsh"
 
 # ── MANPAGER integration ────────────────────────────────────────────────────
 export MANPAGER="sh -c 'col -bx | ${_bat_cmd} --language=man --plain'"

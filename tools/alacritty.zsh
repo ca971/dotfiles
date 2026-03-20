@@ -14,7 +14,6 @@ log_debug "Configuring alacritty"
 readonly ALACRITTY_CONFIG_REPO="https://github.com/ca971/alacritty.git"
 readonly ALACRITTY_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/alacritty"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/alacritty.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/alacritty.zsh"
 
 # ── Auto-clone config ───────────────────────────────────────────────────────
 function _alacritty_auto_setup() {

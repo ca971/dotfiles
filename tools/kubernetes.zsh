@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_KUBERNETES_LOADED=1
 has "kubectl" || return 0
 log_debug "Configuring kubernetes"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/kubernetes.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/kubernetes.zsh"
 
 [[ -d "$(dirname "$KUBECONFIG")" ]] || mkdir -p "$(dirname "$KUBECONFIG")" 2>/dev/null
 

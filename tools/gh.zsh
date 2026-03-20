@@ -4,7 +4,6 @@ readonly _ZSH_TOOLS_GH_LOADED=1
 has "gh" || return 0
 log_debug "Configuring gh"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/gh.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/gh.zsh"
 
 function gh-pr()    { has "fzf" && { local pr=$(gh pr list --limit 50 --json number,title,author,headRefName --template '{{range .}}{{.number}}	{{.title}}	{{.author.login}}{{"\n"}}{{end}}' 2>/dev/null | fzf --header='PR' --delimiter='\t' --preview='gh pr view {1} 2>/dev/null' | awk -F'\t' '{print $1}'); [[ -n "$pr" ]] && { printf "  [C]heckout [V]iew [W]eb [D]iff: "; read -rk1 a; echo; case "${a:l}" in c) gh pr checkout "$pr" ;; v) gh pr view "$pr" ;; w) gh pr view "$pr" --web ;; d) gh pr diff "$pr" ;; esac; }; } || gh pr list; }
 function gh-issue() { has "fzf" && { local i=$(gh issue list --limit 50 --json number,title --template '{{range .}}{{.number}}	{{.title}}{{"\n"}}{{end}}' 2>/dev/null | fzf --header='Issue' --delimiter='\t' --preview='gh issue view {1} 2>/dev/null' | awk -F'\t' '{print $1}'); [[ -n "$i" ]] && { printf "  [V]iew [W]eb [C]omment: "; read -rk1 a; echo; case "${a:l}" in v) gh issue view "$i" ;; w) gh issue view "$i" --web ;; c) gh issue comment "$i" ;; esac; }; } || gh issue list; }

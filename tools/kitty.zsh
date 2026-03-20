@@ -14,7 +14,6 @@ log_debug "Configuring kitty"
 readonly KITTY_CONFIG_REPO="https://github.com/ca971/kitty.git"
 readonly KITTY_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/kitty"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/kitty.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/kitty.zsh"
 
 # ── Auto-clone config ───────────────────────────────────────────────────────
 function _kitty_auto_setup() {

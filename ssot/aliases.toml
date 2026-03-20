@@ -1,210 +1,462 @@
 # ============================================================================
 # @file        ssot/aliases.toml
-# @description Single Source of Truth for GENERIC shell aliases only.
-#              These aliases have NO tool dependency — they use only
-#              built-in shell commands and standard POSIX utilities.
+# @description Single Source of Truth for ALL aliases (generic + tools).
+#              Each section declares its required binary via [section.meta].
+#              The generator outputs conditional aliases that only load
+#              if the required tool is installed.
 #
-#              Tool-specific aliases are defined in tools/*.zsh
-#              and are loaded ONLY if the tool is installed.
+#              Sections WITHOUT meta.binary are ALWAYS loaded (generic).
+#              Sections WITH meta.binary are loaded ONLY if the binary exists.
+#
+# @format      [category]
+#              meta.binary = "command"    # Required binary (optional)
+#              meta.binary_alt = "alt"    # Alternative binary name (optional)
+#              alias_name = "command"
 #
 # @repository  https://github.com/ca971/dotfiles.git
 # @author      ca971
 # @license     MIT
-# @version     3.0.0
+# @version     4.0.0
 # ============================================================================
 
 # ============================================================================
-# [general] — Common everyday aliases (no tool dependency)
+# GENERIC — Always loaded (no tool dependency)
 # ============================================================================
+
 [general]
-
-# @description  Clear terminal screen
 c = "clear"
-
-# @description  Quick exit
 q = "exit"
-
-# @description  Reload shell configuration
 reload = "exec ${SHELL} -l"
-
-# @description  Print current working directory (resolved)
-pwd = "pwd -P"
-
-# @description  Create parent directories as needed
 mkd = "mkdir -pv"
-
-# @description  Make file executable
 cx = "chmod +x"
-
-# @description  Show PATH entries one per line
-path = "echo $PATH | tr ':' '\\n' | sort"
-
-# @description  Show current date in ISO 8601 format
 now = "date '+%Y-%m-%dT%H:%M:%S%z'"
-
-# @description  Show current Unix timestamp
 timestamp = "date '+%s'"
 
-# @description  Quick edit of ZSH configuration
-zshrc = "${EDITOR:-nvim} ${ZDOTDIR:-~/.config/zsh}/.zshrc"
-
-# ============================================================================
-# [navigation] — Directory navigation (no tool dependency)
-# ============================================================================
 [navigation]
-
-# @description  Go up one directory
 ".." = "cd .."
-
-# @description  Go up two directories
 "..." = "cd ../.."
-
-# @description  Go up three directories
 "...." = "cd ../../.."
-
-# @description  Go up four directories
 "....." = "cd ../../../.."
-
-# @description  Go to config directory
 cdc = "cd ${XDG_CONFIG_HOME:-~/.config}"
-
-# @description  Go to projects directory
 cdp = "cd ~/Projects"
-
-# @description  Go to downloads directory
 cdd = "cd ~/Downloads"
-
-# @description  Go to desktop directory
 cdt = "cd ~/Desktop"
-
-# @description  Go to dotfiles directory
 cdz = "cd ${DOTFILES_DIR:-~/dotfiles}"
 
-# ============================================================================
-# [file_ops] — File operations with safety (no tool dependency)
-# ============================================================================
 [file_ops]
-
-# @description  Copy with confirmation
 cp = "cp -iv"
-
-# @description  Move with confirmation
 mv = "mv -iv"
-
-# @description  Remove with confirmation
 rm = "rm -iv"
-
-# @description  Remove recursively with confirmation
 rmf = "rm -rfv"
-
-# @description  Recursive copy preserving attributes
 cpr = "cp -rv"
-
-# @description  rsync with progress
 rcp = "rsync -avhP --info=progress2"
 
-# ============================================================================
-# [system] — System commands (no tool dependency)
-# ============================================================================
 [system]
-
-# @description  Process grep
 psg = "ps aux | grep -v grep | grep -i"
-
-# @description  Show listening ports
 ports = "ss -tulpn"
-
-# @description  Show all network connections
 connections = "ss -tupan"
-
-# @description  Show public IP address
 myip = "curl -s https://ifconfig.me && echo ''"
-
-# @description  Show weather
 weather = "curl -s 'wttr.in?format=3'"
-
-# @description  Show calendar (3 months)
 cal3 = "cal -3"
-
-# @description  Show top memory consumers
 topmem = "ps aux --sort=-%mem | head -20"
-
-# @description  Show top CPU consumers
 topcpu = "ps aux --sort=-%cpu | head -20"
-
-# @description  Show disk usage summary
 usage = "df -h --total 2>/dev/null || df -h"
 
-# ============================================================================
-# [network] — Network diagnostics (no tool dependency)
-# ============================================================================
 [network]
-
-# @description  Ping (limited to 5 packets)
 ping = "ping -c 5"
-
-# @description  HTTP GET request
 get = "curl -sSL"
-
-# @description  HTTP headers only
 headers = "curl -sSI"
-
-# @description  Download file with progress
 dl = "curl -LO --progress-bar"
 
-# ============================================================================
-# [archive] — Archive operations (no tool dependency)
-# ============================================================================
 [archive]
-
-# @description  Create tar.gz archive
 tgz = "tar -czvf"
-
-# @description  Extract tar.gz archive
 untgz = "tar -xzvf"
-
-# @description  Create tar.bz2 archive
 tbz = "tar -cjvf"
-
-# @description  Extract tar.bz2 archive
 untbz = "tar -xjvf"
-
-# @description  Create tar.xz archive
 txz = "tar -cJvf"
-
-# @description  Extract tar.xz archive
 untxz = "tar -xJvf"
 
-# ============================================================================
-# [encoding] — Encoding utilities (python3 assumed available)
-# ============================================================================
 [encoding]
-
-# @description  URL encode a string
 urlencode = "python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))'"
-
-# @description  URL decode a string
 urldecode = "python3 -c 'import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))'"
-
-# @description  JSON pretty print
 jsonpp = "python3 -m json.tool"
-
-# @description  Base64 encode
 b64e = "base64"
-
-# @description  Base64 decode
 b64d = "base64 --decode"
-
-# @description  Generate UUID
 uuid = "python3 -c 'import uuid; print(uuid.uuid4())'"
-
-# @description  Generate random password
 genpass = "openssl rand -base64 32"
 
-# ============================================================================
-# [misc] — Miscellaneous (no tool dependency)
-# ============================================================================
 [misc]
-
-# @description  Show directory size
 dirsize = "du -sh . 2>/dev/null"
+
+# ============================================================================
+# TOOL-SPECIFIC — Loaded ONLY if the tool is installed
+# ============================================================================
+
+[eza]
+meta.binary = "eza"
+ls = "eza --icons --group-directories-first --color=always"
+la = "eza --icons --group-directories-first --color=always --all"
+ll = "eza --icons --group-directories-first --color=always --long --git --header --time-style=relative --octal-permissions"
+lla = "eza --icons --group-directories-first --color=always --long --git --header --all --time-style=relative"
+lt = "eza --icons --tree --level=2 --color=always"
+lt3 = "eza --icons --tree --level=3 --color=always"
+lta = "eza --icons --tree --level=2 --all --color=always"
+ld = "eza --icons --only-dirs --color=always"
+lm = "eza --icons --long --sort=modified --reverse --color=always"
+lsize = "eza --icons --long --sort=size --reverse --color=always"
+l1 = "eza --icons --oneline --color=always"
+lnk = "eza --icons=auto --color=auto -la --header --time-style=relative | rg '\\->'"
+
+[bat]
+meta.binary = "bat"
+meta.binary_alt = "batcat"
+cat = "bat --style=auto"
+catn = "bat --style=numbers"
+catp = "bat --plain"
+catd = "bat --diff"
+catj = "bat --language=json"
+caty = "bat --language=yaml"
+catm = "bat --language=markdown"
+
+[fd]
+meta.binary = "fd"
+meta.binary_alt = "fdfind"
+f = "fd --hidden --follow"
+fd-dir = "fd --type d --hidden --follow"
+fd-file = "fd --type f --hidden --follow"
+
+[ripgrep]
+meta.binary = "rg"
+rgs = "rg --smart-case --hidden --follow --glob '!.git' --glob '!node_modules'"
+rgc = "rg --smart-case --hidden --follow --glob '!.git' -C 3"
+rgf = "rg --smart-case --hidden --follow --glob '!.git' --files-with-matches"
+
+[git]
+meta.binary = "git"
+gs = "git status --short --branch"
+gst = "git status"
+ga = "git add --all"
+gap = "git add --patch"
+gc = "git commit -m"
+gcs = "git commit -s -m"
+gca = "git commit --amend --no-edit"
+gp = "git push"
+gpf = "git push --force-with-lease"
+gpl = "git pull --rebase"
+gfa = "git fetch --all --prune --tags"
+glog = "git log --oneline --graph --decorate --all"
+glg = "git log --graph --pretty=format:'%C(auto)%h%d %s %C(dim)(%ar) %C(blue)<%an>%Creset' --all"
+gd = "git diff"
+gds = "git diff --staged"
+gb = "git branch -vv"
+gba = "git branch -avv"
+gco = "git checkout"
+gcb = "git checkout -b"
+gsw = "git switch"
+gswc = "git switch -c"
+gsta = "git stash push -m"
+gstp = "git stash pop"
+gstl = "git stash list"
+grsh = "git reset --soft HEAD~1"
+grhh = "git reset --hard HEAD"
+grm = "git remote -v"
+gtl = "git tag -l --sort=-v:refname"
+gwt = "git worktree list"
+
+[docker]
+meta.binary = "docker"
+meta.binary_alt = "podman"
+dk = "docker"
+dkc = "docker compose"
+dkcu = "docker compose up -d"
+dkcd = "docker compose down"
+dkcl = "docker compose logs -f"
+dkcr = "docker compose restart"
+dkcb = "docker compose build --no-cache"
+dkv = "docker volume ls"
+dkn = "docker network ls"
+dkprune = "docker system prune -af --volumes"
+
+[kubernetes]
+meta.binary = "kubectl"
+k = "kubectl"
+kx = "kubectl exec -it"
+kl = "kubectl logs --tail=100"
+klf = "kubectl logs -f --tail=200"
+kd = "kubectl describe"
+krm = "kubectl delete"
+kga = "kubectl get all"
+kgp = "kubectl get pods"
+kgpw = "kubectl get pods -o wide"
+kgs = "kubectl get svc"
+kgd = "kubectl get deploy"
+kgn = "kubectl get nodes -o wide"
+kgns = "kubectl get ns"
+ka = "kubectl apply -f"
+kdel = "kubectl delete -f"
+kpf = "kubectl port-forward"
+ktop = "kubectl top pods"
+ktopn = "kubectl top nodes"
+
+[neovim]
+meta.binary = "nvim"
+v = "nvim"
+vi = "nvim"
+vim = "nvim"
+vd = "nvim -d"
+vr = "nvim -R"
+vn = "nvim --clean"
+
+[dust]
+meta.binary = "dust"
+du = "dust"
+dus = "dust -s"
+dut = "dust -d 1"
+
+[duf]
+meta.binary = "duf"
+df = "duf"
+
+[btop]
+meta.binary = "btop"
+top = "btop"
+htop = "btop"
+
+[tldr]
+meta.binary = "tldr"
+h = "tldr"
+tldrl = "tldr --list"
+tldru = "tldr --update"
+
+[navi]
+meta.binary = "navi"
+cheat = "navi"
+
+[fastfetch]
+meta.binary = "fastfetch"
+sysinfo = "fastfetch"
+sysinfo-short = "fastfetch --structure Title:OS:Host:Kernel:Uptime:Shell:Terminal:CPU:GPU:Memory"
+
+[gh]
+meta.binary = "gh"
+ghh = "gh"
+ghpr = "gh pr create"
+ghprv = "gh pr view --web"
+ghprl = "gh pr list"
+ghi = "gh issue create"
+ghil = "gh issue list"
+ghrepo = "gh repo view --web"
+ghclone = "gh repo clone"
+
+[just]
+meta.binary = "just"
+j = "just"
+jl = "just --list"
+jlu = "just --list --unsorted"
+js = "just --show"
+jd = "just --dry-run"
+
+[topgrade]
+meta.binary = "topgrade"
+upgrade = "topgrade"
+upgrade-yes = "topgrade --yes"
+upgrade-dry = "topgrade --dry-run"
+upgrade-clean = "topgrade --cleanup"
+
+[thefuck]
+meta.binary = "thefuck"
+please = "fuck"
+fix = "fuck"
+oops = "fuck"
+
+[lazygit]
+meta.binary = "lazygit"
+lg = "lazygit"
+
+[lazydocker]
+meta.binary = "lazydocker"
+ldk = "lazydocker"
+ldocker = "lazydocker"
+
+[chezmoi]
+meta.binary = "chezmoi"
+cm = "chezmoi"
+cma = "chezmoi apply -v"
+cmd = "chezmoi diff"
+cme = "chezmoi edit"
+cmad = "chezmoi add"
+cmcd = "chezmoi cd"
+cmu = "chezmoi update -v"
+cms = "chezmoi status"
+
+[broot]
+meta.binary = "broot"
+brt = "broot"
+brs = "broot --sizes"
+brg = "broot --git-status"
+
+[tmux]
+meta.binary = "tmux"
+ta = "tmux attach -t"
+tl = "tmux list-sessions"
+tn = "tmux new-session -s"
+tk = "tmux kill-session -t"
+
+[zellij]
+meta.binary = "zellij"
+zj = "zellij"
+zja = "zellij attach"
+zjl = "zellij list-sessions"
+
+[k9s]
+meta.binary = "k9s"
+k9 = "k9s"
+k9a = "k9s --all-namespaces"
+
+[dive]
+meta.binary = "dive"
+dive-ci = "dive --ci"
+
+[curlie]
+meta.binary = "curlie"
+curl = "curlie"
+
+[bandwhich]
+meta.binary = "bandwhich"
+bw = "sudo bandwhich"
+
+[difftastic]
+meta.binary = "difft"
+dft = "difft"
+
+[viddy]
+meta.binary = "viddy"
+watch = "viddy"
+watchd = "viddy --differences"
+
+[lnav]
+meta.binary = "lnav"
+logs = "lnav"
+
+[xh]
+meta.binary = "xh"
+http = "xh"
+https = "xh --https"
+
+[ouch]
+meta.binary = "ouch"
+pack = "ouch compress"
+unpack = "ouch decompress"
+lspack = "ouch list"
+
+[jq]
+meta.binary = "jq"
+jqp = "jq '.'"
+jqc = "jq -c '.'"
+jqr = "jq -r '.'"
+jqk = "jq 'keys'"
+
+[yq]
+meta.binary = "yq"
+yqp = "yq '.'"
+yqj = "yq -o json '.'"
+
+[gum]
+meta.binary = "gum"
+
+[hyperfine]
+meta.binary = "hyperfine"
+bench = "hyperfine"
+bench-shell = "hyperfine --warmup 3 'zsh -ic exit' 'bash -ic exit'"
+
+[tokei]
+meta.binary = "tokei"
+loc = "tokei"
+loc-sort = "tokei --sort code"
+
+[procs]
+meta.binary = "procs"
+ps = "procs"
+pst = "procs --tree"
+psw = "procs --watch"
+
+[glow]
+meta.binary = "glow"
+md = "glow"
+mdp = "glow -p"
+
+[sd]
+meta.binary = "sd"
+
+[age]
+meta.binary = "age"
+
+[helm]
+meta.binary = "helm"
+hm = "helm"
+hml = "helm list"
+hmi = "helm install"
+hmu = "helm upgrade"
+hms = "helm search repo"
+
+[terraform]
+meta.binary = "terraform"
+meta.binary_alt = "tofu"
+tf = "terraform"
+tfi = "terraform init"
+tfp = "terraform plan"
+tfa = "terraform apply"
+tfd = "terraform destroy"
+
+[ansible]
+meta.binary = "ansible"
+ans = "ansible"
+ansp = "ansible-playbook"
+ansg = "ansible-galaxy"
+ansv = "ansible-vault"
+
+[act]
+meta.binary = "act"
+act-dry = "act --dryrun"
+act-list = "act --list"
+
+[trivy]
+meta.binary = "trivy"
+trivy-image = "trivy image"
+trivy-fs = "trivy fs ."
+trivy-repo = "trivy repo"
+
+[sops]
+meta.binary = "sops"
+
+[brew]
+meta.binary = "brew"
+brewup = "brew update && brew upgrade && brew cleanup --prune=7"
+brewi = "brew install"
+brews = "brew search"
+brewinfo = "brew info"
+brewls = "brew list"
+brewout = "brew outdated"
+brewdr = "brew doctor"
+brewsvc = "brew services list"
+
+[delta]
+meta.binary = "delta"
+
+[zoxide]
+meta.binary = "zoxide"
+
+[atuin]
+meta.binary = "atuin"
+
+[direnv]
+meta.binary = "direnv"
+
+[carapace]
+meta.binary = "carapace"
+
+[mise]
+meta.binary = "mise"
+
+[starship]
+meta.binary = "starship"

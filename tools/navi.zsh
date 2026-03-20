@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_NAVI_LOADED=1
 has "navi" || return 0
 log_debug "Configuring navi"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/navi.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/navi.zsh"
 
 eval "$(navi widget zsh 2>/dev/null)"
 

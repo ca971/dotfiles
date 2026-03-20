@@ -11,7 +11,6 @@ readonly _ZSH_TOOLS_ATUIN_LOADED=1
 has "atuin" || return 0
 log_debug "Configuring atuin"
 
-[[ -f "${DOTFILES_DIR}/config/tools.d/atuin.zsh" ]] && source "${DOTFILES_DIR}/config/tools.d/atuin.zsh"
 
 eval "$(atuin init zsh --disable-up-arrow)"
 
