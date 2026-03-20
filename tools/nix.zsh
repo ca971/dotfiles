@@ -391,10 +391,10 @@ function nix-shell-list() {
 
 function nix-dev() {
   local shell="${1:-default}"
-  local flake="${DOTFILES_DIR}/config/nix"
-  [[ -f "${flake}/flake.nix" ]] || { log_error "No flake.nix"; return 1; }
+  local flake_dir="${DOTFILES_DIR}/config/nix"
+  [[ -f "${flake_dir}/flake.nix" ]] || { log_error "No flake.nix"; return 1; }
   log_info "Entering %s shell..." "$shell"
-  nix develop "${flake}#${shell}" "$@"
+  nix develop "path:${flake_dir}#${shell}"
 }
 
 log_debug "nix configured"
