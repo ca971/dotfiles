@@ -377,7 +377,7 @@ main() {
     create_directories
     link_shell
     generate_ssot
-    # apply_macos_defaults
+    apply_macos_defaults
     check_shells
     offer_shell_install
     summary

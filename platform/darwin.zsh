@@ -51,10 +51,32 @@ alias brewbundle="brew bundle --file=${XDG_CONFIG_HOME}/homebrew/Brewfile"
 # macOS Defaults — Quick aliases
 # ============================================================================
 
-# @description  Apply macOS defaults from dot CLI
+# @description  macOS preferences management via dot CLI
 alias macos-apply="dot macos apply"
 alias macos-preview="dot macos apply --dry-run"
+alias macos-force="dot macos apply --force"
 alias macos-backup="dot macos backup"
+alias macos-restore="dot macos restore"
+alias macos-list="dot macos list"
+alias macos-help="dot macos help"
+
+# @description  Per-module shortcuts
+alias macos-general="dot macos apply --module general"
+alias macos-dock="dot macos apply --module dock"
+alias macos-finder="dot macos apply --module finder"
+alias macos-safari="dot macos apply --module safari"
+alias macos-input="dot macos apply --module input"
+alias macos-screen="dot macos apply --module screen"
+alias macos-security="dot macos apply --module security"
+alias macos-energy="dot macos apply --module energy"
+alias macos-apps="dot macos apply --module apps"
+alias macos-terminal="dot macos apply --module terminal"
+alias macos-accessibility="dot macos apply --module accessibility"
+
+# @description  Per-module dry-run previews
+alias macos-preview-dock="dot macos apply --module dock --dry-run"
+alias macos-preview-finder="dot macos apply --module finder --dry-run"
+alias macos-preview-security="dot macos apply --module security --dry-run"
 
 # @description  Interactive Homebrew search and install via FZF
 # @return       void
