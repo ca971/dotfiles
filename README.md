@@ -778,16 +778,46 @@ dot nix audit             # Security audit
 ### Flake Structure
 
 ```
-config/nix/
-├── flake.nix              # Entry point — cross-platform outputs
-├── flake.lock             # Pinned versions (auto-generated)
-├── home.nix               # Home Manager (optional)
-├── packages/
-│   ├── common.nix         # 60+ packages for ALL platforms
-│   ├── darwin.nix         # macOS-specific (GNU coreutils, etc.)
-│   └── linux.nix          # Linux-specific (iproute2, xclip, etc.)
-└── shells/
-    └── default.nix        # Dev shell configuration
+config/nix
+├── flake.lock                  # Locked dependencies for reproducibility
+├── flake.nix                   # Main flake entry point
+├── home                        # Home Manager configuration
+│   ├── darwin.nix              # macOS-specific home settings
+│   ├── default.nix             # Shared home configuration entry point
+│   ├── git.nix                 # Git configuration
+│   ├── programs.nix            # User-level programs configuration
+│   └── shell.nix               # Shell configuration (zsh, aliases, etc.)
+├── hosts                       # Host-specific system configurations
+│   ├── linux-dev               # Linux development machine
+│   │   └── default.nix         # Linux host configuration
+│   └── mbp                     # MacBook Pro
+│       └── default.nix         # macOS host configuration
+├── lib                         # Helper functions and utilities
+│   └── mkSystem.nix            # System builder abstraction
+├── overlays                    # Nixpkgs overlays
+│   └── default.nix             # Custom package overlays
+├── packages                    # Package sets by platform / category
+│   ├── common.nix              # Cross-platform packages
+│   ├── darwin.nix              # macOS-only packages
+│   ├── devtools.nix            # Development tooling packages
+│   └── linux.nix               # Linux-only packages
+├── README.md                   # Project documentation
+├── shells                      # Nix development shells
+│   ├── default.nix             # Default / shared shell configuration
+│   ├── devops.nix              # DevOps shell (Terraform, k8s, etc.)
+│   ├── go.nix                  # Go development shell
+│   ├── node.nix                # Node.js development shell
+│   ├── python.nix              # Python development shell
+│   └── rust.nix                # Rust development shell
+└── templates                   # Flake templates for new projects
+    ├── go                      # Go project template
+    │   └── flake.nix           # Go flake template
+    ├── node                    # Node.js project template
+    │   └── flake.nix           # Node flake template
+    ├── python                  # Python project template
+    │   └── flake.nix           # Python flake template
+    └── rust                    # Rust project template
+        └── flake.nix           # Rust flake template
 ```
 
 ### New Machine Setup
@@ -815,6 +845,25 @@ nix flake update                        # Regenerate
 nix flake show .                        # Test
 nix develop                             # Default shell
 nix develop .#devShells.aarch64-darwin  # Explicit system
+
+# Specific dev environment
+nix-dev python
+ll
+gs
+exit
+
+nix-dev go
+ll
+exit
+
+nix-dev devops
+k
+exit
+
+nix-dev rust
+ll
+gs
+exit
 
 # Install environment
 nix profile install .                   # All packages
