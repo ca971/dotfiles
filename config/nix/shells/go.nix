@@ -4,19 +4,12 @@ pkgs.mkShell {
   name = "go-dev";
 
   buildInputs = with pkgs; [
-    # Go
-    go_1_23
-
-    # Tools
-    gopls # LSP
-    gotools # goimports, etc.
-    golangci-lint # Linter
-    delve # Debugger
-    gomod2nix # Nix integration
-    go-task # Task runner
-
-    # Build deps
-    gcc
+    go
+    gopls
+    gotools
+    golangci-lint
+    delve
+    go-task
   ];
 
   env = {
