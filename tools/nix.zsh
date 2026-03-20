@@ -72,8 +72,6 @@ cat > "$nix_conf" << 'EOF'
 experimental-features = nix-command flakes
 warn-dirty = false
 max-jobs = auto
-connect-timeout = 10
-stalled-download-timeout = 30
 EOF
     log_debug "Generated nix.conf"
   fi
