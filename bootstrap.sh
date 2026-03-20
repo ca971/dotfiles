@@ -259,6 +259,34 @@ generate_ssot() {
 }
 
 # ============================================================================
+# macOS Defaults (darwin only)
+# ============================================================================
+
+apply_macos_defaults() {
+    [ "$PLATFORM" = "darwin" ] || return 0
+
+    _step "macOS Preferences"
+
+    if [ ! -d "${DOTFILES_DIR}/platform/darwin-defaults/defaults.d" ]; then
+        _warn "darwin-defaults/ not found — skipping"
+        return 0
+    fi
+
+    printf "  Apply macOS system preferences? [y/N] "
+    read -r apply_macos
+    if [ "$apply_macos" = "y" ] || [ "$apply_macos" = "Y" ]; then
+        if _has bash; then
+            # Use dot CLI which sources _core.sh for proper formatting
+            bash "${DOTFILES_DIR}/bin/dot" macos apply --force
+        else
+            _warn "Bash required for macOS defaults — run later: dot macos apply"
+        fi
+    else
+        _info "Skipped — run later with: ${GREEN}dot macos apply${RESET}"
+    fi
+}
+
+# ============================================================================
 # Check Available Shells
 # ============================================================================
 
@@ -349,6 +377,7 @@ main() {
     create_directories
     link_shell
     generate_ssot
+    # apply_macos_defaults
     check_shells
     offer_shell_install
     summary

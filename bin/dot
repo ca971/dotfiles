@@ -102,6 +102,9 @@ main() {
         # ── Editor ──
         editor | ed) _run_module editor cmd_editor "$@" ;;
 
+        # ── macOS Defaults ──                          ← ADD THIS BLOCK
+        macos | mac) _run_module macos cmd_macos "$@" ;;
+
         # ── Security ──
         gpg) zsh -ic "gpg-${2:-info}" 2> /dev/null || zsh -ic "gpg-info" ;;
 

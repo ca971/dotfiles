@@ -47,6 +47,15 @@ alias brewdeps="brew deps --tree --installed"
 alias brewdump="brew bundle dump --file=${XDG_CONFIG_HOME}/homebrew/Brewfile --force"
 alias brewbundle="brew bundle --file=${XDG_CONFIG_HOME}/homebrew/Brewfile"
 
+# ============================================================================
+# macOS Defaults — Quick aliases
+# ============================================================================
+
+# @description  Apply macOS defaults from dot CLI
+alias macos-apply="dot macos apply"
+alias macos-preview="dot macos apply --dry-run"
+alias macos-backup="dot macos backup"
+
 # @description  Interactive Homebrew search and install via FZF
 # @return       void
 function brewfzf() {
