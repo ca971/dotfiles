@@ -101,25 +101,19 @@
               name = "dotfiles-dev";
               buildInputs = commonPkgs ++ platformPkgs ++ devtoolsPkgs;
               shellHook = ''
-                echo ""
-                echo "  ❄️  Nix dev shell — ${system}"
-                echo "  Packages: ${toString (builtins.length (commonPkgs ++ platformPkgs ++ devtoolsPkgs))} tools"
-                echo ""
+                if [ -n "$IN_NIX_SHELL" ]; then
+                  echo ""
+                  echo "  ⚠️  Already inside a Nix shell ($name)"
+                  echo "  Exit first with: exit"
+                  echo ""
+                else
+                  echo ""
+                  echo "  ❄️  Nix dev shell — ${system}"
+                  echo "  Packages: ${toString (builtins.length (commonPkgs ++ platformPkgs ++ devtoolsPkgs))} tools"
+                  echo ""
+                fi
               '';
             };
-
-            shellHook = ''
-              if [ -n "$IN_NIX_SHELL" ]; then
-                echo ""
-                echo "  ⚠️  Already inside a Nix shell ($name)"
-                echo "  Exit first with: exit"
-                echo ""
-              else
-                echo ""
-                echo "  ❄️  Nix dev shell — ${system}"
-                echo ""
-              fi
-            '';
 
             # Rust
             rust = import ./shells/rust.nix { inherit pkgs; };
