@@ -118,3 +118,6 @@ export GH_NO_UPDATE_NOTIFIER=1
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_AUTOREMOVE=1
+
+# ── Dev workspace ────────────────────────────────────────────────────────────
+export DEV_HOME="$HOME/dev"

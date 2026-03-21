@@ -13,6 +13,9 @@ _add_path() {
     esac
 }
 
+# ── Dev workspace ────────────────────────────────────────────────────────────
+_add_path "${DEV_HOME}/tools/bin"
+
 # ── User local ───────────────────────────────────────────────────────────────
 _add_path "${HOME}/.local/bin"
 _add_path "${HOME}/bin"

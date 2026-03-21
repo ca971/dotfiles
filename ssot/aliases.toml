@@ -88,6 +88,14 @@ genpass = "openssl rand -base64 32"
 [misc]
 dirsize = "du -sh . 2>/dev/null"
 
+[dev]
+dev = "cd $DEV_HOME"
+proj = "cd $DEV_HOME/projects/personal"
+work = "cd $DEV_HOME/projects/work"
+lab = "cd $DEV_HOME/lab"
+infra = "cd $DEV_HOME/infra"
+dt = "cd $DEV_HOME/dotfiles"
+
 # ============================================================================
 # TOOL-SPECIFIC — Loaded ONLY if the tool is installed
 # ============================================================================
@@ -95,16 +103,24 @@ dirsize = "du -sh . 2>/dev/null"
 [eza]
 meta.binary = "eza"
 ls = "eza --icons --group-directories-first --color=always"
-la = "eza --icons --group-directories-first --color=always --all"
-ll = "eza --icons --group-directories-first --color=always --long --git --header --time-style=relative --octal-permissions"
-lla = "eza --icons --group-directories-first --color=always --long --git --header --all --time-style=relative"
-lt = "eza --icons --tree --level=2 --color=always"
-lt3 = "eza --icons --tree --level=3 --color=always"
-lta = "eza --icons --tree --level=2 --all --color=always"
-ld = "eza --icons --only-dirs --color=always"
-lm = "eza --icons --long --sort=modified --reverse --color=always"
-lsize = "eza --icons --long --sort=size --reverse --color=always"
-l1 = "eza --icons --oneline --color=always"
+l = "eza --icons=auto --group-directories-first --color=auto"
+ll = "eza --icons=auto --group-directories-first --color=auto -l --git --header --time-style=relative"
+la = "eza --icons=auto --group-directories-first --color=auto -la --git --header --time-style=relative"
+lw = "eza --icons=auto --group-directories-first --color=auto --across"
+lt = "eza --icons=auto --group-directories-first --color=auto --tree --level=1 --git-ignore"
+lt2 = "eza --icons=auto --group-directories-first --color=auto --tree --level=2 --git-ignore"
+lt3 = "eza --icons=auto --group-directories-first --color=auto --tree --level=3 --git-ignore"
+lts = "eza --icons=auto --group-directories-first --color=auto --tree --level=2 --git-ignore -l --total-size --no-permissions --no-user --no-time"
+ld = "eza --icons=auto --color=auto -lD"
+lf = "eza --icons=auto --color=auto -lf --git --header --time-style=relative"
+ldot = "eza --icons=auto --color=auto -la --git --header --time-style=relative -d .*"
+lm = "eza --icons=auto --group-directories-first --color=auto -l --sort=modified --reverse --git --time-style=relative"
+lc = "eza --icons=auto --group-directories-first --color=auto -l --sort=created --reverse --git --time-style=relative"
+lS = "eza --icons=auto --group-directories-first --color=auto -l --sort=size --reverse --total-size"
+lx = "eza --icons=auto --group-directories-first --color=auto -l --sort=extension --git --header"
+l1 = "eza --icons=never --group-directories-first --color=never -1"
+lr = "eza --icons=auto --color=auto -l --recurse --git --time-style=relative --git-ignore"
+lX = "eza --icons=auto --color=auto -la@ --header"
 lnk = "eza --icons=auto --color=auto -la --header --time-style=relative | rg '\\->'"
 
 [bat]
