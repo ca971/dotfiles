@@ -15,7 +15,7 @@ display_time = true
 no_retry = true
 skip_notify = false
 disable = ["helm"]
-ignore_failures = ["containers"]
+# ignore_failures = ["containers"]
 # run_in_tmux = false
 
 # Commands to run before anything
