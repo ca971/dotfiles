@@ -9,7 +9,7 @@ eval "$(mise activate zsh)"
 
 local _comp="${ZSH_CACHE_DIR:-${XDG_CACHE_HOME}/zsh}/mise-completions.zsh"
 if [[ ! -f "$_comp" ]] || [[ "$(mise --version 2>/dev/null)" != "$(cat "${_comp}.ver" 2>/dev/null)" ]]; then
-  mise completions zsh > "$_comp" 2>/dev/null; mise --version > "${_comp}.ver" 2>/dev/null
+  mise completions zsh >| "$_comp" 2>/dev/null; mise --version >| "${_comp}.ver" 2>/dev/null
 fi
 [[ -f "$_comp" ]] && source "$_comp"
 
