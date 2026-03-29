@@ -1,80 +1,110 @@
 # ============================================================================
 # @file        git/.gitconfig
-# @description Global Git configuration — power-user edition.
+# @description Global Git configuration — power-user edition 2026.
 #              Optimized for modern Git workflows, security, performance,
-#              and cross-platform compatibility.
+#              delta integration, and cross-platform compatibility.
 #
 #              Symlink: ln -sf ~/dotfiles/config/git/.gitconfig ~/.gitconfig
 #
-#              Private identity: ~/dotfiles/config/local/gitconfig.local
-#              Work overrides:   ~/dotfiles/config/local/gitconfig.work
+#              Private identity: ~/dotfiles/local/gitconfig.local
+#              Work overrides:   ~/dotfiles/local/gitconfig.work
 #
-# @repository  https://github.com/ca971/dotfiles/config.git
+# @repository  https://github.com/ca971/dotfiles.git
 # @author      ca971
 # @license     MIT
 # @created     2025-07-15
-# @version     2.0.0
+# @version     3.0.0
+#
+# @changelog   3.0.0 — Complete restructure by category
+#                       Added 40+ stats/analysis aliases
+#                       Added temporal activity aliases (hours, days, weekly)
+#                       Added hot files / churn detection
+#                       Added dashboard / summary commands
+#                       Added changelog / standup / release aliases
+#                       Modernized for Git 2.45+ features
+#                       Deduplicated and cleaned all aliases
 # ============================================================================
 
-# ── Identity — loaded from private local file ───────────────────────────────
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  1. IDENTITY & INCLUDES                                                  ║
+# ║     Conditional identity loading per directory.                          ║
+# ║     Never hardcode name/email here — use gitconfig.local.                ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [include]
 	path = ~/dotfiles/local/gitconfig.local
 
-# ── Conditional includes — different config per directory ────────────────────
-# Work projects
 [includeIf "gitdir:~/Work/"]
 	path = ~/dotfiles/local/gitconfig.work
 
-# Personal projects
 [includeIf "gitdir:~/Projects/"]
 	path = ~/dotfiles/local/gitconfig.local
 
-# Open source
 [includeIf "gitdir:~/OSS/"]
 	path = ~/dotfiles/local/gitconfig.local
 
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  2. SIGNING & SECURITY                                                   ║
+# ║     SSH-based commit/tag signing. GPG-free, modern approach.             ║
+# ║     Requires: ssh-keygen, allowed_signers file.                          ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [gpg]
-    format = ssh
+	format = ssh
 
 [gpg "ssh"]
-    program = /usr/bin/ssh-keygen
-    allowedSignersFile = ~/.ssh/allowed_signers
+	program = /usr/bin/ssh-keygen
+	allowedSignersFile = ~/.ssh/allowed_signers
 
-# [commit]
-#   gpgSign = true
+[commit]
+	gpgsign = true
+	verbose = true
+	template = ~/dotfiles/config/git/.gitmessage
 
-# ── Core ─────────────────────────────────────────────────────────────────────
+[tag]
+	gpgsign = true
+	sort = -version:refname
+
+[transfer]
+	fsckobjects = true
+
+[receive]
+	fsckobjects = true
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  3. CORE                                                                 ║
+# ║     Editor, pager, whitespace, filesystem, performance.                  ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [core]
 	editor = nvim
 	pager = delta
 	autocrlf = input
 	safecrlf = warn
-	# Prevent data corruption
 	whitespace = fix,trailing-space,cr-at-eol
 	excludesFile = ~/dotfiles/config/git/.gitignore_global
 	attributesFile = ~/dotfiles/config/git/.gitattributes_global
 	hooksPath = ~/dotfiles/config/git/git-templates/hooks
-	# Faster file hashing
+	# Performance
 	untrackedCache = true
-	# Performance: use filesystem monitor
 	fsmonitor = true
-	# Protect against NTFS/HFS+ case issues
-	ignoreCase = false
 	commitGraph = true
 	multiPackIndex = true
-	# Compression
 	compression = 9
-	# Bigger buffer for large repos
+	# Large repo support
 	packedGitLimit = 512m
 	packedGitWindowSize = 512m
+	# Case sensitivity (protect against NTFS/HFS+ issues)
+	ignoreCase = false
 
-# ── Init ─────────────────────────────────────────────────────────────────────
 [init]
 	defaultBranch = main
-	# Auto-install hooks on every git init / git clone
 	templateDir = ~/dotfiles/config/git/git-templates
 
-# ── Pull / Push / Fetch ──────────────────────────────────────────────────────
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  4. NETWORK — Pull / Push / Fetch / HTTP                                 ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [pull]
 	rebase = true
 	ff = only
@@ -91,14 +121,31 @@
 	parallel = 0
 	writeCommitGraph = true
 
-# ── Rebase ───────────────────────────────────────────────────────────────────
+[http]
+	lowSpeedLimit = 1000
+	lowSpeedTime = 300
+	postBuffer = 524288000
+	maxRequests = 5
+	sslVerify = true
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  5. BRANCH & REBASE                                                      ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+[branch]
+	sort = -committerdate
+	autoSetupRebase = always
+
 [rebase]
 	autoSquash = true
 	autoStash = true
 	updateRefs = true
 	missingCommitsCheck = warn
 
-# ── Merge ────────────────────────────────────────────────────────────────────
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  6. MERGE                                                                ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [merge]
 	ff = false
 	conflictstyle = zdiff3
@@ -111,22 +158,24 @@
 [mergetool "nvim"]
 	cmd = nvim -d "$LOCAL" "$MERGED" "$REMOTE"
 
-# ── Diff ─────────────────────────────────────────────────────────────────────
+[rerere]
+	enabled = true
+	autoUpdate = true
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  7. DIFF                                                                 ║
+# ║     Histogram algorithm, rename/copy detection, word-level diff.         ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [diff]
 	mnemonicPrefix = true
 	tool = nvim
-	# Better diff algorithm
 	algorithm = histogram
-	# Detect renames and copies
 	renames = copies
-	# Color moved lines differently
 	colorMoved = default
 	colorMovedWS = allow-indentation-change
-	# Show word-level diff
 	wordRegex = [[:alnum:]_]+|[^[:space:]]
-	# Show submodule changes
 	submodule = log
-	# Show context
 	context = 3
 
 [difftool]
@@ -135,7 +184,11 @@
 [difftool "nvim"]
 	cmd = nvim -d "$LOCAL" "$REMOTE"
 
-# ── Delta (diff pager) ───────────────────────────────────────────────────────
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  8. DELTA — Modern diff pager                                            ║
+# ║     Syntax highlighting, line numbers, hyperlinks to editor.             ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [delta]
 	navigate = true
 	dark = true
@@ -171,53 +224,35 @@
 [interactive]
 	diffFilter = delta --color-only
 
-# ── Branch ───────────────────────────────────────────────────────────────────
-[branch]
-	# Sort by most recent commit
-	sort = -committerdate
-	# Auto-setup rebase for new branches
-	autoSetupRebase = always
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  9. LOG & STATUS DISPLAY                                                 ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
 
-# ── Tag ──────────────────────────────────────────────────────────────────────
-[tag]
-	# Sign tags by default
-	gpgsign = true
-	# Sort by version
-	sort = -version:refname
-
-# ── Stash ────────────────────────────────────────────────────────────────────
-[stash]
-	# Show patch in stash list
-	showPatch = true
-	showStat = true
-
-# ── Log ──────────────────────────────────────────────────────────────────────
 [log]
-	# ISO dates for consistency
 	date = iso
-	# Show renames in log
 	follow = true
-	# Decorate refs
 	decorate = short
-	# Abbreviate commit hashes
 	abbrevCommit = true
 
 [format]
 	pretty = format:%C(auto)%h %C(blue)%an %C(dim)%ar%C(auto)%d %s
 
-# ── Status ───────────────────────────────────────────────────────────────────
 [status]
-	# Show individual files in untracked directories
 	showUntrackedFiles = all
-	# Short format by default
 	short = true
 	branch = true
-	# Show stash count
 	showStash = true
-	# Show submodule summary
 	submoduleSummary = true
 
-# ── Color ────────────────────────────────────────────────────────────────────
+[stash]
+	showPatch = true
+	showStat = true
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  10. COLORS                                                              ║
+# ║      Gruvbox-inspired palette for branch, status, diff.                  ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [color]
 	ui = true
 
@@ -252,13 +287,11 @@
 	newNormal = "green bold"
 	newHighlight = "green bold 22"
 
-# ── Commit ───────────────────────────────────────────────────────────────────
-[commit]
-	gpgsign = true
-	verbose = true
-	template = ~/dotfiles/config/git/.gitmessage
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  11. CREDENTIALS                                                         ║
+# ║      macOS Keychain + gh/glab CLI credential helpers.                    ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
 
-# ── Credential ───────────────────────────────────────────────────────────────
 [credential]
 	helper = osxkeychain
 
@@ -270,47 +303,12 @@
 	helper =
 	helper = !glab auth git-credential
 
-# ── Rerere (reuse recorded resolution) ───────────────────────────────────────
-[rerere]
-	enabled = true
-	autoUpdate = true
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  12. URL SHORTCUTS                                                       ║
+# ║      gh: → github, gl: → gitlab, bb: → bitbucket.                        ║
+# ║      Forces SSH push even when cloned via HTTPS.                         ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
 
-# ── Submodule ────────────────────────────────────────────────────────────────
-[submodule]
-	recurse = true
-	fetchJobs = 4
-
-# ── Transfer ─────────────────────────────────────────────────────────────────
-[transfer]
-	fsckobjects = true
-
-[receive]
-	fsckobjects = true
-
-[http]
-	lowSpeedLimit = 1000
-	lowSpeedTime = 300
-	postBuffer = 524288000
-	maxRequests = 5
-	# SSL verification (never disable in production)
-	sslVerify = true
-
-# ── Maintenance — Auto-optimize repos ────────────────────────────────────────
-[maintenance]
-	auto = true
-	strategy = incremental
-
-# ── Pack / GC ────────────────────────────────────────────────────────────────
-[pack]
-	threads = 0
-	useSparse = true
-
-[gc]
-	auto = 256
-	writeCommitGraph = true
-
-# ── URL Shortcuts ────────────────────────────────────────────────────────────
-# Note: insteadOf replaces the prefix in the URL
 [url "git@github.com:"]
 	insteadOf = gh:
 	pushInsteadOf = https://github.com/
@@ -321,33 +319,108 @@
 [url "git@bitbucket.org:"]
 	insteadOf = bb:
 
-# ── LFS ──────────────────────────────────────────────────────────────────────
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  13. SUBMODULES                                                          ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+[submodule]
+	recurse = true
+	fetchJobs = 4
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  14. LFS                                                                 ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
 
-# ── Aliases ──────────────────────────────────────────────────────────────────
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  15. PERFORMANCE — GC, Pack, Maintenance                                 ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+[pack]
+	threads = 0
+	useSparse = true
+
+[gc]
+	auto = 256
+	writeCommitGraph = true
+
+[maintenance]
+	auto = true
+	strategy = incremental
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║                                                                          ║
+# ║  16. ALIASES — Power User Edition 2026                                   ║
+# ║                                                                          ║
+# ║  Categories:                                                             ║
+# ║  ├─ 16.1  Meta & Help                                                    ║
+# ║  ├─ 16.2  Status & Info                                                  ║
+# ║  ├─ 16.3  Staging                                                        ║
+# ║  ├─ 16.4  Commit                                                         ║
+# ║  ├─ 16.5  Push / Pull / Sync                                             ║
+# ║  ├─ 16.6  Branch                                                         ║
+# ║  ├─ 16.7  Log — Graph & History                                          ║
+# ║  ├─ 16.8  Log — Stats per Commit                                         ║
+# ║  ├─ 16.9  Stats — Contributors & Impact                                  ║
+# ║  ├─ 16.10 Stats — Temporal Activity                                      ║
+# ║  ├─ 16.11 Stats — Hot Files & Churn                                      ║
+# ║  ├─ 16.12 Stats — Dashboard & Summary                                    ║
+# ║  ├─ 16.13 Diff                                                           ║
+# ║  ├─ 16.14 Stash                                                          ║
+# ║  ├─ 16.15 Reset / Undo / Recover                                         ║
+# ║  ├─ 16.16 Clean & Housekeeping                                           ║
+# ║  ├─ 16.17 Search & Find                                                  ║
+# ║  ├─ 16.18 Branch Analysis                                                ║
+# ║  ├─ 16.19 Changelog / Standup / Release                                  ║
+# ║  ├─ 16.20 Worktree                                                       ║
+# ║  ├─ 16.21 PR & CI Workflow (gh CLI)                                      ║
+# ║  ├─ 16.22 Bisect                                                         ║
+# ║  ├─ 16.23 Maintenance & Optimization                                     ║
+# ║  └─ 16.24 Shortcuts                                                      ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
 [alias]
-	# ── Meta & Help ──
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.1  META & HELP
+	# ══════════════════════════════════════════════════════════════════
+
+	# List all aliases (formatted table)
 	aliases = "!f() { git config --get-regexp '^alias\\.' | sed -E 's/^alias\\.([^ ]+) (.*)/\\1 \t => \\2/' | sort | column -t -s '\t'; }; f"
+
+	# Search aliases by keyword
 	alias-grep = "!f() { git config --get-regexp '^alias\\.' | cut -c 7- | grep -Ei --color \"$1\"; }; f"
+
+	# Browse all aliases in pager
 	help-all = "!git aliases | less"
 
-	# ── Status & Info ──
+	# ══════════════════════════════════════════════════════════════════
+	# 16.2  STATUS & INFO
+	# ══════════════════════════════════════════════════════════════════
+
 	s = status --short --branch
 	st = status -sb
 	ss = status
-	info = !git remote -v && echo && git branch -vv
+	info = !echo '═══ Remotes ═══' && git remote -v && echo '' && echo '═══ Branches ═══' && git branch -vv
 
-	# ── Staging ──
+	# ══════════════════════════════════════════════════════════════════
+	# 16.3  STAGING
+	# ══════════════════════════════════════════════════════════════════
+
 	a = add
 	aa = add --all
 	ap = add --patch
 	ai = add --interactive
 
-	# ── Commit ──
+	# ══════════════════════════════════════════════════════════════════
+	# 16.4  COMMIT
+	# ══════════════════════════════════════════════════════════════════
+
 	c = commit -m
 	ci = commit
 	cm = commit -m
@@ -355,51 +428,185 @@
 	cs = commit -s -m
 	amend = commit --amend --no-edit
 	empty = commit --allow-empty -m
-	fixup = "!f() { git commit --fixup=$1; }; f"
+	fixup = "!f() { git commit --fixup=\"$1\"; }; f"
 	wip = !git add -A && git commit -m 'chore: wip [skip ci]'
 	unwip = reset --soft HEAD~1
 
-	# ── Push / Pull ──
+	# ══════════════════════════════════════════════════════════════════
+	# 16.5  PUSH / PULL / SYNC
+	# ══════════════════════════════════════════════════════════════════
+
 	p = push
 	pf = push --force-with-lease --force-if-includes
 	pl = pull --rebase
 	fa = fetch --all --prune --tags
-	# Removed duplicate `sync` alias below
-	deploy = "!git push origin main && sleep 10 && gh run watch"
-	pw = "!git push origin $(git branch --show-current) && sleep 10 && gh run watch"
-	ship = "!git push origin $(git branch --show-current) && sleep 10 && gh run watch && echo '🚀 Shipped!'"
 	sync = "!git pull --rebase && git push"
+	deploy = "!git push origin main && sleep 10 && gh run watch"
+	ship = "!git push origin $(git branch --show-current) && sleep 10 && gh run watch && echo '🚀 Shipped!'"
 
-	# ── Branch ──
+	# ══════════════════════════════════════════════════════════════════
+	# 16.6  BRANCH
+	# ══════════════════════════════════════════════════════════════════
+
 	b = branch -vv
 	ba = branch -avv
 	bd = branch -d
 	bD = branch -D
 	sw = switch
 	swc = switch -c
-	recent = branch --sort=-committerdate --format='%(refname:short) %(committerdate:relative) %(authorname)'
 
-	# ── Log ──
+	# Branches sorted by last commit date (most recent first)
+	recent = branch --sort=-committerdate --format='%(color:yellow)%(refname:short)%(color:reset) %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)%(authorname)%(color:reset) %(contents:subject)'
+
+	# All branches with last commit info (local + remote)
+	branches = for-each-ref --sort=-committerdate refs/heads/ --format='%(color:yellow)%(refname:short)%(color:reset) %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)%(authorname)%(color:reset) %(contents:subject)'
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.7  LOG — GRAPH & HISTORY
+	# ══════════════════════════════════════════════════════════════════
+
+	# Compact one-line (20 entries)
 	l = log --oneline --graph --decorate --all -20
-	ll = log --oneline --graph --decorate --all
-	lg = log --graph --pretty=format:'%C(auto)%h%d %s %C(dim)(%ar) %C(blue)<%an>%Creset' --all
-	lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)— %an%C(reset)%C(auto)%d%C(reset)' --all -20
-	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)— %an%C(reset)' --all -15
-	lg3 = log --graph --abbrev-commit --decorate --format=format:'%C(bold yellow)⦿ %h%C(reset) %C(bold white)%s%C(reset)%C(auto)%d%C(reset)%n  %C(dim cyan)📅 %aD%C(reset) %C(dim green)(%ar)%C(reset)%n  %C(dim white)👤 %an <%ae>%C(reset)%n' --all -10
-	lp = log --patch --follow
-	last = log -1 HEAD --stat
-	today = log --since='00:00:00' --all --oneline --no-merges --author='me'
-	week = log --since='1 week ago' --all --oneline --no-merges
-	standup = !git log --since='yesterday' --author=\"$(git config user.name)\" --oneline --no-merges
+	lo = log --oneline -20
 
-	# ── Diff ──
+	# Full graph (all commits)
+	ll = log --oneline --graph --decorate --all
+
+	# Graph + author + relative date (compact)
+	lg = log --graph --pretty=format:'%C(bold red)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim cyan)— %an%C(reset)%C(auto)%d%C(reset)' --all
+
+	# Graph + date (20 entries)
+	lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)— %an%C(reset)%C(auto)%d%C(reset)' --all -20
+
+	# Graph + full date (15 entries, 2 lines per commit)
+	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)— %an%C(reset)' --all -15
+
+	# Graph + emoji (10 entries, 3 lines per commit)
+	lg3 = log --graph --abbrev-commit --decorate --format=format:'%C(bold yellow)⦿ %h%C(reset) %C(bold white)%s%C(reset)%C(auto)%d%C(reset)%n  %C(dim cyan)📅 %aD%C(reset) %C(dim green)(%ar)%C(reset)%n  %C(dim white)👤 %an <%ae>%C(reset)%n' --all -10
+
+	# Log with full patch (follow renames)
+	lp = log --patch --follow
+
+	# Last commit with stats
+	last = log -1 HEAD --stat
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.8  LOG — STATS PER COMMIT
+	# ══════════════════════════════════════════════════════════════════
+
+	# Files modified per commit (classic stat)
+	ls = log --stat --oneline -15
+
+	# Short stat (insertions/deletions summary per commit)
+	lss = log --shortstat --oneline -20
+
+	# Numeric stat (exact line counts per file per commit)
+	ln = log --numstat --oneline -10
+
+	# Pretty stat (author + date + shortstat)
+	ld = log --pretty=format:'%C(yellow)%h %C(green)%ar %C(blue)%an %C(reset)%s' --shortstat -15
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.9  STATS — CONTRIBUTORS & IMPACT
+	# ══════════════════════════════════════════════════════════════════
+
+	# Rank authors by commit count
+	rank = shortlog -sn --all --no-merges
+
+	# Rank authors by commit count (with email)
+	rank-email = shortlog -sne --all --no-merges
+
+	# TOP 10 contributors
+	top10 = !git shortlog -sn --all --no-merges | head -10
+
+	# TOP 5 contributors
+	top5 = !git shortlog -sn --all --no-merges | head -5
+
+	# Total lines added/deleted per author (all time)
+	impact = !git log --all --numstat --pretty=format:'%aN' | awk 'NF==3 {add[name]+=$1; del[name]+=$2} NF==1 {name=$0} END {for(n in add) printf \"%s: +%d -%d (net: %d)\\n\", n, add[n], del[n], add[n]-del[n]}' | sort -t: -k2 -rn
+
+	# Unique authors list
+	who = !git log --all --format='%aN <%aE>' | sort -u
+
+	# Author commit count (current branch only)
+	contributors = shortlog -sn --no-merges
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.10  STATS — TEMPORAL ACTIVITY
+	# ══════════════════════════════════════════════════════════════════
+
+	# Commits per day (last 30 days)
+	activity = !git log --date=short --format='%ad' --since='30 days ago' | sort | uniq -c | sort -rn
+
+	# Commits per week (last 6 months)
+	weekly = !git log --date=format:'%Y-W%V' --format='%ad' --since='6 months ago' | sort | uniq -c | sort -rn
+
+	# Commits per month (full history)
+	monthly = !git log --date=format:'%Y-%m' --format='%ad' | sort | uniq -c | sort -rn
+
+	# Commits per year
+	yearly = !git log --date=format:'%Y' --format='%ad' | sort | uniq -c | sort -rn
+
+	# Commits by hour of day (when do you code?)
+	hours = !git log --format='%ad' --date=format:'%H' | sort | uniq -c | sort -rn
+
+	# Commits by day of week (which days?)
+	days = !git log --format='%ad' --date=format:'%A' | sort | uniq -c | sort -rn
+
+	# Commits today (all authors)
+	today = log --since='00:00:00' --all --oneline --no-merges
+
+	# My commits today
+	today-mine = !git log --since='00:00:00' --all --oneline --no-merges --author=\"$(git config user.name)\"
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.11  STATS — HOT FILES & CHURN
+	# ══════════════════════════════════════════════════════════════════
+
+	# TOP 20 most modified files (all time)
+	hot = !git log --all --pretty=format: --name-only | grep -v '^$' | sort | uniq -c | sort -rn | head -20
+
+	# TOP 20 most modified files (last 30 days)
+	hot-recent = !git log --since='30 days ago' --pretty=format: --name-only | grep -v '^$' | sort | uniq -c | sort -rn | head -20
+
+	# TOP 20 most modified files (last 90 days)
+	hot-quarter = !git log --since='90 days ago' --pretty=format: --name-only | grep -v '^$' | sort | uniq -c | sort -rn | head -20
+
+	# Files with highest churn (total lines added + deleted)
+	churn = !git log --all --numstat --pretty=format: | awk 'NF==3 {a[$3]+=$1+$2} END {for(f in a) printf \"%7d %s\\n\", a[f], f}' | sort -rn | head -20
+
+	# Largest blobs in repo history (find bloat)
+	bloat = !git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' | awk '/^blob/{print $3,$4}' | sort -rn | head -20
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.12  STATS — DASHBOARD & SUMMARY
+	# ══════════════════════════════════════════════════════════════════
+
+	# Quick dashboard (recent + stats + top contributors)
+	dashboard = "!echo '\\n═══ 📋 Recent Commits ═══' && git log --oneline -8 && echo '\\n═══ 📊 This Week ═══' && git shortlog -sn --since='1 week ago' --no-merges && echo '\\n═══ 🏆 Top Contributors ═══' && git shortlog -sn --all --no-merges | head -5 && echo '\\n═══ 🔥 Hot Files (30d) ═══' && git log --since='30 days ago' --pretty=format: --name-only | grep -v '^$' | sort | uniq -c | sort -rn | head -5 && echo ''"
+
+	# Full repo summary (counts, dates, authors)
+	summary = "!echo '📊 Repository Summary' && echo '─────────────────────────────────' && echo \"Commits:      $(git rev-list --all --count)\" && echo \"Authors:      $(git shortlog -sn --all | wc -l | tr -d ' ')\" && echo \"Branches:     $(git branch -a | wc -l | tr -d ' ')\" && echo \"Tags:         $(git tag | wc -l | tr -d ' ')\" && echo \"Files:        $(git ls-files | wc -l | tr -d ' ')\" && echo \"First commit: $(git log --reverse --format='%ar (%ad)' --date=short | head -1)\" && echo \"Latest:       $(git log -1 --format='%ar (%ad)' --date=short)\" && echo \"Repo size:    $(du -sh .git | cut -f1)\""
+
+	# Compact stats (one-liner)
+	stats = "!echo \"$(git rev-list --all --count) commits, $(git shortlog -sn --all | wc -l | tr -d ' ') authors, $(git ls-files | wc -l | tr -d ' ') files\""
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.13  DIFF
+	# ══════════════════════════════════════════════════════════════════
+
 	df = diff
 	ds = diff --stat
 	dc = diff --cached
+	dcs = diff --cached --stat
 	dw = diff --word-diff
 	dm = diff main...HEAD
+	dms = diff --stat main...HEAD
 
-	# ── Stash ──
+	# ══════════════════════════════════════════════════════════════════
+	# 16.14  STASH
+	# ══════════════════════════════════════════════════════════════════
+
 	save = stash push -m
 	stp = stash pop
 	stl = stash list
@@ -407,62 +614,154 @@
 	sta = stash apply
 	sts = stash show --patch
 
-	# ── Reset / Undo ──
+	# ══════════════════════════════════════════════════════════════════
+	# 16.15  RESET / UNDO / RECOVER
+	# ══════════════════════════════════════════════════════════════════
+
+	# Soft undo (keep changes staged)
 	undo = reset --soft HEAD~1
-	hard = reset --hard HEAD
-	unstage = reset HEAD --
-	discard = checkout --
-	nuke = !git reset --hard HEAD && git clean -fd
+
+	# Mixed undo (keep changes unstaged)
 	uncommit = reset --mixed HEAD~1
 
-	# ── Clean ──
+	# Hard reset to HEAD
+	hard = reset --hard HEAD
+
+	# Unstage files
+	unstage = reset HEAD --
+
+	# Discard working tree changes
+	discard = checkout --
+
+	# Nuclear option: reset + clean
+	nuke = !git reset --hard HEAD && git clean -fd
+	nevermind = !git reset --hard HEAD && git clean -fd
+
+	# Show reflog for recovery
+	recover = "!git reflog | head -20"
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.16  CLEAN & HOUSEKEEPING
+	# ══════════════════════════════════════════════════════════════════
+
+	# Delete merged branches (keep main/master/develop)
 	cleanup = !git branch --merged | grep -v '\\*\\|main\\|master\\|develop' | xargs -n 1 git branch -d
+
+	# Delete branches whose upstream is gone
 	gone = !git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D
+
+	# Both cleanup + gone
 	tidy = !git gone && git cleanup
+
+	# Full clean (tracked + untracked)
 	clean-all = "!git clean -fd && git reset --hard"
 
-	# ── Recover ──
-	# Recover deleted branch or commit
-	recover = "!git reflog | head -20"
-	nevermind = "!git reset --hard HEAD && git clean -fd"
+	# ══════════════════════════════════════════════════════════════════
+	# 16.17  SEARCH & FIND
+	# ══════════════════════════════════════════════════════════════════
 
-	# ── Worktree ──
+	# Search code changes across history (pickaxe)
+	search = log --all -S
+
+	# Search commit messages
+	find = log --all --oneline --grep
+
+	# Who last modified a file
+	file-who = log -1 --format='%an (%ar)' --
+
+	# Full history of a file (with stats, follows renames)
+	file-history = log --follow --stat --oneline --
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.18  BRANCH ANALYSIS
+	# ══════════════════════════════════════════════════════════════════
+
+	# Commits in current branch not in main
+	ahead = log --oneline main..HEAD
+
+	# Commits in main not in current branch
+	behind = log --oneline HEAD..main
+
+	# Stat diff between current branch and main
+	branch-stat = diff --stat main...HEAD
+
+	# How many commits ahead/behind main
+	diverge = "!echo \"Ahead:  $(git rev-list --count main..HEAD)\" && echo \"Behind: $(git rev-list --count HEAD..main)\""
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.19  CHANGELOG / STANDUP / RELEASE
+	# ══════════════════════════════════════════════════════════════════
+
+	# What I did yesterday (for standup)
+	standup = !git log --since='yesterday' --author=\"$(git config user.name)\" --oneline --no-merges
+
+	# What I did this week
+	week = !git log --since='1 week ago' --author=\"$(git config user.name)\" --oneline --no-merges
+
+	# Changelog since last tag
+	changelog = !git log $(git describe --tags --abbrev=0 2>/dev/null || echo HEAD~20)..HEAD --oneline --no-merges
+
+	# Changelog grouped by conventional commit type
+	changelog-grouped = !git log $(git describe --tags --abbrev=0 2>/dev/null || echo HEAD~20)..HEAD --oneline --no-merges | sort -t: -k1
+
+	# Unreleased commits count (since last tag)
+	unreleased = "!echo \"$(git rev-list $(git describe --tags --abbrev=0 2>/dev/null || echo HEAD~100)..HEAD --count) commits since $(git describe --tags --abbrev=0 2>/dev/null || echo 'no tag')\""
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.20  WORKTREE
+	# ══════════════════════════════════════════════════════════════════
+
 	wt = worktree list
 	wta = worktree add
 	wtr = worktree remove
 
-	# ── Shortcuts ──
+	# ══════════════════════════════════════════════════════════════════
+	# 16.21  PR & CI WORKFLOW (gh CLI)
+	# ══════════════════════════════════════════════════════════════════
+
+	pr = !gh pr create --fill
+	prs = !gh pr list
+	prv = !gh pr view --web
+	prm = !gh pr merge --auto --squash
+	release = !gh release create
+	runs = !gh run list --limit 5
+	run-watch = !gh run watch
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.22  BISECT
+	# ══════════════════════════════════════════════════════════════════
+
+	bisect-start = bisect start HEAD
+	bisect-good = bisect good
+	bisect-bad = bisect bad
+	bisect-reset = bisect reset
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.23  MAINTENANCE & OPTIMIZATION
+	# ══════════════════════════════════════════════════════════════════
+
+	# Aggressive GC + repack
+	optimize = !git gc --aggressive --prune=now && git repack -a -d --depth=250 --window=250
+
+	# Full filesystem check
+	fsck-full = fsck --full --strict
+
+	# Commit count
+	count = rev-list --count HEAD
+
+	# Total file count
+	filecount = !git ls-files | wc -l
+
+	# Total line count
+	linecount = !git ls-files | xargs wc -l | tail -1
+
+	# ══════════════════════════════════════════════════════════════════
+	# 16.24  SHORTCUTS
+	# ══════════════════════════════════════════════════════════════════
+
 	co = checkout
 	cb = checkout -b
 	cp = cherry-pick
 	ri = rebase -i
 	mt = mergetool
 	dt = difftool
-
-	# ── Stats & Analysis ──
-	contributors = shortlog -sn --all --no-merges
-	filecount = !git ls-files | wc -l
-	linecount = !git ls-files | xargs wc -l | tail -1
-	biggest = !git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' | awk '/^blob/{print $3,$4}' | sort -rn | head -20
-
-	# ── Find & Search ──
-	find = !git log --all --pretty=format:'%h %s' --grep
-	search = !git log --all -S
-	who = !git log --all --format='%aN <%aE>' | sort -u
-
-	# ── PR & Release Workflow ──
-	pr = !gh pr create --fill
-	prs = !gh pr list
-	prv = !gh pr view --web
-	release = !gh release create
-
-	# ── Bisect Helpers ──
-	bisect-start = bisect start HEAD
-	bisect-good = bisect good
-	bisect-bad = bisect bad
-	bisect-reset = bisect reset
-
-	# ── Maintenance ──
-	optimize = !git gc --aggressive --prune=now && git repack -a -d --depth=250 --window=250
-	fsck-full = fsck --full --strict
-	count = rev-list --count HEAD
