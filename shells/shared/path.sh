@@ -18,8 +18,9 @@ _add_path "${DEV_HOME}/tools/bin"
 
 # ── User local ───────────────────────────────────────────────────────────────
 _add_path "${HOME}/.local/bin"
-_add_path "${HOME}/bin"
 _add_path "${DOTFILES_DIR:-${HOME}/dotfiles}/bin"
+_add_path "${DOTFILES_DIR:-${HOME}/dotfiles}/config/git/bin"
+_add_path "${HOME}/bin"
 
 # ── Homebrew ─────────────────────────────────────────────────────────────────
 if [ -x "/opt/homebrew/bin/brew" ]; then

@@ -390,6 +390,9 @@
 	# 16.1  META & HELP
 	# ══════════════════════════════════════════════════════════════════
 
+  # Git cheatsheet
+  cheatsheet = !git-cheatsheet
+
 	# List all aliases (formatted table)
 	aliases = "!f() { git config --get-regexp '^alias\\.' | sed -E 's/^alias\\.([^ ]+) (.*)/\\1 \t => \\2/' | sort | column -t -s '\t'; }; f"
 
