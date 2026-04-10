@@ -82,6 +82,10 @@ export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 # ── Ripgrep ──────────────────────────────────────────────────────────────────
 export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgrep/config"
 
+# ── Ruby ─────────────────────────────────────────────────────────────────────
+RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
+export RUBY_CONFIGURE_OPTS
+
 # ── Gem ──────────────────────────────────────────────────────────────────────
 if command -v gem > /dev/null 2>&1; then
     export GEM_HOME="$HOME/.gem"
@@ -90,9 +94,11 @@ fi
 
 # ── Bat MANPAGER ─────────────────────────────────────────────────────────────
 if command -v bat > /dev/null 2>&1; then
+    # shellcheck disable=SC2089
     export MANPAGER="sh -c 'col -bx | bat --language=man --plain'"
     export MANROFFOPT="-c"
 elif command -v batcat > /dev/null 2>&1; then
+    # shellcheck disable=SC2089
     export MANPAGER="sh -c 'col -bx | batcat --language=man --plain'"
     export MANROFFOPT="-c"
 fi
