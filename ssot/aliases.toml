@@ -255,6 +255,7 @@ sysinfo-short = "fastfetch --structure Title:OS:Host:Kernel:Uptime:Shell:Termina
 
 [gh]
 meta.binary = "gh"
+ghd = "gh dash"
 ghh = "gh"
 ghpr = "gh pr create"
 ghprv = "gh pr view --web"
