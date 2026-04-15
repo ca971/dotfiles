@@ -52,9 +52,9 @@ _banner() {
     cat << EOF
 
   ${CYN}${B}┏${HLINE_HEAVY}┓${RST}
-  ${CYN}${B}┃${RST}${B}$(printf '%*s' $(((WIDTH - 48) / 2)) '')${WHT}🔀  Git Power User — Aliases & Commands${RST}$(printf '%*s' $(((WIDTH - 48 + 1) / 2 + 12)) '')${CYN}${B}┃${RST}
-  ${CYN}${B}┃${RST}${D}$(printf '%*s' $(((WIDTH - 40) / 2)) '')~/dotfiles/config/git/.gitconfig$(printf '%*s' $(((WIDTH - 40 + 1) / 2 + 10)) '')${RST}${CYN}${B}┃${RST}
-  ${CYN}${B}┃${RST}${D}$(printf '%*s' $(((WIDTH - 44) / 2)) '')v2.0 · 100+ aliases · 24 categories$(printf '%*s' $(((WIDTH - 44 + 1) / 2 + 10)) '')${RST}${CYN}${B}┃${RST}
+  ${CYN}${B}┃${RST}${B}$(printf '%*s' $(((WIDTH - 48) / 2)) '')${WHT}🔀  Git Power User — Aliases & Commands${RST}$(printf '%*s' $(((WIDTH - 48 + 1) / 2 + 9)) '')${CYN}${B}┃${RST}
+  ${CYN}${B}┃${RST}${D}$(printf '%*s' $(((WIDTH - 40) / 2)) '')~/dotfiles/config/git/.gitconfig$(printf '%*s' $(((WIDTH - 40 + 1) / 2 + 8)) '')${RST}${CYN}${B}┃${RST}
+  ${CYN}${B}┃${RST}${D}$(printf '%*s' $(((WIDTH - 44) / 2)) '')v2.0 · 100+ aliases · 24 categories$(printf '%*s' $(((WIDTH - 44 + 1) / 2 + 9)) '')${RST}${CYN}${B}┃${RST}
   ${CYN}${B}┗${HLINE_HEAVY}┛${RST}
 EOF
 }
