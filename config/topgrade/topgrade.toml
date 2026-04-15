@@ -112,14 +112,11 @@ git fetch --prune \
 # Cargo: update all binaries installed via cargo-update
 "07 - Cargo binaries" = "cargo install-update --all"
 
-# Pipx: upgrade all isolated Python tools
-"08 - Pipx packages" = "pipx upgrade-all"
-
 # Homebrew: remove cached versions older than 7 days
-"09 - Brew cleanup" = "brew cleanup --prune=7"
+"08 - Brew cleanup" = "brew cleanup --prune=7"
 
 # MAS: upgrade Mac App Store apps from the CLI
-"10 - MAS updates" = "mas upgrade"
+"09 - MAS updates" = "mas upgrade"
 
 
 # ┌─────────────────────────────────────────────────────────────────────────┐
