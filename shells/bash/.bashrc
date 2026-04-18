@@ -79,3 +79,8 @@ dot() {
 
 # ── Fastfetch ────────────────────────────────────────────────────────────────
 command -v fastfetch &> /dev/null && [[ -z "${BASH_NO_FASTFETCH:-}" ]] && fastfetch
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/ca/.lmstudio/bin"
+# End of LM Studio CLI section
+

@@ -75,3 +75,8 @@ unset -f _add_to_path
 if [[ -f "${DOTFILES_DIR}/shells/bash/.bashrc" ]]; then
     source "${DOTFILES_DIR}/shells/bash/.bashrc"
 fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/ca/.lmstudio/bin"
+# End of LM Studio CLI section
+

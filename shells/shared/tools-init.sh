@@ -22,23 +22,31 @@ fi
 # ── Zoxide ───────────────────────────────────────────────────────────────────
 _has zoxide && zoxide init "$SHELL_NAME" --cmd cd 2> /dev/null
 
-# ── Atuin ────────────────────────────────────────────────────────────────────
-_has atuin && atuin init "$SHELL_NAME" --disable-up-arrow 2> /dev/null
-
 # ── Mise ─────────────────────────────────────────────────────────────────────
 _has mise && mise activate "$SHELL_NAME" 2> /dev/null
 
 # ── Direnv ───────────────────────────────────────────────────────────────────
 _has direnv && direnv hook "$SHELL_NAME" 2> /dev/null
 
-# ── FZF ──────────────────────────────────────────────────────────────────────
+# ── FZF (before atuin, so that atuin can override its Ctrl+R) ────────────────
 if _has fzf; then
+    # If atuin is present, let it handle Ctrl+R (global synced history)
+    # and disable fzf's Ctrl+R binding to avoid conflicts.
+    _fzf_ctrl_r_flag=""
+    if _has atuin; then
+        _fzf_ctrl_r_flag="--no-ctrl-r"
+    fi
+
     case "$SHELL_NAME" in
-        zsh) fzf --zsh 2> /dev/null ;;
-        bash) fzf --bash 2> /dev/null ;;
-        fish) fzf --fish 2> /dev/null ;;
+        zsh) fzf --zsh $_fzf_ctrl_r_flag 2> /dev/null ;;
+        bash) fzf --bash $_fzf_ctrl_r_flag 2> /dev/null ;;
+        fish) fzf --fish $_fzf_ctrl_r_flag 2> /dev/null ;;
     esac
+    unset _fzf_ctrl_r_flag
 fi
+
+# ── Atuin (after fzf → his Ctrl+R wins) ──────────────────────────────────────
+_has atuin && atuin init "$SHELL_NAME" --disable-up-arrow 2> /dev/null
 
 # ── Carapace ─────────────────────────────────────────────────────────────────
 _has carapace && carapace _carapace "$SHELL_NAME" 2> /dev/null

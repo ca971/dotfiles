@@ -102,3 +102,8 @@ test -f "$DOTFILES_DIR/local/local.fish"; and source "$DOTFILES_DIR/local/local.
 
 # ── Fastfetch ────────────────────────────────────────────────────────────────
 type -q fastfetch; and not set -q FISH_NO_FASTFETCH; and fastfetch
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/ca/.lmstudio/bin
+# End of LM Studio CLI section
+

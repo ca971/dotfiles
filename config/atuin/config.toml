@@ -1,0 +1,195 @@
+# ============================================================================
+# @file        config.toml
+# @description Atuin configuration — Power User setup.
+# @repository  https://github.com/ca971/dotfiles.git
+# @author      ca971
+# ============================================================================
+
+# ── Core ─────────────────────────────────────────────────────────────────────
+dialect = "us"
+timezone = "local"
+style = "compact"
+inline_height = 40
+show_preview = true
+max_preview_height = 4
+invert = false
+show_help = true
+show_tabs = true
+
+# ── Search & Filter ─────────────────────────────────────────────────────────
+# Explicitly global to fix the Ctrl+R directory-only issue (bypassing fzf)
+search_mode = "fuzzy"
+filter_mode = "global"
+
+# When navigating with Up/Down arrows, keep it global too
+filter_mode_shell_up_key_binding = "global"
+search_mode_shell_up_key_binding = "fuzzy"
+
+# ── Behavior ────────────────────────────────────────────────────────────────
+enter_accept = true        # Enter runs the command, Tab edits it
+command_chaining = true    # Smart completion after &&, ||, |
+exit_mode = "return-query" # Esc keeps the search query instead of wiping it
+keymap_mode = "auto"       # Matches shell mode (emacs/vim)
+word_jump_mode = "emacs"
+secrets_filter = true      # Prevent leaking AWS/GitHub/Slack tokens
+
+# ── Sync ────────────────────────────────────────────────────────────────────
+auto_sync = true
+sync_frequency = "5m" # Sync every 5 minutes instead of 10
+
+# ── Noise Reduction (History Filter) ────────────────────────────────────────
+# Exclude trivial navigational commands and TUI apps that you don't re-run from search
+history_filter = [
+  "^\\s*$",                                              # Empty commands
+  "^(ls|ll|la|l|eza|lsd|tree|broot)\\s*$",               # Listing variants
+  "^(cd|z|zi|zoxide)\\s.*$",                             # Navigation (zoxide)
+  "^(clear|cls|reset)$",                                 # Screen clearing
+  "^(exit|logout|q)$",                                   # Shell exits
+  "^(pwd|hostname|date|whoami|uname|uptime|fastfetch)$", # Trivial info
+  "^(htop|btop|top|btm)$",                               # System monitors
+  "^(lazygit|lazydocker|gitui|tig)$",                    # Git TUIs
+  "^(k9s|lnav|visidata)$",                               # K8s/Log TUIs
+  "^(bat|cat|less|more|most)\\s.*$",                     # File reading (we search the command, not the output)
+]
+
+# ── UI Layout ───────────────────────────────────────────────────────────────
+[ui]
+# Shows exit code (color-coded), duration, time, directory context, and command
+columns = [
+  { type = "exit", width = 3 },
+  { type = "duration", width = 5 },
+  { type = "time", width = 8 },
+  { type = "directory", width = 20 },
+  { type = "command", expand = true },
+]
+
+# ── Statistics ───────────────────────────────────────────────────────────────
+[stats]
+# Group tools by their subcommands for accurate stats (e.g., kubectl get vs kubectl apply)
+common_subcommands = [
+  "act",
+  "age",
+  "aichat",
+  "apt",
+  "brew",
+  "cargo",
+  "colima",
+  "composer",
+  "curlie",
+  "direnv",
+  "docker",
+  "docker-compose",
+  "doctl",
+  "doggo",
+  "dive",
+  "dnf",
+  "dotnet",
+  "eza",
+  "fd",
+  "ffmpeg",
+  "gh",
+  "git",
+  "go",
+  "gpg",
+  "gum",
+  "helm",
+  "jj",
+  "jq",
+  "just",
+  "k9s",
+  "kubectl",
+  "kubectx",
+  "mise",
+  "nix",
+  "nmcli",
+  "node",
+  "npm",
+  "ollama",
+  "pass",
+  "pnpm",
+  "podman",
+  "python",
+  "ripgrep",
+  "rustup",
+  "sops",
+  "starship",
+  "stern",
+  "systemctl",
+  "tmux",
+  "uv",
+  "xh",
+  "yq",
+  "zellij",
+]
+
+# Commands that wrap other commands (stats will analyze the inner command instead)
+common_prefix = ["sudo", "doas", "env", "watch", "viddy", "parallel", "entr"]
+
+# Commands that pollute stats and should be entirely ignored
+ignored_commands = [
+  "cd",
+  "ls",
+  "l",
+  "ll",
+  "la",
+  "lw",
+  "lt",
+  "lt2",
+  "lt3",
+  "lts",
+  "ld",
+  "lf",
+  "ldot",
+  "lm",
+  "lc",
+  "lS",
+  "lx",
+  "l1",
+  "lr",
+  "lX",
+  "lnk",
+  "eza",
+  "lsd",
+  "c",
+  "clear",
+  "pwd",
+  "exit",
+  "q",
+  "htop",
+  "btop",
+  "lazygit",
+  "lazydocker",
+  "gitui",
+  "k9s",
+  "lnav",
+  "v",
+  "vi",
+  "vim",
+  "nvim",
+  "neovide",
+]
+
+# ── Sync Engine ─────────────────────────────────────────────────────────────
+[sync]
+records = true # Enable sync v2
+
+# ── Preview ─────────────────────────────────────────────────────────────────
+[preview]
+strategy = "auto" # Adjust preview height dynamically
+
+# ── Network / DB ────────────────────────────────────────────────────────────
+network_connect_timeout = 5
+network_timeout = 5
+local_timeout = 5
+
+# ── Keys ────────────────────────────────────────────────────────────────────
+[keys]
+scroll_exits = false        # Prevent accidental exit when scrolling past edges
+exit_past_line_start = true
+accept_past_line_end = true
+
+# ── Tmux (disabled by default, enable if tmux >= 3.2) ──────────────────────
+[tmux]
+enabled = false
+# width = "80%"
+# height = "60%"
