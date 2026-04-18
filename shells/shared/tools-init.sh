@@ -28,10 +28,8 @@ _has mise && mise activate "$SHELL_NAME" 2> /dev/null
 # ── Direnv ───────────────────────────────────────────────────────────────────
 _has direnv && direnv hook "$SHELL_NAME" 2> /dev/null
 
-# ── FZF (before atuin, so that atuin can override its Ctrl+R) ────────────────
+# ── FZF ──────────────────────────────────────────────────────────────────────
 if _has fzf; then
-    # If atuin is present, let it handle Ctrl+R (global synced history)
-    # and disable fzf's Ctrl+R binding to avoid conflicts.
     _fzf_ctrl_r_flag=""
     if _has atuin; then
         _fzf_ctrl_r_flag="--no-ctrl-r"
@@ -42,11 +40,18 @@ if _has fzf; then
         bash) fzf --bash $_fzf_ctrl_r_flag 2> /dev/null ;;
         fish) fzf --fish $_fzf_ctrl_r_flag 2> /dev/null ;;
     esac
+
+    # Flag to prevent tools/fzf.zsh from re-initializing and overwriting bindings
+    echo "export _FZF_INITIALIZED=1"
     unset _fzf_ctrl_r_flag
 fi
 
 # ── Atuin (after fzf → his Ctrl+R wins) ──────────────────────────────────────
-_has atuin && atuin init "$SHELL_NAME" --disable-up-arrow 2> /dev/null
+if _has atuin; then
+    atuin init "$SHELL_NAME" --disable-up-arrow 2> /dev/null
+    # Flag to prevent tools/atuin.zsh from re-initializing
+    echo "export _ATUIN_INITIALIZED=1"
+fi
 
 # ── Carapace ─────────────────────────────────────────────────────────────────
 _has carapace && carapace _carapace "$SHELL_NAME" 2> /dev/null

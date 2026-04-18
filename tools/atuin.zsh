@@ -11,7 +11,10 @@ readonly _ZSH_TOOLS_ATUIN_LOADED=1
 has "atuin" || return 0
 log_debug "Configuring atuin"
 
-eval "$(atuin init zsh --disable-up-arrow)"
+# Skip eval if already initialized by tools-init.sh
+if [[ -z "${_ATUIN_INITIALIZED:-}" ]]; then
+  eval "$(atuin init zsh --disable-up-arrow)"
+fi
 
 # ============================================================================
 # Constants

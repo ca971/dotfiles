@@ -11,35 +11,47 @@ readonly _ZSH_TOOLS_FZF_LOADED=1
 has "fzf" || return 0
 log_debug "Configuring fzf"
 
-
 # ── Shell integration ────────────────────────────────────────────────────────
 local _fzf_loaded=0
 
-if (( ! _fzf_loaded )); then
-  eval "$(fzf --zsh 2>/dev/null)" && _fzf_loaded=1
-fi
-
-if (( ! _fzf_loaded )) && [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
-  local _fzf_brew="${HOMEBREW_PREFIX}/opt/fzf/shell"
-  if [[ -d "$_fzf_brew" ]]; then
-    [[ -f "${_fzf_brew}/completion.zsh" ]] && source "${_fzf_brew}/completion.zsh"
-    [[ -f "${_fzf_brew}/key-bindings.zsh" ]] && source "${_fzf_brew}/key-bindings.zsh"
-    _fzf_loaded=1
+# Skip eval if already initialized by tools-init.sh
+if [[ -z "${_FZF_INITIALIZED:-}" ]]; then
+  local _fzf_ctrl_r_flag=""
+  if has "atuin"; then
+    _fzf_ctrl_r_flag="--no-ctrl-r"
   fi
+
+  if (( ! _fzf_loaded )); then
+    eval "$(fzf --zsh ${_fzf_ctrl_r_flag} 2>/dev/null)" && _fzf_loaded=1
+  fi
+
+  if (( ! _fzf_loaded )) && [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
+    local _fzf_brew="${HOMEBREW_PREFIX}/opt/fzf/shell"
+    if [[ -d "$_fzf_brew" ]]; then
+      [[ -f "${_fzf_brew}/completion.zsh" ]] && source "${_fzf_brew}/completion.zsh"
+      [[ -f "${_fzf_brew}/key-bindings.zsh" ]] && source "${_fzf_brew}/key-bindings.zsh"
+      _fzf_loaded=1
+    fi
+  fi
+
+  if (( ! _fzf_loaded )); then
+    local _fzf_sys
+    for _fzf_sys in /usr/share/fzf /usr/share/doc/fzf/examples /usr/share/fzf/shell; do
+      if [[ -d "$_fzf_sys" ]]; then
+        [[ -f "${_fzf_sys}/completion.zsh" ]] && source "${_fzf_sys}/completion.zsh"
+        [[ -f "${_fzf_sys}/key-bindings.zsh" ]] && source "${_fzf_sys}/key-bindings.zsh"
+        _fzf_loaded=1
+        break
+      fi
+    done
+  fi
+  unset _fzf_ctrl_r_flag
 fi
 
-if (( ! _fzf_loaded )); then
-  local _fzf_sys
-  for _fzf_sys in /usr/share/fzf /usr/share/doc/fzf/examples /usr/share/fzf/shell; do
-    if [[ -d "$_fzf_sys" ]]; then
-      [[ -f "${_fzf_sys}/completion.zsh" ]] && source "${_fzf_sys}/completion.zsh"
-      [[ -f "${_fzf_sys}/key-bindings.zsh" ]] && source "${_fzf_sys}/key-bindings.zsh"
-      _fzf_loaded=1
-      break
-    fi
-  done
+# ── Safety net: ensure atuin keeps Ctrl+R ────────────────────────────────────
+if has "atuin" && (( ${+functions[_atuin_search]} )); then
+  bindkey '^r' _atuin_search
 fi
-unset _fzf_loaded
 
 # ── Functions ────────────────────────────────────────────────────────────────
 function fkill() {
