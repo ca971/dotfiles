@@ -153,7 +153,7 @@ format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bold yellow"
 
 [git_metrics]
-disabled = false
+disabled = true                                                   # No metrics (persistent timeout)
 format = "([󰐕$added]($added_style) [󰍴$deleted]($deleted_style) )"
 added_style = "bold green"
 deleted_style = "bold red"
