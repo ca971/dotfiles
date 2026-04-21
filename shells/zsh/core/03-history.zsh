@@ -28,10 +28,10 @@ log_debug "Configuring history engine"
 export HISTFILE="${ZSH_DATA_DIR}/history"
 
 # @description Maximum number of history entries kept in memory
-export HISTSIZE=100000
+export HISTSIZE=1000000
 
 # @description Maximum number of history entries saved to file
-export SAVEHIST=100000
+export SAVEHIST=1000000
 
 # @description Ensure the history directory exists
 [[ -d "$(dirname "$HISTFILE")" ]] || mkdir -p "$(dirname "$HISTFILE")" 2>/dev/null

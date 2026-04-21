@@ -1,0 +1,26 @@
+# ============================================================================
+# @file        themes/power.toml
+# @description Catppuccin Mocha theme for Atuin.
+# @palette     https://catppuccin.com/palette
+# ============================================================================
+
+# Command list — Catppuccin Text (blanc doux)
+Base = "#cdd6f4"
+
+# Matches de recherche — Catppuccin Mauve (violet)
+Important = "#cba6f7"
+
+# Aide, raccourcis clavier — Catppuccin Teal (cyan)
+Guidance = "#94e2d5"
+
+# Info — Catppuccin Green (vert)
+AlertInfo = "#a6e3a1"
+
+# Avertissement — Catppuccin Yellow (jaune)
+AlertWarn = "#f9e2af"
+
+# Erreur — Catppuccin Red (rouge)
+AlertError = "#f38ba8"
+
+# Métadonnées (durée, heure, dossier) — Catppuccin Peach (orange)
+Annotation = "#fab387"

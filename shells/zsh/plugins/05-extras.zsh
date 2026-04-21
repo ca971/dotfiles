@@ -130,8 +130,8 @@ fi
 # @description  Toggle between global history and per-directory history
 #               with Ctrl-G. Uses the OMZ plugin directly with explicit
 #               script sourcing to avoid loading issues.
-zinit ice wait"2" lucid
-zinit snippet OMZP::per-directory-history/per-directory-history.zsh
+# zinit ice wait"2" lucid
+# zinit snippet OMZP::per-directory-history/per-directory-history.zsh
 
 # ============================================================================
 # ZSH Vi Mode (optional — controlled by SSOT feature flag)
