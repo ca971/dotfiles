@@ -19,7 +19,7 @@ DOTFILES_DIR="${DOTFILES_DIR:-${HOME}/dotfiles}"
 _THEMES_DIR="${DOTFILES_DIR}/themes"
 
 # ── Default theme ────────────────────────────────────────────────────────────
-_STARSHIP_THEME="powerline"
+_STARSHIP_THEME="minimal"
 
 # ============================================================================
 # Detection Logic (POSIX sh compatible — no bashisms)
