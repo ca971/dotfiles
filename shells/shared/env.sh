@@ -127,3 +127,9 @@ export HOMEBREW_AUTOREMOVE=1
 
 # ── Dev workspace ────────────────────────────────────────────────────────────
 export DEV_HOME="$HOME/dev"
+
+# ── Claude Code with Ollama Cloud Models ─────────────────────────────────────
+# claude --model kimi-k2.6:cloud
+# export ANTHROPIC_BASE_URL=http://localhost:11434
+# export ANTHROPIC_AUTH_TOKEN=ollama
+# export ANTHROPIC_API_KEY=""
