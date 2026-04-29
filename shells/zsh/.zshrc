@@ -142,3 +142,6 @@ unset _ZSH_START_MS
 # ── Fastfetch ────────────────────────────────────────────────────────────────
 has "fastfetch" && [[ -z "${ZSH_NO_FASTFETCH:-}" ]] && \
     [[ "${ZSH_IS_SSH:-0}" -eq 0 ]] && fastfetch
+
+# opencode
+export PATH=/Users/ca/.opencode/bin:$PATH
