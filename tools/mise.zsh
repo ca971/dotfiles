@@ -1,5 +1,11 @@
 #!/usr/bin/env zsh
 
+# ============================================================================
+# @file        tools/mise.zsh
+# @description Mise — Tools and Runtimes installer.
+# @version     1.0.0
+# ============================================================================
+
 [[ -n "${_ZSH_TOOLS_MISE_LOADED:-}" ]] && return 0
 readonly _ZSH_TOOLS_MISE_LOADED=1
 

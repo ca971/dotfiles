@@ -1,7 +1,18 @@
 [settings]
-# mise settings for power users
+# --- NETWORK & API ---
+# Increase timeout to 60s for slow APIs (prevents timeouts during GitHub congestion)
+fetch_remote_versions_timeout = "60s"
+# Cache the list of available versions for 1 hour to reduce API calls and avoid rate limiting
+fetch_remote_versions_cache = "1h"
+
+# --- CLEANUP & STORAGE ---
+# Automatically delete the downloaded source/binary after a successful installation
 always_keep_download = false
+# Automatically delete the temporary installation directory if the install fails
 always_keep_install = false
+
+# --- PERFORMANCE ---
+# Number of simultaneous installation jobs (4 is ideal for your M3's performance cores)
 jobs = 4
 
 [tools]
@@ -17,10 +28,10 @@ erlang = "latest" # Required dependency for Elixir
 elixir = "latest"
 
 # --- VIRTUALIZATION & CONTAINERS ---
-# Colima provides Docker/Kubernetes on macOS with minimal setup
-colima = "latest"
-docker-cli = "latest"
-docker-compose = "latest"
+colima = "latest"         # Container runtime for macOS (Docker Desktop replacement)
+lima = "latest"           # Linux virtual machines on macOS (required by Colima)
+docker-cli = "latest"     # Command-line interface for interacting with Docker
+docker-compose = "latest" # Tool for defining and running multi-container applications
 
 # --- CORE TERMINAL TOOLS ---
 # High-performance binaries best managed by mise
