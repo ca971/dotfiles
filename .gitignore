@@ -11,6 +11,9 @@
 local/*
 !local/.gitkeep
 
+# ── Colima sockets ──────────────────────────────────────────────────────────
+config/colima/*.sock
+
 # ── Cache / Runtime ─────────────────────────────────────────────────────────
 cache/*
 !cache/.gitkeep
