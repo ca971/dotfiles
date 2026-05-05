@@ -70,8 +70,10 @@ EOF
 
   # ── 4. Clone git-templates (background) ──────────────────────────────
   if [[ ! -d "${GIT_TEMPLATES_DIR}/.git" ]]; then
+    # Fresh clone if missing
     { git clone --depth=1 --quiet "$GIT_TEMPLATES_REPO" "$GIT_TEMPLATES_DIR" 2>/dev/null } &!
   else
+    # Auto-update if already exists
     { git -C "$GIT_TEMPLATES_DIR" pull --rebase --quiet 2>/dev/null } &!
   fi
 
