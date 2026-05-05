@@ -94,13 +94,11 @@ fi
 
 # ── Bat MANPAGER ─────────────────────────────────────────────────────────────
 if command -v bat > /dev/null 2>&1; then
-    # shellcheck disable=SC2089
-    export MANPAGER="sh -c 'col -bx | bat --language=man --plain'"
-    export MANROFFOPT="-c"
+    MANPAGER="bat --language=man --plain"
+    export MANPAGER
 elif command -v batcat > /dev/null 2>&1; then
-    # shellcheck disable=SC2089
-    export MANPAGER="sh -c 'col -bx | batcat --language=man --plain'"
-    export MANROFFOPT="-c"
+    MANPAGER="batcat --language=man --plain"
+    export MANPAGER
 fi
 
 # ── Mise ─────────────────────────────────────────────────────────────────────
@@ -119,6 +117,8 @@ export STARSHIP_CACHE="${XDG_CACHE_HOME}/starship"
 
 # ── GitHub CLI ───────────────────────────────────────────────────────────────
 export GH_NO_UPDATE_NOTIFIER=1
+GITHUB_TOKEN=$(gh auth token 2> /dev/null)
+export GITHUB_TOKEN
 
 # ── Homebrew ─────────────────────────────────────────────────────────────────
 export HOMEBREW_NO_ANALYTICS=1
