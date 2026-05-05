@@ -130,26 +130,76 @@ function gquick() {
 }
 
 function gconv() {
-  local type="$1" scope="" desc=""
-  if [[ -z "$type" ]]; then
+  # Local variables for commit components
+  local type="" scope="" desc=""
+
+  # Define commit types with their succinct English descriptions
+  local types_with_desc=(
+    "feat:      A new feature"
+    "fix:       A bug fix"
+    "docs:      Documentation only changes"
+    "style:     Changes that do not affect the meaning of the code"
+    "refactor:  A code change that neither fixes a bug nor adds a feature"
+    "perf:      A code change that improves performance"
+    "test:      Adding missing tests or correcting existing tests"
+    "build:     Changes that affect the build system or external dependencies"
+    "ci:        Changes to our CI configuration files and scripts"
+    "chore:     Other changes that don't modify src or test files"
+    "revert:    Reverts a previous commit"
+    "release:   Create a release commit"
+  )
+
+  # Interactive mode if no arguments are provided
+  if [[ -z "$1" ]]; then
     if has "fzf"; then
-      type=$(printf "feat\nfix\ndocs\nstyle\nrefactor\ntest\nchore\nci\nperf\nbuild\nrevert\nrelease" | \
-        fzf --header='Commit type' --height='40%' --border)
+      # Display full line in fzf, but extract only the type before the colon
+      type=$(printf "%s\n" "${types_with_desc[@]}" | \
+        fzf --header='Commit Type' \
+            --height='40%' \
+            --border \
+            --layout=reverse | awk -F':' '{print $1}' | xargs)
     else
+      # Fallback for environments without fzf
+      printf "Available types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert, release\n"
       printf "Type: "; read -r type
     fi
+
+    # Exit if no type was selected or entered
     [[ -z "$type" ]] && return 0
+
+    # Prompt for optional scope and mandatory description
     printf "Scope (optional): "; read -r scope
     printf "Description: "; read -r desc
+
+    # Validate that description is not empty
     [[ -z "$desc" ]] && { log_error "Description required"; return 1; }
   else
+    # Command line mode (e.g., gconv feat "add login" or gconv feat ui "add button")
+    type="$1"
     case "$#" in
-      1) log_error "Usage: gconv <type> [scope] <desc>"; return 1 ;;
-      2) desc="$2" ;;
-      *) scope="$2"; shift 2; desc="$*" ;;
+      1)
+        log_error "Usage: gconv <type> [scope] <desc>"
+        return 1
+        ;;
+      2)
+        # Only type and description provided
+        desc="$2"
+        ;;
+      *)
+        # Type, scope, and multi-word description provided
+        scope="$2"
+        shift 2
+        desc="$*"
+        ;;
     esac
   fi
-  [[ -n "$scope" ]] && git commit -m "${type}(${scope}): ${desc}" || git commit -m "${type}: ${desc}"
+
+  # Execute git commit with the formatted message
+  if [[ -n "$scope" ]]; then
+    git commit -m "${type}(${scope}): ${desc}"
+  else
+    git commit -m "${type}: ${desc}"
+  fi
 }
 
 function ginfo() {
