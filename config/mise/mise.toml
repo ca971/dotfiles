@@ -17,66 +17,79 @@ jobs = 4
 
 [tools]
 # --- LANGUAGES & RUNTIMES ---
-# Gold standard for version management
-python = "latest"
-node = "latest"
-go = "latest"
-ruby = "latest"
-rust = "latest"
-lua = "latest"
-erlang = "latest" # Required dependency for Elixir
-elixir = "latest"
+python = "latest" # General purpose programming language
+node = "latest"   # JavaScript runtime environment
+go = "latest"     # Google's statically typed compiled language
+ruby = "latest"   # Dynamic, open source programming language
+rust = "latest"   # Systems programming language focusing on safety and speed
+lua = "5.4.7"     # Fixed version to ensure LuaRocks compatibility
+erlang = "latest" # Soft real-time system programming language
+elixir = "latest" # Dynamic, functional language for scalable apps
+deno = "latest"   # Secure runtime for JavaScript and TypeScript
+
+# --- SHELLS ---
+# "asdf:mise-plugins/mise-lua" = "latest" # A new type of shell focusing on structured data
+"aqua:nushell/nushell" = "latest" # A new type of shell focusing on structured data
 
 # --- VIRTUALIZATION & CONTAINERS ---
 colima = "latest"         # Container runtime for macOS (Docker Desktop replacement)
 lima = "latest"           # Linux virtual machines on macOS (required by Colima)
-docker-cli = "latest"     # Command-line interface for interacting with Docker
-docker-compose = "latest" # Tool for defining and running multi-container applications
+docker-cli = "latest"     # CLI for interacting with Docker
+docker-compose = "latest" # Tool for defining and running multi-container apps
+lazydocker = "latest"     # The simple terminal UI for both docker and docker-compose
 
 # --- CORE TERMINAL TOOLS ---
-# High-performance binaries best managed by mise
-neovim = "nightly"  # Your primary editor
-usage = "latest"    # CLI auto-completion engine
-starship = "latest" # Universal shell prompt
-zoxide = "latest"   # Smarter 'cd' command
-fzf = "latest"      # Fuzzy finder
-atuin = "latest"    # SQLite-powered shell history
-zellij = "latest"   # Terminal workspace/multiplexer
-direnv = "latest"   # Environment loader
+neovim = "nightly"  # Hyperextensible Vim-based text editor
+usage = "latest"    # CLI auto-completion engine generator
+starship = "latest" # The minimal, blazing-fast, and infinitely customizable prompt
+zoxide = "latest"   # A smarter cd command for your terminal
+fzf = "latest"      # A command-line fuzzy finder
+atuin = "latest"    # Magical shell history powered by SQLite
+zellij = "latest"   # A terminal workspace with batteries included
+direnv = "latest"   # Unclutter your .profile based on the current directory
 
 # --- RUST-POWERED ALTERNATIVES ---
-# Blazing fast, static binaries (replaces older brew versions)
-eza = "latest"                  # Modern 'ls'
-bat = "latest"                  # Modern 'cat' with syntax highlighting[cite: 1]
-fd = "latest"                   # Fast 'find' replacement
-ripgrep = "latest"              # Fastest search (rg)[cite: 1]
-yazi = "latest"                 # Terminal file manager
-"aqua:ouch-org/ouch" = "latest" # Universal compression (zip/tar/7z)
-"aqua:dalance/procs" = "latest" # Modern 'ps'
-bottom = "latest"               # Modern 'top' (btm)
-dust = "latest"                 # Disk usage analyzer (du)
+eza = "latest"                  # A modern, maintained replacement for ls
+bat = "latest"                  # A cat clone with syntax highlighting and Git integration
+fd = "latest"                   # A simple, fast and user-friendly alternative to 'find'
+ripgrep = "latest"              # Line-oriented search tool that recursively searches directories
+yazi = "latest"                 # Blazing fast terminal file manager written in Rust
+"aqua:ouch-org/ouch" = "latest" # Painless compression and decompression for the terminal
+"aqua:dalance/procs" = "latest" # A modern replacement for ps written in Rust
+bottom = "latest"               # Yet another cross-platform graphical process/system monitor
+dust = "latest"                 # A more intuitive version of du in Rust
+"aqua:orf/gping" = "latest"     # Ping, but with a graph
+"aqua:muesli/duf" = "latest"    # Disk Usage/Free Utility - a better 'df' replacement
 
 # --- WEB, API & DATA ---
-# mise provides static binaries, faster than brew/npm
-jq = "latest"    # JSON processor
-yq = "latest"    # YAML/TOML/XML processor
-xh = "latest"    # Rust-based HTTP client (faster than httpie)
-hurl = "latest"  # HTTP testing and curls
-doggo = "latest" # Modern DNS client (dig replacement)
+jq = "latest"    # Lightweight and flexible command-line JSON processor
+yq = "latest"    # Portable command-line YAML, JSON, XML, CSV and TOML processor
+xh = "latest"    # Friendly and fast tool for sending HTTP requests
+hurl = "latest"  # Run and test HTTP requests with plain text
+doggo = "latest" # Human-readable DNS client for dig lovers
 
 # --- CLOUD, OPS & SEC ---
-# Ensures same versions across different machines
-kubectl = "latest"
-k9s = "latest"        # K8s TUI dashboard
-lazydocker = "latest" # Docker TUI
-lazygit = "latest"    # Git TUI
-sops = "latest"       # Secrets management
-age = "latest"        # Modern encryption
-terraform = "latest"
+awscli = "latest"                 # Official CLI for Amazon Web Services
+"aqua:aws/aws-sam-cli" = "latest" # CLI for local development and testing of Serverless apps
+helm = "latest"                   # The Kubernetes Package Manager
+kubectl = "latest"                # Command line tool for communicating with a Kubernetes cluster
+k9s = "latest"                    # Kubernetes CLI To Manage Your Clusters In Style
+doctl = "latest"                  # Command line interface for the DigitalOcean API
+sops = "latest"                   # Editor of encrypted files
+age = "latest"                    # A simple, modern and secure file encryption tool
+terraform = "latest"              # Tool for building, changing, and versioning infrastructure
+
+# --- FORMATTERS & LINTERS ---
+biome = "latest"      # Toolchain of the web (linter, formatter, and more)
+stylua = "latest"     # An opinionated Lua code formatter
+taplo = "latest"      # A TOML toolkit for linting and formatting
+shellcheck = "latest" # Static analysis tool for shell scripts
+hadolint = "latest"   # Dockerfile linter, validate inline bash and lint Dockerfiles
 
 # --- DEV UTILITIES ---
-gh = "latest"        # GitHub CLI
-just = "latest"      # Modern command runner
-gum = "latest"       # Script interactivity
-tokei = "latest"     # Code statistics
-hyperfine = "latest" # Benchmarking
+gh = "latest"        # GitHub’s official command line tool
+lazygit = "latest"   # Simple terminal UI for git commands
+just = "latest"      # Handy runner for project-specific commands
+gum = "latest"       # A tool for glamorous shell scripts
+tokei = "latest"     # Program that allows you to count your code, quickly
+hyperfine = "latest" # A command-line benchmarking tool
