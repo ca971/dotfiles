@@ -1,0 +1,82 @@
+[settings]
+# --- NETWORK & API ---
+# Increase timeout to 60s for slow APIs (prevents timeouts during GitHub congestion)
+fetch_remote_versions_timeout = "60s"
+# Cache the list of available versions for 1 hour to reduce API calls and avoid rate limiting
+fetch_remote_versions_cache = "1h"
+
+# --- CLEANUP & STORAGE ---
+# Automatically delete the downloaded source/binary after a successful installation
+always_keep_download = false
+# Automatically delete the temporary installation directory if the install fails
+always_keep_install = false
+
+# --- PERFORMANCE ---
+# Number of simultaneous installation jobs (4 is ideal for your M3's performance cores)
+jobs = 4
+
+[tools]
+# --- LANGUAGES & RUNTIMES ---
+# Gold standard for version management
+python = "latest"
+node = "latest"
+go = "latest"
+ruby = "latest"
+rust = "latest"
+lua = "latest"
+erlang = "latest" # Required dependency for Elixir
+elixir = "latest"
+
+# --- VIRTUALIZATION & CONTAINERS ---
+colima = "latest"         # Container runtime for macOS (Docker Desktop replacement)
+lima = "latest"           # Linux virtual machines on macOS (required by Colima)
+docker-cli = "latest"     # Command-line interface for interacting with Docker
+docker-compose = "latest" # Tool for defining and running multi-container applications
+
+# --- CORE TERMINAL TOOLS ---
+# High-performance binaries best managed by mise
+neovim = "nightly"  # Your primary editor
+usage = "latest"    # CLI auto-completion engine
+starship = "latest" # Universal shell prompt
+zoxide = "latest"   # Smarter 'cd' command
+fzf = "latest"      # Fuzzy finder
+atuin = "latest"    # SQLite-powered shell history
+zellij = "latest"   # Terminal workspace/multiplexer
+direnv = "latest"   # Environment loader
+
+# --- RUST-POWERED ALTERNATIVES ---
+# Blazing fast, static binaries (replaces older brew versions)
+eza = "latest"                  # Modern 'ls'
+bat = "latest"                  # Modern 'cat' with syntax highlighting[cite: 1]
+fd = "latest"                   # Fast 'find' replacement
+ripgrep = "latest"              # Fastest search (rg)[cite: 1]
+yazi = "latest"                 # Terminal file manager
+"aqua:ouch-org/ouch" = "latest" # Universal compression (zip/tar/7z)
+"aqua:dalance/procs" = "latest" # Modern 'ps'
+bottom = "latest"               # Modern 'top' (btm)
+dust = "latest"                 # Disk usage analyzer (du)
+
+# --- WEB, API & DATA ---
+# mise provides static binaries, faster than brew/npm
+jq = "latest"    # JSON processor
+yq = "latest"    # YAML/TOML/XML processor
+xh = "latest"    # Rust-based HTTP client (faster than httpie)
+hurl = "latest"  # HTTP testing and curls
+doggo = "latest" # Modern DNS client (dig replacement)
+
+# --- CLOUD, OPS & SEC ---
+# Ensures same versions across different machines
+kubectl = "latest"
+k9s = "latest"        # K8s TUI dashboard
+lazydocker = "latest" # Docker TUI
+lazygit = "latest"    # Git TUI
+sops = "latest"       # Secrets management
+age = "latest"        # Modern encryption
+terraform = "latest"
+
+# --- DEV UTILITIES ---
+gh = "latest"        # GitHub CLI
+just = "latest"      # Modern command runner
+gum = "latest"       # Script interactivity
+tokei = "latest"     # Code statistics
+hyperfine = "latest" # Benchmarking
